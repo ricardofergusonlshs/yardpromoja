@@ -1,0 +1,1132 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>YardPromo Jamaica | Find What’s Happening</title>
+  <meta name="description" content="Discover Jamaican events, promos, venues, campaigns, and local deals — or post your own promo link."/>
+  <meta property="og:title" content="YardPromo Jamaica"/>
+  <meta property="og:description" content="Find what’s happening in Jamaica or post your own promo link."/>
+  <meta property="og:image" content="assets/yardpromo-brand-presentation.png"/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:url" content="https://yardpromo.com"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <link rel="canonical" href="https://yardpromo.com"/>
+  <link rel="icon" type="image/png" href="assets/yardpromo-app-icon.png"/>
+  <link rel="apple-touch-icon" href="assets/yardpromo-app-icon.png"/>
+
+  <style>
+    *{box-sizing:border-box}
+    :root{
+      --green:#008a3d;
+      --green-dark:#064e3b;
+      --gold:#f7c600;
+      --ink:#07111f;
+      --muted:#64748b;
+      --line:#e2e8f0;
+      --soft:#f8fafc;
+      --white:#fff;
+      --danger:#b42318;
+      --radius:22px;
+      --shadow:0 18px 50px rgba(15,23,42,.10);
+    }
+    html{scroll-behavior:smooth}
+    body{margin:0;background:#f8fafc;color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    a{color:inherit;text-decoration:none}
+    button,input,select,textarea{font:inherit}
+    button{cursor:pointer}
+    img{display:block;max-width:100%}
+    .container{width:min(1160px,calc(100% - 32px));margin:0 auto}
+    .header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.96);border-bottom:1px solid var(--line);backdrop-filter:blur(18px)}
+    .nav{min-height:76px;display:flex;align-items:center;justify-content:space-between;gap:18px}
+    .brand{border:0;background:transparent;display:flex;align-items:center;gap:12px;text-align:left}
+    .brand-mark{width:46px;height:46px;border-radius:16px;display:grid;place-items:center;color:white;background:linear-gradient(135deg,var(--green),var(--green-dark));font-weight:1000;letter-spacing:-.06em}
+    .brand strong{display:block;font-size:21px;letter-spacing:-.05em}
+    .brand small{display:block;color:var(--muted);font-size:12px;font-weight:850}
+    .nav-links{display:flex;align-items:center;gap:4px;flex-wrap:wrap}
+    .nav-links button{border:0;background:transparent;padding:10px 12px;border-radius:14px;color:#475569;font-size:14px;font-weight:900}
+    .nav-links button:hover,.nav-links button.active{background:#fff4bf;color:#111827}
+    .mobile-menu{display:none;width:100%;gap:8px;overflow-x:auto;padding:0 0 14px}
+    .mobile-menu button{white-space:nowrap;border:1px solid var(--line);background:white;border-radius:999px;padding:9px 12px;font-weight:900;color:#475569}
+    .mobile-menu button.active{background:var(--gold);color:#111827}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:11px 15px;border-radius:16px;border:0;font-weight:950;white-space:nowrap}
+    .btn-primary{background:linear-gradient(135deg,var(--green),var(--green-dark));color:white}
+    .btn-gold{background:var(--gold);color:#111827}
+    .btn-light{background:white;color:#334155;border:1px solid var(--line)}
+    .btn-danger{background:var(--danger);color:white}
+    .hero{background:radial-gradient(circle at 14% 12%,rgba(0,138,61,.40),transparent 32%),radial-gradient(circle at 88% 78%,rgba(247,198,0,.22),transparent 34%),linear-gradient(135deg,#070b13 0%,#07111f 52%,#022c22 100%);color:white}
+    .hero-grid{min-height:540px;padding:70px 0;display:grid;grid-template-columns:1.05fr .95fr;align-items:center;gap:44px}
+    .eyebrow{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.10);padding:9px 13px;border-radius:999px;font-weight:950;font-size:14px}
+    h1{margin:18px 0 0;font-size:clamp(40px,6.3vw,72px);line-height:.95;letter-spacing:-.072em}
+    h2{margin:8px 0 0;font-size:clamp(28px,4.2vw,46px);line-height:1;letter-spacing:-.055em}
+    h3{margin:0;font-size:22px;letter-spacing:-.035em}
+    p{line-height:1.65}
+    .hero p{max-width:620px;color:#d1d5db;font-size:18px;margin:22px 0 0}
+    .hero-actions,.action-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+    .hero-card{background:white;color:var(--ink);border-radius:28px;overflow:hidden;box-shadow:0 28px 90px rgba(0,0,0,.24)}
+    .hero-card img{height:300px;width:100%;object-fit:cover}
+    .hero-card div{padding:22px}
+    .section{padding:54px 0}
+    .section-head{display:flex;align-items:end;justify-content:space-between;gap:20px;margin-bottom:26px}
+    .kicker{margin:0;color:var(--green);font-size:12px;font-weight:1000;text-transform:uppercase;letter-spacing:.09em}
+    .muted{color:var(--muted)}
+    .small{font-size:13px}
+    .grid{display:grid;gap:22px}
+    .grid-2{grid-template-columns:repeat(2,1fr)}
+    .grid-3{grid-template-columns:repeat(3,1fr)}
+    .grid-4{grid-template-columns:repeat(4,1fr)}
+    .card,.panel,.form-card,.stat,.price-card,.category-card,.profile-card,.venue-card,.campaign-card,.share-preview-card{background:white;border:1px solid var(--line);border-radius:var(--radius);box-shadow:0 4px 14px rgba(15,23,42,.04)}
+    .card,.campaign-card{overflow:hidden}
+    .card-img{height:230px;background:#e2e8f0;position:relative}
+    .card-img img,.campaign-card img{width:100%;height:100%;object-fit:cover}
+    .campaign-card img{height:190px}
+    .card-body,.campaign-body{padding:20px}
+    .card h3{margin-top:8px}
+    .meta{color:var(--green);font-size:12px;font-weight:1000;text-transform:uppercase;letter-spacing:.08em}
+    .details{display:grid;gap:7px;margin:14px 0;color:#475569;font-size:14px;font-weight:750}
+    .date-pill{position:absolute;left:12px;bottom:12px;background:rgba(255,255,255,.96);border-radius:14px;padding:8px 11px;color:#111827;font-size:13px;font-weight:950}
+    .featured-tag{position:absolute;top:12px;left:12px;background:var(--gold);color:#111827;border-radius:999px;padding:6px 10px;font-size:12px;font-weight:1000}
+    .tag{display:inline-flex;border-radius:999px;padding:6px 10px;font-size:12px;font-weight:950;background:#f1f5f9;color:#475569}
+    .tag.green{background:#ecfdf5;color:#047857}.tag.gold{background:#fff4bf;color:#7a5b00}.tag.red{background:#fff1f2;color:#be123c}
+    .panel,.form-card,.stat,.price-card,.profile-card,.venue-card,.share-preview-card{padding:24px}
+    .category-card{padding:22px;text-align:left}
+    .category-card strong{display:block;margin-top:6px}
+    .filters{display:grid;grid-template-columns:1fr 180px 180px 150px;gap:12px;margin-bottom:24px}
+    label{display:grid;gap:7px;color:#334155;font-size:14px;font-weight:900}
+    input,select,textarea{width:100%;border:1px solid var(--line);border-radius:15px;padding:12px 13px;outline:none;background:white}
+    input:focus,select:focus,textarea:focus{border-color:var(--green);box-shadow:0 0 0 4px #dcfce7}
+    .form-grid{display:grid;gap:18px}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+    .form-section{border-top:1px solid var(--line);padding-top:18px}
+    .form-section:first-child{border-top:0;padding-top:0}
+    .upload-box{border:2px dashed #86efac;background:#f0fdf4;border-radius:20px;padding:16px}
+    .layout-2{display:grid;grid-template-columns:1fr 360px;gap:26px;align-items:start}
+    .detail-shell{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(330px,.95fr);gap:28px;align-items:start}
+    .detail-image{border-radius:28px;overflow:hidden;background:#e2e8f0;box-shadow:var(--shadow)}
+    .detail-image img{width:100%;max-height:760px;object-fit:cover}
+    .detail-panel{background:white;border:1px solid var(--line);border-radius:28px;padding:26px;box-shadow:0 8px 28px rgba(15,23,42,.06)}
+    .promo-title{font-size:clamp(34px,4.5vw,56px);line-height:1;letter-spacing:-.065em;color:#07111f}
+    .primary-actions{border:1px solid var(--line);background:#fbfdff;border-radius:24px;padding:16px;margin-top:20px;display:grid;grid-template-columns:repeat(2,1fr);gap:10px;align-items:center}
+    .primary-actions .btn{width:100%}
+    .more-actions{margin-top:16px}
+    .more-actions details{border:1px solid var(--line);background:white;border-radius:22px;padding:14px}
+    .more-actions summary{font-weight:1000;cursor:pointer;color:#07111f}
+    .more-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+    .trust-row{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}
+    .trust-row span{border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 10px;color:#475569;font-size:13px;font-weight:900}
+    .engagement-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0}
+    .engagement-stat{border:1px solid var(--line);background:#fff;border-radius:18px;padding:14px}
+    .engagement-stat strong{display:block;font-size:24px;letter-spacing:-.04em;color:#07111f}
+    .engagement-stat span{display:block;color:#64748b;font-size:13px;font-weight:850}
+    .guest-meter{height:10px;background:#e2e8f0;border-radius:999px;overflow:hidden;margin:10px 0}
+    .guest-meter span{display:block;height:100%;background:linear-gradient(90deg,var(--green),var(--gold));border-radius:999px}
+    .social-proof{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
+    .proof-pill{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:7px 10px;background:#f8fafc;border:1px solid var(--line);color:#475569;font-size:13px;font-weight:900}
+    .qr-box{display:grid;grid-template-columns:repeat(9,1fr);gap:3px;width:150px;height:150px;background:white;border:10px solid white;border-radius:16px;box-shadow:0 8px 24px rgba(15,23,42,.10)}
+    .qr-dot{background:#07111f;border-radius:2px}.qr-dot.off{background:white}
+    .calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:10px}
+    .calendar-head{background:#07111f;color:white;padding:10px;border-radius:14px;text-align:center;font-size:12px;font-weight:1000;text-transform:uppercase}
+    .calendar-day{min-height:120px;background:white;border:1px solid var(--line);border-radius:18px;padding:12px}
+    .calendar-day.muted-day{opacity:.35;background:#f1f5f9}
+    .calendar-event{margin-top:8px;border:0;border-radius:12px;background:#ecfdf5;color:#064e3b;padding:8px;text-align:left;width:100%;font-size:12px;font-weight:900}
+    .event-row,.rank-row,.inquiry-row,.claim-row,.rsvp-row,.interest-row{display:grid;grid-template-columns:80px 1fr auto;gap:14px;align-items:center;background:white;border:1px solid var(--line);border-radius:20px;padding:14px}
+    .event-date{background:#07111f;color:white;border-radius:16px;padding:10px;text-align:center;font-weight:1000}
+    .event-date small{display:block;color:#cbd5e1;text-transform:uppercase}
+    .rank-row{grid-template-columns:56px 70px 1fr 120px auto}
+    .rank-number{width:44px;height:44px;display:grid;place-items:center;border-radius:14px;background:#07111f;color:white;font-weight:1000}
+    .rank-img{width:64px;height:64px;border-radius:16px;object-fit:cover}
+    .score{font-weight:1000;color:#047857;background:#ecfdf5;border-radius:999px;padding:8px 10px;text-align:center}
+    .profile-hero{display:grid;grid-template-columns:130px 1fr auto;gap:22px;align-items:center}
+    .avatar{width:130px;height:130px;border-radius:28px;object-fit:cover;background:#e2e8f0}
+    .profile-links{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}
+    .map-box{height:320px;border-radius:22px;background:#e2e8f0;overflow:hidden;border:1px solid var(--line);box-shadow:0 4px 14px rgba(15,23,42,.04)}
+    .map-box iframe{width:100%;height:100%;border:0;display:block}
+    .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+    .tabs button{border:1px solid var(--line);background:white;border-radius:999px;padding:10px 13px;font-weight:950;color:#475569}
+    .tabs button.active{background:var(--gold);color:#111827}
+    .table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:20px}
+    table{width:100%;min-width:860px;border-collapse:collapse;background:white}
+    th,td{padding:14px;border-bottom:1px solid var(--line);text-align:left}
+    th{background:#f8fafc;color:#64748b;font-size:12px;text-transform:uppercase;letter-spacing:.08em}
+    .row-ad{display:flex;align-items:center;gap:12px}
+    .row-ad img{width:50px;height:50px;border-radius:14px;object-fit:cover}
+    .status{display:inline-flex;border-radius:999px;padding:6px 10px;font-size:12px;font-weight:950;background:#f1f5f9;color:#475569}
+    .status.active,.status.confirmed{background:#ecfdf5;color:#047857}
+    .status.pending,.status.new{background:#fffbeb;color:#b45309}
+    .status.rejected,.status.cancelled{background:#fff1f2;color:#be123c}
+    .campaign-type{display:inline-flex;border-radius:999px;background:#ecfdf5;color:#047857;padding:6px 10px;font-size:12px;font-weight:1000}
+    .modal-backdrop{position:fixed;inset:0;z-index:100;background:rgba(7,17,31,.58);display:grid;place-items:center;padding:20px}
+    .modal{width:min(720px,100%);max-height:88vh;overflow:auto;background:white;border-radius:26px;padding:24px;box-shadow:var(--shadow)}
+    .modal-head{display:flex;justify-content:space-between;gap:16px;align-items:start;margin-bottom:18px}
+    .close{border:0;background:#f1f5f9;border-radius:999px;width:38px;height:38px;font-weight:1000}
+    .mini-success{border:1px solid #bbf7d0;background:#f0fdf4;color:#047857;border-radius:16px;padding:12px 14px;font-weight:900;margin-top:12px}
+    .caption-box{width:100%;min-height:130px;border:1px solid var(--line);border-radius:14px;padding:12px;background:#f8fafc}
+    .whatsapp-mock{max-width:430px;margin:auto;background:#efe7dc;border:12px solid #07111f;border-radius:42px;overflow:hidden;box-shadow:0 28px 70px rgba(15,23,42,.24)}
+    .whatsapp-head{background:white;padding:16px;display:flex;align-items:center;gap:12px;border-bottom:1px solid #e5e7eb}
+    .mock-avatar{width:44px;height:44px;border-radius:50%;background:#07111f;color:#fed100;display:grid;place-items:center;font-weight:1000}
+    .chat-area{padding:18px;min-height:500px;background:#f6efe7}
+    .chat-bubble{background:#d9fdd3;border-radius:18px 18px 4px 18px;padding:14px;margin-left:30px;box-shadow:0 1px 1px rgba(0,0,0,.08)}
+    .link-card{background:white;border-radius:16px;overflow:hidden;margin-top:10px;display:grid;grid-template-columns:130px 1fr;border:1px solid #e5e7eb}
+    .link-card img{width:130px;height:130px;object-fit:cover}.link-info{padding:12px}.link-info strong{display:block;font-size:18px;line-height:1.1}.link-info span{display:block;color:#64748b;margin-top:6px;font-size:13px}.link-info small{display:block;color:#008069;margin-top:10px;font-weight:850}
+    .status-mock{max-width:380px;margin:auto;background:#050a08;border:12px solid #07111f;border-radius:42px;overflow:hidden;color:white;box-shadow:0 28px 70px rgba(15,23,42,.24)}
+    .status-content{height:690px;background:linear-gradient(180deg,rgba(0,0,0,.1),rgba(0,0,0,.92)),var(--status-img);background-size:cover;background-position:center;position:relative;padding:18px}
+    .status-bars{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-bottom:14px}.status-bars span{height:3px;background:rgba(255,255,255,.75);border-radius:999px}
+    .status-title{position:absolute;left:22px;right:22px;bottom:160px;text-align:center}.status-title h2{font-size:52px;color:white;text-shadow:0 3px 15px rgba(0,0,0,.55)}.status-title p{color:#fff;font-weight:900;margin:8px 0}
+    .status-cta{position:absolute;left:48px;right:48px;bottom:74px;background:rgba(0,0,0,.62);border:1px solid var(--gold);border-radius:18px;text-align:center;padding:14px;font-weight:1000;color:white}
+    .status-reply{display:flex;align-items:center;gap:10px;padding:14px}.reply-pill{flex:1;background:rgba(255,255,255,.12);border-radius:999px;padding:12px 18px;color:#cbd5e1}
+    .empty{padding:34px;text-align:center;border:1px dashed #cbd5e1;border-radius:22px;background:#fff}
+    .footer{border-top:1px solid var(--line);background:white}
+    .footer-inner{padding:32px 0;display:grid;grid-template-columns:1fr auto;gap:24px;color:var(--muted);font-size:14px}
+    .footer-links{display:flex;gap:16px;flex-wrap:wrap}
+    .footer-links button{border:0;background:transparent;color:#475569;font-weight:850;padding:0}
+    .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#07111f;color:white;border-radius:16px;padding:12px 15px;box-shadow:var(--shadow);z-index:120;font-weight:900}
+    @media(max-width:980px){
+      .desktop-only{display:none}.mobile-menu{display:flex}.nav{align-items:flex-start;flex-direction:column;padding:14px 0 0}
+      .hero-grid,.layout-2,.detail-shell,.filters,.profile-hero{grid-template-columns:1fr}
+      .grid-3,.grid-4{grid-template-columns:repeat(2,1fr)}
+      .calendar-grid{grid-template-columns:1fr}.calendar-head,.calendar-day.muted-day{display:none}.calendar-day{min-height:auto}
+      .rank-row,.event-row,.inquiry-row,.claim-row,.rsvp-row,.interest-row{grid-template-columns:1fr}
+      .rank-img{width:100%;height:170px}.avatar{width:110px;height:110px}
+      .footer-inner{grid-template-columns:1fr}
+    }
+    @media(max-width:640px){
+      .grid-2,.grid-3,.grid-4,.form-row,.engagement-strip,.primary-actions,.more-grid{grid-template-columns:1fr}
+      .section-head{align-items:stretch;flex-direction:column}
+      .hero-grid{min-height:auto;padding:56px 0}.hero-card img{height:220px}
+      .btn{width:100%}.action-row{width:100%}
+    }
+  
+    /* Vibrant premium upgrade */
+    body{
+      background:
+        radial-gradient(circle at 8% 8%,rgba(247,198,0,.10),transparent 24%),
+        radial-gradient(circle at 92% 18%,rgba(0,138,61,.10),transparent 28%),
+        linear-gradient(180deg,#fffbea 0%,#f8fafc 34%,#f8fafc 100%);
+    }
+    .header{box-shadow:0 10px 30px rgba(15,23,42,.04)}
+    .brand-mark{box-shadow:0 10px 26px rgba(0,138,61,.24)}
+    .hero{position:relative;overflow:hidden}
+    .hero:before{
+      content:"";position:absolute;inset:0;pointer-events:none;opacity:.26;
+      background-image:
+        linear-gradient(45deg,rgba(255,255,255,.05) 25%,transparent 25%),
+        linear-gradient(-45deg,rgba(255,255,255,.05) 25%,transparent 25%);
+      background-size:34px 34px;
+    }
+    .hero:after{
+      content:"";position:absolute;right:-120px;top:-120px;width:420px;height:420px;border-radius:999px;
+      background:radial-gradient(circle,rgba(247,198,0,.26),transparent 65%);
+      filter:blur(2px);
+    }
+    .hero-grid{position:relative;z-index:1}
+    .hero-actions .btn-gold{animation:softPulse 2.6s ease-in-out infinite;box-shadow:0 0 0 rgba(247,198,0,.35)}
+    @keyframes softPulse{
+      0%,100%{box-shadow:0 0 0 0 rgba(247,198,0,.32);transform:translateY(0)}
+      50%{box-shadow:0 0 0 10px rgba(247,198,0,0);transform:translateY(-1px)}
+    }
+    .btn,.card,.category-card,.campaign-card,.share-preview-card,.panel,.form-card,.venue-card,.profile-card,.price-card{
+      transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease,background .22s ease;
+    }
+    .btn:hover{transform:translateY(-1px)}
+    .card:hover,.category-card:hover,.campaign-card:hover,.share-preview-card:hover{
+      transform:translateY(-5px);
+      box-shadow:0 18px 46px rgba(15,23,42,.12);
+      border-color:rgba(0,138,61,.22);
+    }
+    .card-img{height:250px}
+    .card-img:after{
+      content:"";position:absolute;inset:auto 0 0 0;height:45%;
+      background:linear-gradient(180deg,transparent,rgba(7,17,31,.55));
+      pointer-events:none;
+    }
+    .date-pill,.featured-tag{z-index:2}
+    .featured-tag{
+      background:linear-gradient(135deg,#f7c600,#ffe784);
+      box-shadow:0 10px 20px rgba(247,198,0,.25);
+    }
+    .date-pill{box-shadow:0 10px 20px rgba(15,23,42,.12)}
+    .card-body{background:linear-gradient(180deg,#fff,#fffefa)}
+    .card .btn-primary{width:100%;margin-top:4px}
+    .promo-mini-stats{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+    .promo-mini-stats span{
+      display:inline-flex;border-radius:999px;background:#f8fafc;border:1px solid var(--line);
+      color:#475569;font-size:12px;font-weight:900;padding:6px 9px;
+    }
+    .location-chip{
+      display:inline-flex;border-radius:999px;background:#ecfdf5;color:#047857;
+      padding:5px 9px;font-size:12px;font-weight:1000;margin-top:8px;
+    }
+    .page-hero{
+      background:
+        radial-gradient(circle at 12% 20%,rgba(247,198,0,.20),transparent 26%),
+        radial-gradient(circle at 90% 20%,rgba(0,138,61,.20),transparent 28%),
+        linear-gradient(135deg,#07111f,#064e3b);
+      color:white;border-radius:32px;padding:38px;margin-bottom:26px;overflow:hidden;position:relative;
+      box-shadow:0 20px 60px rgba(7,17,31,.16);
+    }
+    .page-hero p{color:#d1d5db;max-width:720px}
+    .quick-chips{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0 24px}
+    .chip{
+      border:1px solid rgba(0,138,61,.16);background:white;color:#334155;border-radius:999px;
+      padding:9px 13px;font-weight:950;font-size:14px;
+      box-shadow:0 5px 14px rgba(15,23,42,.04);
+    }
+    .chip:hover,.chip.active{background:#ecfdf5;color:#047857;border-color:#86efac}
+    .trending-strip{
+      display:flex;gap:10px;flex-wrap:wrap;margin-top:26px;padding:16px;
+      background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.14);border-radius:22px;
+    }
+    .trend-pill{
+      display:inline-flex;align-items:center;border-radius:999px;
+      background:rgba(255,255,255,.92);color:#07111f;padding:8px 12px;font-size:13px;font-weight:1000;
+    }
+    .poster-stack{position:relative;min-height:410px}
+    .mini-poster{
+      position:absolute;border-radius:26px;overflow:hidden;box-shadow:0 28px 70px rgba(0,0,0,.28);
+      border:1px solid rgba(255,255,255,.18);background:white;
+    }
+    .mini-poster img{width:100%;height:100%;object-fit:cover}
+    .mini-poster.main{right:34px;top:20px;width:300px;height:360px;z-index:3}
+    .mini-poster.two{left:20px;top:84px;width:230px;height:290px;z-index:2;transform:rotate(-5deg)}
+    .mini-poster.three{right:0;bottom:0;width:210px;height:240px;z-index:1;transform:rotate(5deg)}
+    .hero-card{display:none}
+    .trust-band{
+      display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:20px
+    }
+    .trust-tile{
+      padding:18px;border-radius:22px;background:white;border:1px solid var(--line);
+      box-shadow:0 6px 18px rgba(15,23,42,.05)
+    }
+    .trust-tile strong{display:block;font-size:18px}
+    .category-card{
+      position:relative;overflow:hidden;background:linear-gradient(180deg,#fff,#fffdf2);
+      min-height:128px;
+    }
+    .category-card:before{
+      content:"";position:absolute;right:-36px;top:-36px;width:90px;height:90px;border-radius:999px;
+      background:rgba(247,198,0,.18)
+    }
+    .category-card:after{
+      content:"";position:absolute;left:0;bottom:0;width:100%;height:5px;
+      background:linear-gradient(90deg,var(--green),var(--gold));
+    }
+    .category-icon{
+      width:38px;height:38px;border-radius:14px;display:grid;place-items:center;
+      background:#ecfdf5;color:#047857;font-weight:1000;margin-bottom:10px
+    }
+    .detail-shell{
+      background:
+        radial-gradient(circle at 12% 8%,rgba(247,198,0,.14),transparent 24%),
+        linear-gradient(180deg,#07111f 0,#07111f 360px,transparent 360px);
+      padding:28px;border-radius:34px;
+    }
+    .detail-shell .detail-image{border:1px solid rgba(255,255,255,.14);box-shadow:0 28px 80px rgba(0,0,0,.26)}
+    .detail-panel{box-shadow:0 22px 60px rgba(15,23,42,.12)}
+    .primary-actions .btn-gold,.primary-actions .btn-primary{box-shadow:0 10px 24px rgba(0,138,61,.18)}
+    .engagement-stat{
+      background:linear-gradient(180deg,#fff,#fffdf2);
+      border-color:#f2e9b8;
+    }
+    .proof-pill{background:#fffdf2;border-color:#f3e7a3}
+    .calendar-day{position:relative}
+    .calendar-day:has(.calendar-event){border-color:#86efac;background:linear-gradient(180deg,#fff,#f0fdf4)}
+    .calendar-event{background:linear-gradient(135deg,#ecfdf5,#fffbea);border:1px solid #bbf7d0}
+    .campaign-type{background:linear-gradient(135deg,#ecfdf5,#fff4bf);color:#064e3b}
+    .campaign-card{position:relative}
+    .campaign-card:after{
+      content:"";position:absolute;left:0;right:0;top:0;height:5px;background:linear-gradient(90deg,var(--green),var(--gold));
+    }
+    .progress-line{height:9px;background:#e2e8f0;border-radius:999px;overflow:hidden;margin:12px 0}
+    .progress-line span{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--green),var(--gold))}
+    .stat{
+      background:linear-gradient(180deg,#fff,#fffdf2);
+      border-color:#f2e9b8;
+    }
+    .stat h3{font-size:34px;color:#07111f}
+    .empty{
+      background:
+        radial-gradient(circle at 90% 20%,rgba(247,198,0,.14),transparent 26%),
+        #fff;
+    }
+    .filters{
+      background:white;border:1px solid var(--line);border-radius:24px;padding:14px;
+      box-shadow:0 6px 20px rgba(15,23,42,.04);
+    }
+    @media(max-width:980px){
+      .poster-stack{min-height:340px}
+      .mini-poster.main{right:20px;width:250px;height:310px}
+      .mini-poster.two{left:6px;width:190px;height:250px}
+      .mini-poster.three{right:0;width:170px;height:200px}
+      .trust-band{grid-template-columns:1fr}
+      .detail-shell{padding:18px}
+    }
+    @media(max-width:640px){
+      .poster-stack{min-height:310px}
+      .mini-poster.main{right:8px;top:16px;width:215px;height:270px}
+      .mini-poster.two{left:2px;top:70px;width:155px;height:215px}
+      .mini-poster.three{display:none}
+      .page-hero{padding:26px;border-radius:26px}
+      .quick-chips{flex-wrap:nowrap;overflow-x:auto;padding-bottom:4px}
+      .chip{white-space:nowrap}
+      .card-img{height:280px}
+      .filters{grid-template-columns:1fr}
+    }
+
+  
+    .brand-logo{gap:10px;min-width:250px}
+    .brand-icon-img{
+      width:48px;height:48px;border-radius:15px;object-fit:cover;
+      box-shadow:0 10px 26px rgba(0,138,61,.22);
+    }
+    .brand-wordmark-img{
+      height:30px;width:auto;max-width:170px;object-fit:contain;object-position:left center;
+      margin-bottom:1px;
+    }
+    .brand-copy{display:grid;gap:0}
+    .brand-copy small{margin-top:-2px;color:var(--muted);font-size:12px;font-weight:850}
+    .brand-logo:hover .brand-icon-img{transform:translateY(-1px);box-shadow:0 14px 30px rgba(0,138,61,.28)}
+    .brand-icon-img{transition:transform .22s ease,box-shadow .22s ease}
+    .hero-brand-lockup{
+      display:flex;align-items:center;gap:12px;margin-bottom:18px;
+      width:max-content;max-width:100%;
+      background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.15);
+      padding:10px 14px;border-radius:22px;
+    }
+    .hero-brand-lockup img{height:42px;width:auto}
+    .footer-logo-row{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+    .footer-logo-row img{width:42px;height:42px;border-radius:14px;object-fit:cover}
+    @media(max-width:640px){
+      .brand-logo{min-width:auto}
+      .brand-wordmark-img{height:26px;max-width:140px}
+      .brand-icon-img{width:44px;height:44px}
+      .brand-copy small{font-size:11px}
+    }
+
+  
+    /* Next-generation seamless features */
+    .smart-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:24px;align-items:start}
+    .feature-rail{display:grid;gap:14px}
+    .smart-card{
+      background:linear-gradient(180deg,#fff,#fffdf4);
+      border:1px solid #f1e6ab;border-radius:24px;padding:22px;
+      box-shadow:0 8px 24px rgba(15,23,42,.06);
+    }
+    .smart-card.dark{
+      background:radial-gradient(circle at 90% 10%,rgba(247,198,0,.18),transparent 35%),linear-gradient(135deg,#07111f,#064e3b);
+      color:white;border-color:rgba(255,255,255,.10);
+    }
+    .smart-card.dark .muted{color:#d1d5db}
+    .mood-grid{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+    .mood-pill{
+      border:1px solid rgba(0,138,61,.18);background:#fff;border-radius:999px;
+      padding:11px 14px;font-weight:950;color:#334155;
+      box-shadow:0 6px 16px rgba(15,23,42,.04);
+    }
+    .mood-pill:hover,.mood-pill.active{background:#ecfdf5;color:#047857;border-color:#86efac;transform:translateY(-2px)}
+    .parish-card{
+      position:relative;overflow:hidden;background:white;border:1px solid var(--line);
+      border-radius:24px;padding:22px;box-shadow:0 6px 20px rgba(15,23,42,.05);
+    }
+    .parish-card:before{content:"";position:absolute;right:-45px;top:-45px;width:120px;height:120px;border-radius:999px;background:rgba(247,198,0,.16)}
+    .parish-card strong{display:block;font-size:22px;letter-spacing:-.035em}
+    .pulse-meta{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0}
+    .pulse-meta span{background:#f8fafc;border:1px solid var(--line);border-radius:16px;padding:11px;font-size:13px;font-weight:900;color:#475569}
+    .heat-badge{
+      display:inline-flex;align-items:center;gap:7px;border-radius:999px;
+      background:linear-gradient(135deg,#ecfdf5,#fff4bf);color:#064e3b;border:1px solid #bbf7d0;
+      padding:7px 10px;font-size:12px;font-weight:1000;
+    }
+    .board-row{
+      display:grid;grid-template-columns:70px 1fr 120px auto;gap:14px;align-items:center;
+      background:white;border:1px solid var(--line);border-radius:20px;padding:14px;
+    }
+    .board-row img{width:70px;height:70px;object-fit:cover;border-radius:16px}
+    .short-link{
+      display:flex;align-items:center;justify-content:space-between;gap:12px;
+      background:#07111f;color:white;border-radius:16px;padding:12px 14px;font-weight:900;
+    }
+    .short-link small{color:#cbd5e1}
+    .poster-studio-preview{
+      min-height:360px;border-radius:26px;overflow:hidden;position:relative;
+      background:linear-gradient(135deg,#07111f,#064e3b);display:grid;place-items:center;padding:26px;
+    }
+    .poster-studio-preview img{max-height:300px;border-radius:18px;box-shadow:0 18px 50px rgba(0,0,0,.32)}
+    .poster-link-bar{
+      position:absolute;left:20px;right:20px;bottom:20px;background:rgba(7,17,31,.82);
+      color:white;border:1px solid rgba(247,198,0,.55);border-radius:16px;padding:12px 14px;
+      display:flex;align-items:center;justify-content:space-between;gap:12px;font-weight:950;
+    }
+    .mobile-action-bar{
+      display:none;position:fixed;left:10px;right:10px;bottom:10px;z-index:80;
+      background:rgba(255,255,255,.96);backdrop-filter:blur(18px);border:1px solid var(--line);
+      border-radius:22px;padding:8px;box-shadow:0 20px 45px rgba(15,23,42,.18);gap:8px;
+    }
+    .mobile-action-bar .btn{min-height:42px;padding:9px 10px;font-size:13px;flex:1}
+    .intelligence-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:18px}
+    .intel-tile{background:#f8fafc;border:1px solid var(--line);border-radius:18px;padding:14px}
+    .intel-tile strong{display:block;font-size:18px}
+    .onboarding-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}
+    .onboarding-step{border:1px solid var(--line);background:white;border-radius:18px;padding:16px}
+    .step-number{width:34px;height:34px;border-radius:12px;background:#07111f;color:#f7c600;display:grid;place-items:center;font-weight:1000;margin-bottom:10px}
+    .boost-placement{
+      border:1px solid var(--line);background:white;border-radius:22px;padding:18px;position:relative;overflow:hidden;
+    }
+    .boost-placement:before{content:"";position:absolute;inset:0 0 auto 0;height:5px;background:linear-gradient(90deg,var(--green),var(--gold))}
+    .alert-choice{display:flex;gap:8px;flex-wrap:wrap}
+    .alert-choice label{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:999px;padding:9px 12px;background:#fff}
+    .alert-choice input{width:auto}
+    .editor-pick{border-left:5px solid var(--gold)}
+    @media(max-width:980px){
+      .smart-grid,.intelligence-grid,.onboarding-steps{grid-template-columns:1fr}
+      .board-row{grid-template-columns:70px 1fr}
+      .board-row .score,.board-row .btn{grid-column:1 / -1}
+    }
+    @media(max-width:640px){
+      .mobile-action-bar{display:flex}
+      body.has-mobile-bar{padding-bottom:82px}
+      .mood-grid{flex-wrap:nowrap;overflow-x:auto;padding-bottom:5px}
+      .mood-pill{white-space:nowrap}
+      .pulse-meta{grid-template-columns:1fr}
+      .smart-card{padding:18px}
+    }
+
+  
+    .support-note{
+      margin-top:14px;padding:13px 14px;border-radius:18px;
+      background:linear-gradient(135deg,#ecfdf5,#fffbea);
+      border:1px solid #bbf7d0;color:#064e3b;font-weight:900;font-size:14px;
+    }
+    .support-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:18px;}
+    .support-action{
+      border:1px solid var(--line);background:#fff;border-radius:20px;padding:16px;text-align:left;
+      box-shadow:0 6px 18px rgba(15,23,42,.04);font-weight:950;color:#07111f;
+      transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease;
+    }
+    .support-action:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(15,23,42,.10);border-color:#86efac;}
+    .support-action span{display:block;color:#64748b;font-size:13px;font-weight:750;margin-top:4px;line-height:1.45}
+    .support-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px;}
+    .support-stat{background:linear-gradient(180deg,#fff,#fffdf2);border:1px solid #f2e9b8;border-radius:22px;padding:18px;box-shadow:0 6px 18px rgba(15,23,42,.04);}
+    .support-stat strong{display:block;font-size:30px;letter-spacing:-.04em;color:#07111f}
+    .support-stat span{display:block;color:#64748b;font-size:13px;font-weight:900}
+    @media(max-width:760px){.support-grid,.support-summary{grid-template-columns:1fr}}
+
+  
+    .mini-poster{
+      cursor:pointer;
+      transition:transform .24s ease, filter .24s ease, box-shadow .24s ease;
+    }
+    .mini-poster:hover{
+      transform:translateY(-6px) scale(1.025) rotate(var(--poster-rotate,0deg));
+      filter:brightness(1.08) saturate(1.08);
+      box-shadow:0 34px 84px rgba(0,0,0,.36);
+    }
+    .mini-poster.two:hover{--poster-rotate:-5deg}
+    .mini-poster.three:hover{--poster-rotate:5deg}
+    .mini-poster .poster-label{
+      position:absolute;
+      left:14px;
+      right:14px;
+      bottom:14px;
+      opacity:0;
+      transform:translateY(8px);
+      transition:opacity .22s ease, transform .22s ease;
+      background:rgba(7,17,31,.82);
+      color:#fff;
+      border:1px solid rgba(247,198,0,.55);
+      border-radius:16px;
+      padding:10px 12px;
+      font-size:13px;
+      font-weight:1000;
+      text-align:center;
+      backdrop-filter:blur(10px);
+      z-index:5;
+      pointer-events:none;
+    }
+    .mini-poster:hover .poster-label,
+    .mini-poster:focus .poster-label{
+      opacity:1;
+      transform:translateY(0);
+    }
+    .mini-poster:focus{
+      outline:3px solid rgba(247,198,0,.75);
+      outline-offset:4px;
+    }
+    @media(max-width:640px){
+      .mini-poster .poster-label{
+        opacity:1;
+        transform:translateY(0);
+        font-size:12px;
+        padding:8px 10px;
+      }
+    }
+
+  
+    /* Balanced three-image hero poster stack */
+    .poster-stack{
+      position:relative;
+      min-height:430px;
+      overflow:visible;
+    }
+    .mini-poster.main{
+      right:78px;
+      top:18px;
+      width:310px;
+      height:360px;
+      z-index:4;
+      transform:rotate(0deg);
+    }
+    .mini-poster.two{
+      left:26px;
+      top:86px;
+      width:255px;
+      height:310px;
+      z-index:3;
+      transform:rotate(-5deg);
+    }
+    .mini-poster.three{
+      right:-14px;
+      bottom:16px;
+      width:260px;
+      height:300px;
+      z-index:2;
+      transform:rotate(5deg);
+    }
+    .mini-poster.two:hover{
+      transform:translateY(-6px) scale(1.025) rotate(-5deg);
+    }
+    .mini-poster.three:hover{
+      transform:translateY(-6px) scale(1.025) rotate(5deg);
+    }
+    @media(max-width:1100px){
+      .mini-poster.main{right:56px;width:285px;height:340px}
+      .mini-poster.two{left:10px;width:225px;height:295px}
+      .mini-poster.three{right:-6px;width:230px;height:280px}
+    }
+    @media(max-width:980px){
+      .poster-stack{min-height:380px}
+      .mini-poster.main{right:46px;width:255px;height:315px}
+      .mini-poster.two{left:2px;width:205px;height:270px}
+      .mini-poster.three{right:0;bottom:12px;width:210px;height:250px}
+    }
+    @media(max-width:640px){
+      .poster-stack{min-height:340px}
+      .mini-poster.main{right:34px;top:18px;width:220px;height:275px}
+      .mini-poster.two{left:0;top:84px;width:170px;height:225px}
+      .mini-poster.three{
+        display:block;
+        right:-2px;
+        bottom:8px;
+        width:170px;
+        height:210px;
+      }
+    }
+
+  
+    /* Premium gold header banner */
+    .launch-banner{
+      width:100%;
+      background:linear-gradient(90deg,#f7c600 0%,#ffe784 48%,#f7c600 100%);
+      color:#07111f;
+      border-bottom:1px solid rgba(7,17,31,.10);
+      box-shadow:0 8px 22px rgba(247,198,0,.16);
+    }
+    .launch-banner-inner{
+      width:min(1160px,calc(100% - 32px));
+      margin:0 auto;
+      min-height:42px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      font-weight:950;
+      font-size:14px;
+    }
+    .launch-banner strong{letter-spacing:-.02em}
+    .launch-banner span{color:#27364a}
+    .launch-banner button{
+      border:0;
+      background:#07111f;
+      color:#fff;
+      border-radius:999px;
+      padding:8px 13px;
+      font-weight:1000;
+      white-space:nowrap;
+      box-shadow:0 8px 18px rgba(7,17,31,.20);
+    }
+    .launch-banner button:hover{transform:translateY(-1px)}
+    @media(max-width:700px){
+      .launch-banner-inner{
+        min-height:auto;
+        padding:9px 0;
+        align-items:flex-start;
+        flex-direction:column;
+        gap:8px;
+        font-size:13px;
+      }
+      .launch-banner button{
+        width:auto;
+        padding:7px 12px;
+      }
+    }
+
+  
+    .hero .trending-strip{display:none}
+
+  
+    /* Animated premium launch banner */
+    .launch-banner{
+      position:relative;
+      overflow:hidden;
+      background:linear-gradient(90deg,#f7c600 0%,#ffe784 35%,#ffd21a 55%,#f7c600 100%);
+      background-size:240% 100%;
+      animation:bannerGoldFlow 8s ease-in-out infinite;
+    }
+    .launch-banner:before{
+      content:"";
+      position:absolute;
+      inset:0;
+      transform:translateX(-120%);
+      background:linear-gradient(100deg,transparent 0%,rgba(255,255,255,.45) 45%,transparent 62%);
+      animation:bannerShine 4.5s ease-in-out infinite;
+      pointer-events:none;
+    }
+    .launch-banner:after{
+      content:"";
+      position:absolute;
+      left:0;
+      right:0;
+      bottom:0;
+      height:2px;
+      background:linear-gradient(90deg,transparent,#07111f,transparent);
+      opacity:.18;
+      animation:bannerLineMove 5.5s linear infinite;
+      pointer-events:none;
+    }
+    .launch-banner-inner{
+      position:relative;
+      z-index:2;
+    }
+    .launch-banner strong{
+      position:relative;
+      display:inline-block;
+      animation:bannerTextLift 3.8s ease-in-out infinite;
+    }
+    .launch-banner button{
+      animation:bannerButtonPulse 2.8s ease-in-out infinite;
+      transition:transform .22s ease,box-shadow .22s ease;
+    }
+    .launch-banner button:hover{
+      transform:translateY(-2px) scale(1.02);
+      box-shadow:0 12px 26px rgba(7,17,31,.28);
+    }
+    @keyframes bannerGoldFlow{
+      0%,100%{background-position:0% 50%}
+      50%{background-position:100% 50%}
+    }
+    @keyframes bannerShine{
+      0%{transform:translateX(-120%)}
+      45%,100%{transform:translateX(120%)}
+    }
+    @keyframes bannerLineMove{
+      0%{transform:translateX(-100%)}
+      100%{transform:translateX(100%)}
+    }
+    @keyframes bannerTextLift{
+      0%,100%{transform:translateY(0)}
+      50%{transform:translateY(-1px)}
+    }
+    @keyframes bannerButtonPulse{
+      0%,100%{box-shadow:0 8px 18px rgba(7,17,31,.20)}
+      50%{box-shadow:0 8px 18px rgba(7,17,31,.20),0 0 0 8px rgba(7,17,31,.08)}
+    }
+    @media (prefers-reduced-motion: reduce){
+      .launch-banner,
+      .launch-banner:before,
+      .launch-banner:after,
+      .launch-banner strong,
+      .launch-banner button{
+        animation:none!important;
+      }
+    }
+
+  </style>
+</head>
+<body>
+<header class="header">
+  <div class="container nav">
+    <button class="brand brand-logo" data-route="home" aria-label="YardPromo home">
+      <img class="brand-icon-img" src="assets/yardpromo-app-icon.png" alt="YardPromo logo">
+      <span class="brand-copy">
+        <img class="brand-wordmark-img" src="assets/yardpromo-wordmark.png" alt="YardPromo">
+        <small>Jamaican promotion platform</small>
+      </span>
+    </button>
+    <nav class="nav-links desktop-only">
+      <button data-route="home">Home</button>
+      <button data-route="browse">Browse</button>
+      <button data-route="foryou">For You</button>
+      <button data-route="calendar">Calendar</button>
+      <button data-route="weekend">Weekend</button>
+      <button data-route="campaigns">Campaigns</button>
+      <button data-route="create">Post Promo</button>
+      <button data-route="login">Login</button>
+    </nav>
+    <nav class="mobile-menu">
+      <button data-route="home">Home</button>
+      <button data-route="browse">Browse</button>
+      <button data-route="foryou">For You</button>
+      <button data-route="calendar">Calendar</button>
+      <button data-route="weekend">Weekend</button>
+      <button data-route="campaigns">Campaigns</button>
+      <button data-route="create">Post</button>
+      <button data-route="login">Login</button>
+    </nav>
+  </div>
+  <div class="launch-banner">
+    <div class="launch-banner-inner">
+      <div><strong>Free launch posting:</strong> <span>Upload your flyer, get a professional promo page, and share it everywhere.</span></div>
+      <button data-route="create">Post Your Promo</button>
+    </div>
+  </div>
+</header>
+
+<main id="app"></main>
+<div id="modalRoot"></div>
+
+<footer class="footer">
+  <div class="container footer-inner">
+    <div>
+      <div class="footer-logo-row"><img src="assets/yardpromo-app-icon.png" alt="YardPromo"><strong style="color:#07111f">YardPromo Jamaica</strong></div>
+      <p class="muted">Built for promoters, venues, businesses, and event organizers.</p>
+    </div>
+    <div class="footer-links">
+      <button data-route="about">About</button>
+      <button data-route="contact">Contact</button>
+      <button data-route="pricing">Advertise</button>
+      <button data-route="roundup">Weekly Roundup</button>
+      <button data-route="pulse">Parish Pulse</button>
+      <button data-route="weekendboard">Weekend Board</button>
+      <button data-route="rankings">Rankings</button>
+      <button data-route="terms">Terms</button>
+      <button data-route="privacy">Privacy</button>
+      <button data-route="policy">Personalization Policy</button>
+    </div>
+  </div>
+</footer>
+
+<script>
+const categories=["Party","Dancehall","Reggae","Stage Show","Sound Clash","Concert","Business","Food","Fashion","Services","Real Estate","Music","Local Deals"];
+const parishes=["Kingston","St. Andrew","St. Catherine","St. James","St. Ann","Westmoreland","Manchester","Clarendon","St. Elizabeth","Portland","St. Mary","St. Thomas","Hanover","Trelawny"];
+const promoters=[
+  {slug:"island-vibes-promotions",name:"Island Vibes Promotions",verified:true,type:"Promoter",bio:"Kingston-based event promoter focused on nightlife, dancehall, and premium weekend experiences.",parish:"Kingston",location:"New Kingston",phone:"+1 876 555 0100",whatsapp:"+18765550100",website:"https://example.com",instagram:"@islandvibesja",image:"https://images.unsplash.com/photo-1505236858219-8359eb29e329?auto=format&fit=crop&w=900&q=80"},
+  {slug:"roots-stage-ja",name:"Roots Stage JA",verified:true,type:"Event Organizer",bio:"Live reggae shows, culture events, and outdoor music experiences across Jamaica.",parish:"St. Andrew",location:"Kingston",phone:"+1 876 555 0101",whatsapp:"+18765550101",website:"https://example.com",instagram:"@rootsstageja",image:"https://images.unsplash.com/photo-1516280440614-37939bbacd81?auto=format&fit=crop&w=900&q=80"},
+  {slug:"island-bites-ja",name:"Island Bites JA",verified:false,type:"Business",bio:"Seafood, lunch boxes, and weekend food specials in Ocho Rios.",parish:"St. Ann",location:"Ocho Rios",phone:"+1 876 555 0104",whatsapp:"+18765550104",website:"https://example.com",instagram:"@islandbitesja",image:"https://images.unsplash.com/photo-1555992336-fb0d29498b13?auto=format&fit=crop&w=900&q=80"}
+];
+const venues=[
+  {slug:"new-kingston-lounge",name:"New Kingston Lounge",image:"https://images.unsplash.com/photo-1566737236500-c8ac43014a8e?auto=format&fit=crop&w=1200&q=80",parish:"Kingston",location:"New Kingston",address:"New Kingston, Jamaica",description:"Premium lounge venue for parties, selectors, VIP bookings, and weekend events.",phone:"+1 876 555 0200",whatsapp:"+18765550200",website:"https://example.com"},
+  {slug:"hope-gardens",name:"Hope Gardens",image:"https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=80",parish:"St. Andrew",location:"Kingston",address:"Old Hope Road, Kingston, Jamaica",description:"Outdoor venue for concerts, cultural events, family shows, and community gatherings.",phone:"+1 876 555 0201",whatsapp:"+18765550201",website:"https://example.com"},
+  {slug:"montego-bay-cultural-centre",name:"Montego Bay Cultural Centre",image:"https://images.unsplash.com/photo-1519671482749-fd09be7ccebf?auto=format&fit=crop&w=1200&q=80",parish:"St. James",location:"Montego Bay",address:"Sam Sharpe Square, Montego Bay, Jamaica",description:"Venue for stage shows, comedy nights, performances, and community gatherings.",phone:"+1 876 555 0202",whatsapp:"+18765550202",website:"https://example.com"}
+];
+const sampleAds=[
+  {id:1,title:"Uptown Friday Dancehall Party",slug:"uptown-friday-dancehall-party",category:"Dancehall",description:"Dancehall, bottle specials, VIP booths, and top selectors in New Kingston.",poster_image_url:"https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&w=1200&q=80",event_date:"2026-05-22",event_time:"22:00",venue:"New Kingston Lounge",venue_slug:"new-kingston-lounge",location:"New Kingston",parish:"Kingston",price:"JMD $2,500 presold",phone:"+1 876 555 0100",whatsapp:"+18765550100",website_link:"https://example.com/tickets",social_link:"@yardvibespromo",call_to_action:"Get Tickets",status:"active",is_featured:true,is_weekly_pick:true,promoter_slug:"island-vibes-promotions",posted_by:"admin",views:18420,clicks:1642,shares:382,interested_seed:286,rsvp_seed:74,guest_seed:126,vip_seed:18,birthday_seed:9,rsvp_limit:150},
+  {id:2,title:"Reggae Sunset Live",slug:"reggae-sunset-live",category:"Reggae",description:"Live reggae bands, food vendors, craft stalls, and sunset music.",poster_image_url:"https://images.unsplash.com/photo-1501386761578-eac5c94b800a?auto=format&fit=crop&w=1200&q=80",event_date:"2026-05-24",event_time:"18:00",venue:"Hope Gardens",venue_slug:"hope-gardens",location:"Kingston",parish:"St. Andrew",price:"JMD $3,000 general",phone:"+1 876 555 0101",whatsapp:"+18765550101",website_link:"https://example.com/reggae",social_link:"@rootsstageja",call_to_action:"Buy Passes",status:"active",is_featured:true,is_weekly_pick:true,promoter_slug:"roots-stage-ja",posted_by:"promoter",views:13200,clicks:920,shares:211,interested_seed:190,rsvp_seed:52,guest_seed:84,vip_seed:7,birthday_seed:4,rsvp_limit:200},
+  {id:3,title:"MoBay Comedy Night",slug:"mobay-comedy-night",category:"Stage Show",description:"Stand-up comedy, food, drinks, and guest performers.",poster_image_url:"https://images.unsplash.com/photo-1527224538127-2104bb71c51b?auto=format&fit=crop&w=1200&q=80",event_date:"2026-05-29",event_time:"20:30",venue:"Montego Bay Cultural Centre",venue_slug:"montego-bay-cultural-centre",location:"Montego Bay",parish:"St. James",price:"JMD $2,000",phone:"+1 876 555 0102",whatsapp:"+18765550102",website_link:"https://example.com/comedy",social_link:"@stagehouseja",call_to_action:"Reserve Seats",status:"active",is_featured:false,is_weekly_pick:true,promoter_slug:"island-vibes-promotions",posted_by:"admin",views:7100,clicks:506,shares:148,interested_seed:128,rsvp_seed:38,guest_seed:61,vip_seed:5,birthday_seed:2,rsvp_limit:100},
+  {id:4,title:"Ochi Seafood Specials",slug:"ochi-seafood-specials",category:"Food",description:"Fresh seafood, lunch boxes, juices, and weekend meal deals.",poster_image_url:"https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=1200&q=80",event_date:"",event_time:"",venue:"Island Bites JA",venue_slug:"",location:"Ocho Rios",parish:"St. Ann",price:"Meals from JMD $1,800",phone:"+1 876 555 0104",whatsapp:"+18765550104",website_link:"https://example.com/food",social_link:"@islandbitesja",call_to_action:"Order Now",status:"active",is_featured:false,is_weekly_pick:false,promoter_slug:"island-bites-ja",posted_by:"promoter",views:8800,clicks:620,shares:108,interested_seed:95,rsvp_seed:0,guest_seed:0,vip_seed:0,birthday_seed:0,rsvp_limit:0},
+  {id:5,title:"Portmore Summer Sale",slug:"portmore-summer-sale",category:"Fashion",description:"Streetwear, caps, swimwear, and Jamaican graphic tees.",poster_image_url:"https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&w=1200&q=80",event_date:"",event_time:"",venue:"Yardie Threadz",venue_slug:"",location:"Portmore Mall",parish:"St. Catherine",price:"Up to 30% off",phone:"+1 876 555 0105",whatsapp:"+18765550105",website_link:"https://example.com/fashion",social_link:"@yardiethreadz",call_to_action:"Shop Now",status:"active",is_featured:false,is_weekly_pick:true,promoter_slug:"island-vibes-promotions",posted_by:"promoter",views:5400,clicks:414,shares:86,interested_seed:61,rsvp_seed:0,guest_seed:0,vip_seed:0,birthday_seed:0,rsvp_limit:0},
+  {id:6,title:"Fresh Cutz Spanish Town",slug:"fresh-cutz-spanish-town",category:"Services",description:"Fades, grooming packages, lashes, brows, and walk-ins.",poster_image_url:"https://images.unsplash.com/photo-1599351431202-1e0f0137899a?auto=format&fit=crop&w=1200&q=80",event_date:"",event_time:"",venue:"Fresh Cutz Studio",venue_slug:"",location:"Spanish Town Plaza",parish:"St. Catherine",price:"Cuts from JMD $1,500",phone:"+1 876 555 0106",whatsapp:"+18765550106",website_link:"https://example.com/book",social_link:"@freshcutzja",call_to_action:"Book Now",status:"Pending review",is_featured:false,is_weekly_pick:false,promoter_slug:"",posted_by:"user",views:0,clicks:0,shares:0,interested_seed:0,rsvp_seed:0,guest_seed:0,vip_seed:0,birthday_seed:0,rsvp_limit:0}
+];
+let campaigns=[
+  {id:1,slug:"win-2-tickets-uptown-friday",type:"Share-to-Win",title:"Share to Win 2 Free Tickets",promo_slug:"uptown-friday-dancehall-party",reward:"2 free tickets",start_date:"2026-05-01",end_date:"2026-05-21",rules:"Share the campaign link and follow the campaign terms.",status:"active",featured:true,participants:128,shares:382,votes:0,rsvps:0,referrals:0,hashtag:""},
+  {id:2,slug:"vote-next-reggae-guest",type:"Vote / Poll",title:"Choose the Next Guest Artist",promo_slug:"reggae-sunset-live",reward:"Fan choice announcement",start_date:"2026-05-01",end_date:"2026-05-20",rules:"One vote per visitor.",status:"active",featured:false,participants:244,shares:90,votes:244,rsvps:0,referrals:0,question:"Which guest artist should perform next?",options:["Roots Singer","Dancehall DJ","Soca Artist","Gospel Choir"],option_votes:[88,72,54,30],hashtag:""},
+  {id:3,slug:"mobay-comedy-guest-list",type:"RSVP / Guest List",title:"Join the MoBay Comedy Guest List",promo_slug:"mobay-comedy-night",reward:"Early access seating",start_date:"2026-05-03",end_date:"2026-05-28",rules:"Guest list spots are limited and subject to confirmation.",status:"active",featured:true,participants:76,shares:61,votes:0,rsvps:76,referrals:0,hashtag:""},
+  {id:4,slug:"yardpromo-weekend-hashtag",type:"Hashtag Challenge",title:"YardPromo Weekend Challenge",promo_slug:"uptown-friday-dancehall-party",reward:"Featured repost",start_date:"2026-05-01",end_date:"2026-05-31",rules:"Use the hashtag and follow campaign instructions.",status:"active",featured:false,participants:53,shares:47,votes:0,rsvps:0,referrals:0,hashtag:"#YardPromoWeekend"}
+];
+let storedAds=JSON.parse(localStorage.getItem("yp_ads")||"[]");
+let ads=[...storedAds,...sampleAds].filter((ad,i,arr)=>arr.findIndex(x=>x.slug===ad.slug)===i);
+let inquiries=JSON.parse(localStorage.getItem("yp_inquiries")||"[]");
+let claims=JSON.parse(localStorage.getItem("yp_claims")||"[]");
+let interestEvents=JSON.parse(localStorage.getItem("yp_interest_events")||"[]");
+let rsvps=JSON.parse(localStorage.getItem("yp_rsvps")||"[]");
+let reminderEvents=JSON.parse(localStorage.getItem("yp_reminder_events")||"[]");
+let savedPromoters=JSON.parse(localStorage.getItem("yp_saved_promoters")||"[]");
+let support_events=JSON.parse(localStorage.getItem("yp_support_events")||"[]");
+
+// Backend-ready frontend objects for future Supabase connection
+let profiles=JSON.parse(localStorage.getItem("yp_profiles")||"[]");
+let ad_media=JSON.parse(localStorage.getItem("yp_ad_media")||"[]");
+let campaign_participants=JSON.parse(localStorage.getItem("yp_campaign_participants")||"[]");
+let campaign_votes=JSON.parse(localStorage.getItem("yp_campaign_votes")||"[]");
+let campaign_shares=JSON.parse(localStorage.getItem("yp_campaign_shares")||"[]");
+let saved_promos=JSON.parse(localStorage.getItem("yp_saved_promos")||"[]");
+let alerts=JSON.parse(localStorage.getItem("yp_alerts")||"[]");
+let boost_plans=[
+  {slug:"homepage-featured",name:"Homepage Featured",status:"available-soon"},
+  {slug:"weekend-boost",name:"Weekend Boost",status:"available-soon"},
+  {slug:"parish-spotlight",name:"Parish Spotlight",status:"available-soon"},
+  {slug:"category-top-spot",name:"Category Top Spot",status:"available-soon"},
+  {slug:"weekly-roundup-feature",name:"Weekly Roundup Feature",status:"available-soon"},
+  {slug:"campaign-feature",name:"Campaign Feature",status:"available-soon"}
+];
+let boosts=JSON.parse(localStorage.getItem("yp_boosts")||"[]");
+let payments=JSON.parse(localStorage.getItem("yp_payments")||"[]");
+let analytics_events=JSON.parse(localStorage.getItem("yp_analytics_events")||"[]");
+let share_assets=JSON.parse(localStorage.getItem("yp_share_assets")||"[]");
+let short_links=JSON.parse(localStorage.getItem("yp_short_links")||"[]");
+let admin_logs=JSON.parse(localStorage.getItem("yp_admin_logs")||"[]");
+
+let route="home",activeSlug="",activePromoter="",activeVenue="",activeCampaign="",uploadedImage="",calendarDate=new Date(2026,4,1);
+
+function saveAll(){
+  const sampleSlugs=new Set(sampleAds.map(a=>a.slug));
+  localStorage.setItem("yp_ads",JSON.stringify(ads.filter(a=>!sampleSlugs.has(a.slug))));
+  localStorage.setItem("yp_inquiries",JSON.stringify(inquiries));
+  localStorage.setItem("yp_claims",JSON.stringify(claims));
+  localStorage.setItem("yp_interest_events",JSON.stringify(interestEvents));
+  localStorage.setItem("yp_rsvps",JSON.stringify(rsvps));
+  localStorage.setItem("yp_reminder_events",JSON.stringify(reminderEvents));
+  localStorage.setItem("yp_saved_promoters",JSON.stringify(savedPromoters));
+  localStorage.setItem("yp_support_events",JSON.stringify(support_events));
+  localStorage.setItem("yp_profiles",JSON.stringify(profiles));
+  localStorage.setItem("yp_ad_media",JSON.stringify(ad_media));
+  localStorage.setItem("yp_campaign_participants",JSON.stringify(campaign_participants));
+  localStorage.setItem("yp_campaign_votes",JSON.stringify(campaign_votes));
+  localStorage.setItem("yp_campaign_shares",JSON.stringify(campaign_shares));
+  localStorage.setItem("yp_saved_promos",JSON.stringify(saved_promos));
+  localStorage.setItem("yp_alerts",JSON.stringify(alerts));
+  localStorage.setItem("yp_boosts",JSON.stringify(boosts));
+  localStorage.setItem("yp_payments",JSON.stringify(payments));
+  localStorage.setItem("yp_analytics_events",JSON.stringify(analytics_events));
+  localStorage.setItem("yp_share_assets",JSON.stringify(share_assets));
+  localStorage.setItem("yp_short_links",JSON.stringify(short_links));
+  localStorage.setItem("yp_admin_logs",JSON.stringify(admin_logs));
+}
+function navigate(next){location.hash=next==="home"?"":next}
+function readHash(){const h=location.hash.replace(/^#\/?/,"");if(h.startsWith("ad/")){route="ad";activeSlug=h.replace("ad/","")}else if(h.startsWith("promoter/")){route="promoter";activePromoter=h.replace("promoter/","")}else if(h.startsWith("venue/")){route="venue";activeVenue=h.replace("venue/","")}else if(h.startsWith("campaign/")){route="campaign";activeCampaign=h.replace("campaign/","")}else{route=h||"home"}render()}
+function toast(msg){document.querySelector(".toast")?.remove();const el=document.createElement("div");el.className="toast";el.textContent=msg;document.body.appendChild(el);setTimeout(()=>el.remove(),1800)}
+function slugify(v){return String(v||"promo").toLowerCase().trim().replace(/[^a-z0-9]+/g,"-").replace(/(^-|-$)+/g,"")||"promo"}
+function cleanPhone(v){return String(v||"").replace(/[^0-9]/g,"")}
+function publicAdUrl(slug){return location.origin+location.pathname+"#ad/"+slug}
+function campaignUrl(slug){return location.origin+location.pathname+"#campaign/"+slug}
+function mapEmbedUrl(address){return "https://maps.google.com/maps?q="+encodeURIComponent(address||"Jamaica")+"&output=embed"}
+function activeAds(){return ads.filter(a=>a.status==="active")}
+function eventLabel(ad){return ad.event_date?`${ad.event_date}${ad.event_time?" • "+ad.event_time:""}`:ad.parish}
+function isWeekend(ad){if(!ad.event_date)return false;const d=new Date(ad.event_date+"T00:00:00").getDay();return [5,6,0].includes(d)}
+function promoScore(ad){return Math.max(8,Math.min(100,Math.round((Number(ad.views||0)/300)+(Number(ad.clicks||0)*.25)+(Number(ad.shares||0)*.7)+(ad.is_featured?15:0))))}
+function countdown(ad){if(!ad.event_date)return"";const target=new Date(ad.event_date+"T"+(ad.event_time||"23:59"));const diff=target-new Date();if(diff<=0)return"";const days=Math.floor(diff/86400000),hours=Math.floor((diff%86400000)/3600000);return days>0?`${days}d ${hours}h left`:`${hours}h left`}
+function getPromoter(slug){return promoters.find(p=>p.slug===slug)}
+function getVenue(slug){return venues.find(v=>v.slug===slug)}
+function getCampaign(slug){return campaigns.find(c=>c.slug===slug)}
+function campaignPromo(c){return ads.find(a=>a.slug===c.promo_slug)||sampleAds[0]}
+function sessionKey(){let k=localStorage.getItem("yp_session_id");if(!k){k="sess_"+Date.now()+"_"+Math.floor(Math.random()*100000);localStorage.setItem("yp_session_id",k)}return k}
+function interestCount(slug){return interestEvents.filter(e=>e.promo_slug===slug&&!e.removed_at).length+Number((ads.find(a=>a.slug===slug)||{}).interested_seed||0)}
+function hasInterest(slug){const s=sessionKey();return interestEvents.some(e=>e.promo_slug===slug&&e.session_id===s&&!e.removed_at)}
+function rsvpList(slug){return rsvps.filter(r=>r.promo_slug===slug&&r.status!=="cancelled")}
+function rsvpCount(slug){return rsvpList(slug).length+Number((ads.find(a=>a.slug===slug)||{}).rsvp_seed||0)}
+function guestCount(slug){return rsvpList(slug).reduce((sum,r)=>sum+Number(r.guest_count||1),0)+Number((ads.find(a=>a.slug===slug)||{}).guest_seed||0)}
+function vipCount(slug){return rsvpList(slug).filter(r=>r.vip_interest==="Yes").length+Number((ads.find(a=>a.slug===slug)||{}).vip_seed||0)}
+function birthdayCount(slug){return rsvpList(slug).filter(r=>r.birthday==="Yes").length+Number((ads.find(a=>a.slug===slug)||{}).birthday_seed||0)}
+function guestListStatus(slug){const ad=ads.find(a=>a.slug===slug)||{};const limit=Number(ad.rsvp_limit||150),used=guestCount(slug);if(!ad.event_date)return{label:"Open",closed:false,pct:0};if(limit&&used>=limit)return{label:"Full",closed:true,pct:100};if(limit&&used>=limit*.8)return{label:"Almost full",closed:false,pct:Math.round((used/limit)*100)};return{label:"Open",closed:false,pct:Math.round((used/limit)*100)}}
+function trimText(text,max=120){text=String(text||"").replace(/\s+/g," ").trim();return text.length>max?text.slice(0,max-1).trim()+"…":text}
+function shareDescriptionForAd(ad){return ad.event_date?trimText(`${ad.category} in ${ad.location||ad.parish} • ${ad.event_date}${ad.event_time?" • "+ad.event_time:""}`,120):trimText(`${ad.category} • ${ad.location||ad.parish}, ${ad.parish}. ${ad.description||""}`,120)}
+function shareCaptionForAd(ad){const link=publicAdUrl(ad.slug);return `${ad.title}\n${shareDescriptionForAd(ad)}\n${ad.price?ad.price+"\n":""}\nView details:\n${link}`.trim()}
+function downloadText(filename,text){const blob=new Blob([text],{type:"text/plain"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download=filename;a.click();URL.revokeObjectURL(url)}
+function escXml(str){return String(str||"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;")}
+function svgDownload(filename,svg){const blob=new Blob([svg],{type:"image/svg+xml"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download=filename;a.click();URL.revokeObjectURL(url)}
+function linkPreviewSvg(ad){const title=escXml(ad.title),desc=escXml(shareDescriptionForAd(ad)),date=escXml(ad.event_date?`${ad.event_date}${ad.event_time?" • "+ad.event_time:""}`:"View on YardPromo");return `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630"><rect width="1200" height="630" fill="#07111f"/><circle cx="1050" cy="90" r="190" fill="#f7c600" opacity=".15"/><circle cx="120" cy="540" r="220" fill="#008a3d" opacity=".18"/><rect x="70" y="70" width="430" height="490" rx="34" fill="#111827"/><image href="${escXml(ad.poster_image_url)}" x="80" y="80" width="410" height="470" preserveAspectRatio="xMidYMid slice"/><rect x="545" y="92" width="92" height="92" rx="24" fill="#008a3d"/><text x="591" y="151" font-family="Arial" font-size="34" text-anchor="middle" font-weight="900" fill="#f7c600">YP</text><text x="660" y="128" font-family="Arial" font-size="34" font-weight="900" fill="#fff">YardPromo</text><text x="545" y="262" font-family="Arial" font-size="60" font-weight="900" fill="#fff">${title}</text><text x="545" y="328" font-family="Arial" font-size="30" font-weight="700" fill="#d1d5db">${desc}</text><text x="545" y="394" font-family="Arial" font-size="28" font-weight="800" fill="#f7c600">${date}</text><rect x="545" y="480" width="330" height="62" rx="20" fill="#008a3d"/><text x="710" y="520" font-family="Arial" font-size="28" text-anchor="middle" font-weight="900" fill="#fff">View on YardPromo</text></svg>`}
+function statusPreviewSvg(ad){const title=escXml(ad.title),cat=escXml(`${ad.category} • ${ad.location||ad.parish}`),date=escXml(ad.event_date?`${ad.event_date}${ad.event_time?" • "+ad.event_time:""}`:"View today");return `<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1920"><defs><linearGradient id="shade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#000" stop-opacity=".18"/><stop offset=".52" stop-color="#000" stop-opacity=".35"/><stop offset="1" stop-color="#000" stop-opacity=".88"/></linearGradient></defs><rect width="1080" height="1920" fill="#07111f"/><image href="${escXml(ad.poster_image_url)}" x="0" y="0" width="1080" height="1920" preserveAspectRatio="xMidYMid slice"/><rect width="1080" height="1920" fill="url(#shade)"/><text x="175" y="137" font-family="Arial" font-size="34" font-weight="900" fill="#fff">YardPromo</text><text x="540" y="720" text-anchor="middle" font-family="Arial" font-size="98" font-weight="900" fill="#fff">${title}</text><rect x="120" y="840" width="840" height="82" rx="24" fill="#000" opacity=".62" stroke="#f7c600"/><text x="540" y="893" text-anchor="middle" font-family="Arial" font-size="40" font-weight="900" fill="#fff">${cat}</text><text x="540" y="1015" text-anchor="middle" font-family="Arial" font-size="52" font-weight="900" fill="#fff">${date}</text><rect x="240" y="1375" width="600" height="104" rx="28" fill="#000" opacity=".7" stroke="#f7c600" stroke-width="3"/><text x="560" y="1446" text-anchor="middle" font-family="Arial" font-size="42" font-weight="900" fill="#fff">VIEW ON YARDPROMO</text></svg>`}
+function downloadPreview(slug){const ad=ads.find(a=>a.slug===slug);svgDownload(`${slug}-preview-image.svg`,linkPreviewSvg(ad))}
+function downloadStory(slug){const ad=ads.find(a=>a.slug===slug);svgDownload(`${slug}-story-image.svg`,statusPreviewSvg(ad))}
+function generateQR(slug){let hash=0;for(let i=0;i<slug.length;i++)hash=(hash*31+slug.charCodeAt(i))&0xffffffff;let out="";for(let i=0;i<81;i++){const finder=(i<21&&i%9<3)||(i<27&&i%9>5)||(i>53&&i%9<3);const on=finder||(((hash>>(i%24))+i*7)%3===0);out+=`<span class="qr-dot ${on?'':'off'}"></span>`}return `<div class="qr-box">${out}</div>`}
+
+
+function supportLabel(ad){
+  const c=String(ad.category||"").toLowerCase();
+  if(c.includes("party") || c.includes("dancehall") || c.includes("nightlife")) return "Support This Party";
+  if(ad.event_date) return "Support This Event";
+  if(c.includes("business") || c.includes("food") || c.includes("fashion") || c.includes("services")) return "Support This Business";
+  if(c.includes("venue")) return "Support This Venue";
+  if(c.includes("campaign")) return "Support This Campaign";
+  return "Support This Promo";
+}
+function logSupport(slug,type){
+  support_events=[{id:Date.now(),promo_slug:slug,type,session_id:sessionKey(),created_at:new Date().toLocaleString()},...support_events];
+  const ad=ads.find(a=>a.slug===slug);
+  if(ad){if(type==="whatsapp_share") ad.shares=Number(ad.shares||0)+1;if(type==="ticket") ad.clicks=Number(ad.clicks||0)+1;}
+  saveAll();
+}
+function supportCount(slug){return support_events.filter(e=>e.promo_slug===slug).length + interestCount(slug) + rsvpCount(slug)}
+function supportAction(slug,type){
+  const ad=ads.find(a=>a.slug===slug)||{};
+  logSupport(slug,type);
+  if(type==="interested"){closeModal();clickInterest(slug);return}
+  if(type==="rsvp"){closeModal();openRsvp(slug);return}
+  if(type==="whatsapp_share"){window.open("https://wa.me/?text="+encodeURIComponent(shareCaptionForAd(ad)),"_blank");toast("Thanks for supporting");return}
+  if(type==="invite"){navigator.clipboard?.writeText(publicAdUrl(slug));toast("Promo link copied");return}
+  if(type==="ticket"){if(ad.website_link) window.open(ad.website_link,"_blank");toast("Opening promo link");return}
+  if(type==="follow"){if(ad.promoter_slug) savePromoter(ad.promoter_slug);toast("Promoter saved");return}
+  if(type==="save"){savePromo(slug);toast("Promo saved");return}
+  if(type==="alerts"){closeModal();openYardAlerts("promo",slug);return}
+}
+function openSupportModal(slug){
+  const ad=ads.find(a=>a.slug===slug)||{};
+  const promoter=getPromoter(ad.promoter_slug);
+  openModal("How do you want to support?",`<div class="form-grid">
+    <p class="muted">Support means helping this promo grow through interest, RSVPs, sharing, saving, following, and clicks.</p>
+    <div class="support-grid">
+      <button class="support-action" onclick="supportAction('${slug}','interested')">I’m Interested<span>Show interest and improve this promo’s momentum.</span></button>
+      ${ad.event_date?`<button class="support-action" onclick="supportAction('${slug}','rsvp')">RSVP / Join Guest List<span>Join the list or request event access.</span></button>`:""}
+      <button class="support-action" onclick="supportAction('${slug}','whatsapp_share')">Share on WhatsApp<span>Help this promo reach more people.</span></button>
+      <button class="support-action" onclick="supportAction('${slug}','invite')">Invite Friends<span>Copy the promo link and send it anywhere.</span></button>
+      ${ad.website_link?`<button class="support-action" onclick="supportAction('${slug}','ticket')">${ad.call_to_action||"Visit Website"}<span>Open the ticket, booking, or website link.</span></button>`:""}
+      ${promoter?`<button class="support-action" onclick="supportAction('${slug}','follow')">Follow Promoter<span>Save ${promoter.name} for future promos.</span></button>`:""}
+      <button class="support-action" onclick="supportAction('${slug}','save')">Save Promo<span>Keep this promo for later.</span></button>
+      <button class="support-action" onclick="supportAction('${slug}','alerts')">Get Alerts<span>Stay updated on this promo and similar picks.</span></button>
+    </div>
+    <p class="small muted">Support actions help increase Heat Score through real engagement and sharing activity.</p>
+  </div>`)
+}
+function supportDashboardHtml(){
+  const totalSupport=support_events.length + ads.reduce((s,a)=>s+interestCount(a.slug)+rsvpCount(a.slug),0);
+  const whatsapp=support_events.filter(e=>e.type==="whatsapp_share").length;
+  const tickets=support_events.filter(e=>e.type==="ticket").length;
+  const follows=support_events.filter(e=>e.type==="follow").length;
+  const saves=support_events.filter(e=>e.type==="save").length;
+  const alertCount=alerts.length;
+  const top=ads.map(ad=>({ad,count:supportCount(ad.slug)})).sort((a,b)=>b.count-a.count);
+  return `<div class="support-summary">
+    <div class="support-stat"><strong>${totalSupport}</strong><span>Total supporters</span></div>
+    <div class="support-stat"><strong>${ads.reduce((s,a)=>s+interestCount(a.slug),0)}</strong><span>Interested clicks</span></div>
+    <div class="support-stat"><strong>${ads.reduce((s,a)=>s+rsvpCount(a.slug),0)}</strong><span>RSVPs</span></div>
+    <div class="support-stat"><strong>${whatsapp}</strong><span>WhatsApp shares</span></div>
+    <div class="support-stat"><strong>${tickets}</strong><span>Ticket clicks</span></div>
+    <div class="support-stat"><strong>${follows}</strong><span>Promoter follows</span></div>
+    <div class="support-stat"><strong>${saves}</strong><span>Saved promos</span></div>
+    <div class="support-stat"><strong>${alertCount}</strong><span>Alert signups</span></div>
+  </div><div class="grid grid-3">${top.slice(0,6).map(item=>`<div class="panel"><h3>${item.ad.title}</h3><p class="muted">${item.ad.parish||"Jamaica"}</p><div class="engagement-stat"><strong>${item.count}</strong><span>Support activity</span></div><button class="btn btn-light" data-ad="${item.ad.slug}">View Promo</button></div>`).join("")}</div>`
+}
+
+function heatScore(ad){return Math.max(8,Math.min(100,Math.round((Number(ad.views||0)/280)+(Number(ad.clicks||0)*.26)+(Number(ad.shares||0)*.72)+(interestCount(ad.slug)*.18)+(rsvpCount(ad.slug)*.35)+(supportCount(ad.slug)*.22)+(ad.is_featured?10:0))))}
+function shortLinkForAd(ad){return "yardpromo.com/p/"+String(ad.slug||"promo").split("-").slice(0,3).join("-")}
+function shortLinkForCampaign(c){return "yardpromo.com/c/"+String(c.slug||"campaign").split("-").slice(0,3).join("-")}
+function savePromo(slug){if(!saved_promos.includes(slug))saved_promos.push(slug);saveAll();toast("Promo saved")}
+function openTuneFeed(){openModal("Tune Your Feed",`<form id="feedForm" class="form-grid"><label>Parish<select name="parish">${parishes.map(p=>`<option>${p}</option>`).join("")}</select></label><label>Favorite categories<select name="category">${categories.map(c=>`<option>${c}</option>`).join("")}</select></label><div class="alert-choice"><label><input type="checkbox" name="events"> Events only</label><label><input type="checkbox" name="business"> Businesses only</label><label><input type="checkbox" name="deals"> Deals only</label><label><input type="checkbox" name="weekend"> This weekend only</label></div><button class="btn btn-primary">Save Preferences</button></form>`);document.querySelector("#feedForm").addEventListener("submit",e=>{e.preventDefault();const data=Object.fromEntries(new FormData(e.target).entries());localStorage.setItem("yp_feed_preferences",JSON.stringify(data));closeModal();toast("Feed updated");navigate("foryou")})}
+function moodFilter(mood){
+  const map={"Party tonight":"Dancehall","Food & brunch":"Food","Live music":"Reggae","Family friendly":"Stage Show","Business deals":"Business","Beauty & grooming":"Services","VIP nightlife":"Dancehall","Free entry":"Party","Date night":"Food","Things to do this weekend":"Party"};
+  window.presetCategory=map[mood]||"";navigate("browse")
+}
+function getParishStats(parish){
+  const list=activeAds().filter(a=>a.parish===parish || (parish==="Montego Bay"&&a.location==="Montego Bay") || (parish==="Portmore"&&a.location?.includes("Portmore")) || (parish==="Ocho Rios"&&a.location?.includes("Ocho")) || (parish==="Spanish Town"&&a.location?.includes("Spanish")));
+  const top=[...list].sort((a,b)=>interestCount(b.slug)-interestCount(a.slug))[0]||activeAds()[0];
+  const rsvpTop=[...list].sort((a,b)=>rsvpCount(b.slug)-rsvpCount(a.slug))[0]||top;
+  const cats={};list.forEach(a=>cats[a.category]=(cats[a.category]||0)+1);
+  const topCat=Object.entries(cats).sort((a,b)=>b[1]-a[1])[0]?.[0]||"Events";
+  return {list,top,rsvpTop,topCat}
+}
+function openSharePack(slug){
+  const ad=ads.find(a=>a.slug===slug);const caption=shareCaptionForAd(ad);const short=shortLinkForAd(ad);
+  openModal("Share Pack",`<div class="smart-grid"><div class="form-grid"><p class="muted">Everything you need to share this promo professionally.</p><div class="short-link"><div><small>Short link</small><br>${short}</div><button class="btn btn-gold" data-copy="${short}">Copy</button></div><textarea class="caption-box" readonly>${caption}</textarea><div class="action-row"><button class="btn btn-primary" data-copy="${publicAdUrl(slug)}">Copy link</button><a class="btn btn-gold" target="_blank" href="https://wa.me/?text=${encodeURIComponent(caption)}">Share WhatsApp</a><button class="btn btn-light" onclick="downloadStory('${slug}')">Download story</button><button class="btn btn-light" onclick="downloadPreview('${slug}')">Download preview</button><button class="btn btn-light" data-copy="${caption}">Copy caption</button><button class="btn btn-light" onclick="toast('QR ready to download')">Download QR</button></div></div><div class="smart-card">${generateQR(slug)}<p class="muted small">Use this QR code on flyers, posters, signs, and tickets.</p></div></div>`)
+}
+function openPosterStudio(slug){
+  const ad=ads.find(a=>a.slug===slug);
+  openModal("Poster Studio",`<div class="smart-grid"><div class="poster-studio-preview"><img src="${ad.poster_image_url}" alt="${ad.title}"><div class="poster-link-bar"><span>View on YardPromo</span><span>${shortLinkForAd(ad)}</span></div></div><div class="form-grid"><p class="muted">Prepare your poster for social sharing and print.</p><button class="btn btn-primary" onclick="downloadPreview('${slug}')">Create social preview</button><button class="btn btn-light" onclick="downloadStory('${slug}')">Create story version</button><button class="btn btn-light" onclick="toast('Square version ready')">Create square version</button><button class="btn btn-light" onclick="toast('Link bar added')">Add YardPromo link bar</button><button class="btn btn-light" onclick="toast('QR code added')">Add QR code</button><button class="btn btn-light" onclick="toast('Event date strip added')">Add event date strip</button><label>Background style<select><option>Dark premium</option><option>Light clean</option></select></label></div></div>`)
+}
+function openYardAlerts(context,slug=""){
+  openModal("Yard Alerts",`<form id="alertForm" class="form-grid"><p class="muted">Choose what you want YardPromo to alert you about.</p><label>Parish<select name="parish">${parishes.map(p=>`<option>${p}</option>`).join("")}</select></label><label>Category<select name="category">${categories.map(c=>`<option>${c}</option>`).join("")}</select></label><div class="alert-choice"><label><input type="checkbox" name="weekend"> Weekend alerts</label><label><input type="checkbox" name="promoter"> Promoter alerts</label><label><input type="checkbox" name="venue"> Venue alerts</label><label><input type="checkbox" name="campaign"> Campaign alerts</label></div><div class="form-row"><label>Email<input name="email" type="email" placeholder="you@example.com"></label><label>WhatsApp<input name="phone" placeholder="+1 876..."></label></div><button class="btn btn-primary">Get Alerts</button></form>`);document.querySelector("#alertForm").addEventListener("submit",e=>{e.preventDefault();alerts=[{id:Date.now(),context,slug,created_at:new Date().toLocaleString(),...Object.fromEntries(new FormData(e.target).entries())},...alerts];saveAll();closeModal();toast("Alerts saved")})
+}
+function openBoostPreview(slug){
+  const ad=ads.find(a=>a.slug===slug)||activeAds()[0];
+  openModal("Boost Preview",`<div class="grid grid-2">${boost_plans.map(plan=>`<div class="boost-placement"><h3>${plan.name}</h3><p class="muted">Preview how ${ad.title} could appear in this placement.</p><div class="row-ad" style="margin:14px 0"><img src="${ad.poster_image_url}" alt="${ad.title}"><div><strong>${ad.title}</strong><br><span class="muted">${ad.parish}</span></div></div><button class="btn btn-primary" onclick="toast('Boost request received')">Request Boost</button></div>`).join("")}</div>`)
+}
+function getDirections(ad){const q=encodeURIComponent((ad.venue||"")+" "+(ad.location||"")+" "+(ad.parish||"")+" Jamaica");window.open("https://www.google.com/maps/search/?api=1&query="+q,"_blank")}
+
+function card(ad){return `<article class="card"><div class="card-img"><img src="${ad.poster_image_url}" alt="${ad.title}">${ad.is_featured?`<span class="featured-tag">Featured</span>`:""}<div class="date-pill">${eventLabel(ad)}</div></div><div class="card-body"><p class="meta">${ad.category}</p><h3>${ad.title}</h3><span class="location-chip">${ad.location||ad.parish}, ${ad.parish}</span><div class="promo-mini-stats"><span>${interestCount(ad.slug)} interested</span>${ad.event_date?`<span>${rsvpCount(ad.slug)} RSVPs</span>`:""}<span>${heatScore(ad)}/100 Heat</span></div><div class="details">${ad.event_date?`<span>${ad.event_date}${ad.event_time?" • "+ad.event_time:""}</span>`:""}<span>${ad.price||"Contact for details"}</span></div><button class="btn btn-primary" data-ad="${ad.slug}">View Details</button></div></article>`}
+function campaignCard(c){const ad=campaignPromo(c);const pct=Math.min(100,Math.max(12,Math.round((Number(c.participants||0)/260)*100)));return `<article class="campaign-card"><img src="${ad.poster_image_url}" alt="${c.title}"><div class="campaign-body"><span class="campaign-type">${c.type}</span><h3 style="margin-top:10px">${c.title}</h3><p class="muted">${ad.title}</p><div class="progress-line"><span style="width:${pct}%"></span></div><div class="details">${c.reward?`<span>${c.reward}</span>`:""}<span>Ends ${c.end_date}</span><span>${Number(c.participants||0).toLocaleString()} participants</span></div><button class="btn btn-primary" onclick="location.hash='campaign/${c.slug}'">Join Campaign</button></div></article>`}
+function engagementHtml(ad){const status=guestListStatus(ad.slug),limit=Number(ad.rsvp_limit||150);return `<div class="engagement-strip"><div class="engagement-stat"><strong>${interestCount(ad.slug)}</strong><span>Interested</span></div><div class="engagement-stat"><strong>${rsvpCount(ad.slug)}</strong><span>RSVPs</span></div><div class="engagement-stat"><strong>${guestCount(ad.slug)}</strong><span>Guests</span></div><div class="engagement-stat"><strong>${vipCount(ad.slug)}</strong><span>VIP requests</span></div></div>${ad.event_date?`<div class="panel" style="padding:16px;margin:12px 0"><strong>Guest list: ${status.label}</strong><div class="guest-meter"><span style="width:${status.pct}%"></span></div><p class="muted small">${guestCount(ad.slug)} of ${limit} spots reserved</p></div>`:""}<div class="social-proof"><span class="proof-pill">${interestCount(ad.slug)} people interested</span>${ad.event_date?`<span class="proof-pill">${rsvpCount(ad.slug)} RSVPs</span>`:""}<span class="proof-pill">Trending in ${ad.parish||"Jamaica"}</span></div>`}
+function homePage(){const featured=activeAds().filter(a=>a.is_featured).slice(0,3),posterItems=[...featured,...activeAds().filter(a=>!featured.some(f=>f.slug===a.slug))].slice(0,3),weekend=activeAds().filter(isWeekend).slice(0,3),hot=[...activeAds()].sort((a,b)=>heatScore(b)-heatScore(a)).slice(0,4);return `<section class="hero"><div class="container hero-grid"><div><div class="hero-brand-lockup"><img src="assets/yardpromo-app-icon.png" alt="YardPromo"><span><strong>YardPromo Jamaica</strong><br><small>Discover • Promote • Connect</small></span></div><span class="eyebrow">Free launch posting</span><h1>Find what’s happening in Jamaica.</h1><p>Discover parties, shows, businesses, services, food deals, venues, and campaigns — or post your own promo link in minutes.</p><div class="hero-actions"><button class="btn btn-gold" data-route="create">Post Your Promo</button><button class="btn btn-light" data-route="browse">Browse Promos</button></div></div><div class="poster-stack">${posterItems[0]?`<div class="mini-poster main" role="link" tabindex="0" data-ad="${posterItems[0].slug}" aria-label="View ${posterItems[0].title}"><img src="${posterItems[0].poster_image_url}" alt="${posterItems[0].title} poster"><span class="poster-label">View Promo</span></div>`:""}${posterItems[1]?`<div class="mini-poster two" role="link" tabindex="0" data-ad="${posterItems[1].slug}" aria-label="View ${posterItems[1].title}"><img src="${posterItems[1].poster_image_url}" alt="${posterItems[1].title} poster"><span class="poster-label">View Promo</span></div>`:""}${posterItems[2]?`<div class="mini-poster three" role="link" tabindex="0" data-ad="${posterItems[2].slug}" aria-label="View ${posterItems[2].title}"><img src="${posterItems[2].poster_image_url}" alt="${posterItems[2].title} poster"><span class="poster-label">View Promo</span></div>`:""}</div></div></section><section class="section"><div class="container"><div class="section-head"><div><p class="kicker">Featured this week</p><h2>Premium picks.</h2></div><button class="btn btn-light" data-route="browse">View All</button></div><div class="grid grid-3">${featured.map(card).join("")}</div></div></section><section class="section"><div class="container"><div class="section-head"><div><p class="kicker">Weekend</p><h2>What’s hot this weekend.</h2></div><button class="btn btn-light" data-route="weekend">See Weekend</button></div><div class="grid grid-3">${weekend.map(card).join("")}</div></div></section><section class="section"><div class="container smart-grid"><div class="smart-card dark"><p class="kicker" style="color:#f7c600">For You</p><h2>Your smart discovery feed.</h2><p class="muted">Find promos based on parish, category, popularity, RSVPs, and what’s moving this weekend.</p><div class="action-row"><button class="btn btn-gold" data-route="foryou">Open For You</button><button class="btn btn-light" onclick="openTuneFeed()">Tune Your Feed</button></div></div><div class="smart-card"><p class="kicker">Mood</p><h2>What are you looking for?</h2><div class="mood-grid">${["Party tonight","Food & brunch","Live music","Family friendly","Business deals","Beauty & grooming","VIP nightlife","Free entry","Date night","Things to do this weekend"].map(m=>`<button class="mood-pill" onclick="moodFilter('${m}')">${m}</button>`).join("")}</div></div></div></section><section class="section"><div class="container"><div class="section-head"><div><p class="kicker">Categories</p><h2>Popular categories.</h2></div></div><div class="grid grid-4">${categories.slice(0,8).map((c,i)=>`<button class="category-card" onclick="window.presetCategory='${c}';navigate('browse')"><span class="category-icon">${i+1}</span><strong>${c}</strong><p class="muted small">Browse promos</p></button>`).join("")}</div><div class="trust-band"><div class="trust-tile"><strong>For promoters</strong><p class="muted small">Post events, collect RSVPs, and share clean promo links.</p></div><div class="trust-tile"><strong>For businesses</strong><p class="muted small">Promote services, offers, products, and local deals.</p></div><div class="trust-tile"><strong>For venues</strong><p class="muted small">Show upcoming events and help visitors find your location.</p></div></div></div></section>`}
+function browsePage(){return `<section class="section"><div class="container"><div class="page-hero"><p class="kicker" style="color:#f7c600">Browse Jamaica</p><h2>Discover promos across the island.</h2><p>Search events, food, fashion, venues, services, and local deals by category or parish.</p></div><div class="quick-chips">${["Party","Dancehall","Food","Fashion","Services","Concert","Kingston","Montego Bay","Portmore","Ocho Rios","Spanish Town"].map(x=>`<button class="chip" onclick="quickBrowse('${x}')">${x}</button>`).join("")}</div><div class="section-head"><div><p class="kicker">Browse</p><h2>All promotions.</h2></div><button class="btn btn-primary" data-route="create">Post Promo</button></div><div class="filters"><label>Search<input id="search" placeholder="Search promos"></label><label>Category<select id="category"><option>All</option>${categories.map(c=>`<option ${window.presetCategory===c?"selected":""}>${c}</option>`).join("")}</select></label><label>Parish<select id="parish"><option>All</option>${parishes.map(p=>`<option ${window.presetParish===p?"selected":""}>${p}</option>`).join("")}</select></label><label>Sort<select id="sort"><option>Featured</option><option>Newest</option><option>Popular</option></select></label></div><div id="browseGrid"></div></div></section>`}
+function quickBrowse(x){if(categories.includes(x)){document.querySelector('#category').value=x}else{document.querySelector('#parish').value=x==='Montego Bay'?'St. James':x==='Portmore'||x==='Spanish Town'?'St. Catherine':x==='Ocho Rios'?'St. Ann':x}document.querySelector('#search').value='';document.querySelector('#category').dispatchEvent(new Event('input'))}
+function setupBrowse(){const renderGrid=()=>{let list=activeAds();const q=document.querySelector("#search").value.toLowerCase(),c=document.querySelector("#category").value,p=document.querySelector("#parish").value,s=document.querySelector("#sort").value;if(c!=="All")list=list.filter(a=>a.category===c);if(p!=="All")list=list.filter(a=>a.parish===p);if(q)list=list.filter(a=>[a.title,a.description,a.category,a.parish,a.location,a.venue].join(" ").toLowerCase().includes(q));if(s==="Featured")list.sort((a,b)=>Number(b.is_featured)-Number(a.is_featured));if(s==="Popular")list.sort((a,b)=>Number(b.views||0)-Number(a.views||0));if(s==="Newest")list.sort((a,b)=>Number(b.id||0)-Number(a.id||0));document.querySelector("#browseGrid").innerHTML=list.length?`<div class="grid grid-3">${list.map(card).join("")}</div>`:`<div class="empty"><h3>No promos found</h3><p class="muted">Try another search or filter.</p></div>`};["search","category","parish","sort"].forEach(id=>document.querySelector("#"+id).addEventListener("input",renderGrid));renderGrid();window.presetCategory="";window.presetParish=""}
+function weekendPage(){const list=activeAds().filter(isWeekend),featured=list.filter(a=>a.is_featured||a.is_weekly_pick),trending=[...list].sort((a,b)=>heatScore(b)-heatScore(a));const friday=list.filter(a=>new Date(a.event_date+"T00:00:00").getDay()===5),saturday=list.filter(a=>new Date(a.event_date+"T00:00:00").getDay()===6),sunday=list.filter(a=>new Date(a.event_date+"T00:00:00").getDay()===0);const section=(title,items)=>`<section class="section" style="padding:28px 0"><div class="section-head"><div><p class="kicker">Weekend</p><h2>${title}</h2></div></div><div class="grid grid-3">${items.map(card).join("")||`<div class="empty"><h3>No promos listed yet</h3><p class="muted">Check back soon or post your own promo.</p><button class="btn btn-primary" data-route="create">Post Promo</button></div>`}</div></section>`;return `<section class="section"><div class="container"><div class="page-hero"><p class="kicker" style="color:#f7c600">Weekend guide</p><h2>This Weekend in Jamaica</h2><p>Featured events, parties, shows, food spots, and local deals happening Friday through Sunday.</p></div>${section("Featured Weekend Picks",featured)}${section("Tonight",friday)}${section("Saturday",saturday)}${section("Sunday",sunday)}${section("Trending",trending.slice(0,3))}</div></section>`}
+function calendarPage(){return `<section class="section"><div class="container"><div class="section-head"><div><p class="kicker">Calendar</p><h2>Events calendar.</h2></div><button class="btn btn-primary" data-route="create">Post Event</button></div><div class="action-row" style="justify-content:space-between;margin-bottom:20px"><button class="btn btn-light" onclick="changeMonth(-1)">Previous</button><h3 id="calendarTitle"></h3><button class="btn btn-light" onclick="changeMonth(1)">Next</button></div><div id="calendarGrid"></div><div id="calendarList"></div></div></section>`}
+function monthName(d){return d.toLocaleString("en-US",{month:"long",year:"numeric"})}function changeMonth(n){calendarDate=new Date(calendarDate.getFullYear(),calendarDate.getMonth()+n,1);renderCalendar()}
+function renderCalendar(){const y=calendarDate.getFullYear(),m=calendarDate.getMonth();document.querySelector("#calendarTitle").textContent=monthName(calendarDate);const first=new Date(y,m,1),last=new Date(y,m+1,0),offset=first.getDay(),total=last.getDate();const events=activeAds().filter(a=>a.event_date);const by={};events.forEach(a=>{by[a.event_date]=by[a.event_date]||[];by[a.event_date].push(a)});let cells=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].map(d=>`<div class="calendar-head">${d}</div>`);for(let i=0;i<offset;i++)cells.push(`<div class="calendar-day muted-day"></div>`);for(let day=1;day<=total;day++){const key=`${y}-${String(m+1).padStart(2,"0")}-${String(day).padStart(2,"0")}`,items=by[key]||[];cells.push(`<div class="calendar-day"><strong>${day}</strong>${items.slice(0,2).map(a=>`<button class="calendar-event" data-ad="${a.slug}">${a.title}</button>`).join("")}</div>`)}document.querySelector("#calendarGrid").innerHTML=`<div class="calendar-grid">${cells.join("")}</div>`;document.querySelector("#calendarList").innerHTML=`<div class="grid" style="margin-top:24px">${events.map(eventRow).join("")}</div>`}
+function eventRow(ad){const d=new Date(ad.event_date+"T00:00:00");return `<article class="event-row"><div class="event-date"><small>${d.toLocaleString("en-US",{month:"short"})}</small>${d.getDate()}</div><div><h3>${ad.title}</h3><p class="muted">${ad.category} • ${ad.location}, ${ad.parish}</p></div><button class="btn btn-primary" data-ad="${ad.slug}">View Details</button></article>`}
+function campaignsPage(){const active=campaigns.filter(c=>c.status==="active");return `<section class="section"><div class="container"><div class="section-head"><div><p class="kicker">Campaigns</p><h2>Social campaigns.</h2><p class="muted">Join contests, polls, guest lists, and share campaigns from Jamaican promoters.</p></div><button class="btn btn-primary" onclick="openCreateCampaign()">Create Campaign</button></div><div class="grid grid-3">${active.map(campaignCard).join("")}</div></div></section>`}
+function campaignDetailPage(){const c=getCampaign(activeCampaign);if(!c)return `<section class="section"><div class="container panel"><h2>Campaign not found</h2></div></section>`;const ad=campaignPromo(c);return `<section class="section"><div class="container detail-shell"><section><div class="detail-image"><img src="${ad.poster_image_url}" alt="${c.title}"></div></section><aside class="detail-panel"><span class="campaign-type">${c.type}</span><h1 class="promo-title">${c.title}</h1><p class="muted">${ad.title} • ${ad.location}, ${ad.parish}</p>${c.reward?`<p><strong>Reward:</strong> ${c.reward}</p>`:""}<p><strong>Runs:</strong> ${c.start_date} to ${c.end_date}</p><div class="primary-actions"><button class="btn btn-primary" onclick="joinCampaign('${c.slug}')">Join Campaign</button><button class="btn btn-light" data-copy="${campaignUrl(c.slug)}">Copy Link</button><button class="btn btn-light" onclick="openShareKit('${c.slug}')">Share Kit</button><button class="btn btn-light" onclick="location.hash='ad/${ad.slug}'">View Promo</button></div><section class="section" style="padding:28px 0 0"><h3>Campaign Analytics</h3><div class="engagement-strip" style="grid-template-columns:1fr 1fr"><div class="engagement-stat"><strong>${c.participants}</strong><span>Participants</span></div><div class="engagement-stat"><strong>${c.shares}</strong><span>Shares</span></div><div class="engagement-stat"><strong>${c.votes}</strong><span>Votes</span></div><div class="engagement-stat"><strong>${c.rsvps}</strong><span>RSVPs</span></div></div><p class="muted small">Rules & Terms: ${c.rules}</p></section></aside></div><div class="mobile-action-bar"><a class="btn btn-primary" href="https://wa.me/${cleanPhone(ad.whatsapp)}?text=${encodeURIComponent(publicAdUrl(ad.slug))}" target="_blank">WhatsApp</a>${ad.event_date?`<button class="btn btn-light" onclick="openRsvp(\'${ad.slug}\')">RSVP</button>`:`<button class="btn btn-light" onclick="openInquiry(\'${ad.slug}\')">Inquiry</button>`}<button class="btn btn-light" onclick="openSupportModal(\'${ad.slug}\')">Support</button><button class="btn btn-light" onclick="openSharePack(\'${ad.slug}\')">Share</button>${ad.website_link?`<a class="btn btn-gold" href="${ad.website_link}" target="_blank">Visit</a>`:""}</div></section>`}
+function joinCampaign(slug){const c=getCampaign(slug);c.participants++;saveAll();toast("Campaign joined");render()}
+function openShareKit(slug){const c=getCampaign(slug),ad=campaignPromo(c),caption=`${c.title}\n${c.reward?c.reward+"\\n":""}${ad.title}\n${campaignUrl(c.slug)}`;openModal("Share Kit",`<div class="form-grid"><p class="muted">Share this campaign with your audience.</p><textarea class="caption-box" rows="6" readonly>${caption}</textarea><div class="action-row"><button class="btn btn-primary" data-copy="${caption}">Copy Caption</button><a class="btn btn-gold" target="_blank" href="https://wa.me/?text=${encodeURIComponent(caption)}">Share on WhatsApp</a><button class="btn btn-light" data-copy="${campaignUrl(c.slug)}">Copy Link</button></div></div>`)}
+function profilePage(){const p=getPromoter(activePromoter);if(!p)return `<section class="section"><div class="container panel"><h2>Promoter not found</h2></div></section>`;const promos=activeAds().filter(a=>a.promoter_slug===p.slug);return `<section class="section"><div class="container"><div class="profile-card"><div class="profile-hero"><img class="avatar" src="${p.image}" alt="${p.name}"><div><p class="kicker">${p.type} ${p.verified?`<span class="tag green">Verified</span>`:""}</p><h1 class="promo-title">${p.name}</h1><p class="muted">${p.bio}</p><div class="profile-links"><a class="btn btn-primary" href="https://wa.me/${cleanPhone(p.whatsapp)}" target="_blank">WhatsApp</a><a class="btn btn-light" href="tel:${cleanPhone(p.phone)}">Call</a><a class="btn btn-light" href="${p.website}" target="_blank">Website</a><button class="btn btn-light" onclick="savePromoter('${p.slug}')">Save Promoter</button><button class="btn btn-gold" onclick="toast('Promoter support saved')">Support Promoter</button></div></div><div class="panel"><p class="muted">Location</p><h3>${p.location}</h3><p class="muted">${p.parish}</p></div></div></div><div class="intelligence-grid"><div class="intel-tile"><strong>${promos.reduce((s,a)=>s+Number(a.views||0),0).toLocaleString()}</strong><span class="muted small">Total views</span></div><div class="intel-tile"><strong>${promos.reduce((s,a)=>s+Number(a.shares||0),0)}</strong><span class="muted small">Total shares</span></div><div class="intel-tile"><strong>${promos.reduce((s,a)=>s+rsvpCount(a.slug),0)}</strong><span class="muted small">Total RSVPs</span></div><div class="intel-tile"><strong>Responds quickly</strong><span class="muted small">Response rate</span></div></div><section class="section"><div class="section-head"><div><p class="kicker">Promos</p><h2>Upcoming promos.</h2></div></div><div class="grid grid-3">${promos.map(card).join("")||`<div class="empty"><h3>No active promos</h3></div>`}</div></section></div></section>`}
+function venuePage(){const v=getVenue(activeVenue);if(!v)return `<section class="section"><div class="container panel"><h2>Venue not found</h2></div></section>`;const events=activeAds().filter(a=>a.venue_slug===v.slug);return `<section class="section"><div class="container"><div class="venue-card"><div class="profile-hero"><img class="avatar" src="${v.image}" alt="${v.name}"><div><p class="kicker">Venue</p><h1 class="promo-title">${v.name}</h1><p class="muted">${v.description}</p><div class="profile-links"><a class="btn btn-primary" href="https://wa.me/${cleanPhone(v.whatsapp)}" target="_blank">WhatsApp</a><a class="btn btn-light" href="tel:${cleanPhone(v.phone)}">Call</a><a class="btn btn-light" href="${v.website}" target="_blank">Website</a><button class="btn btn-light" onclick="openVenueClaim('${v.slug}')">Claim this venue</button></div></div><div class="panel"><p class="muted">Location</p><h3>${v.location}</h3><p class="muted">${v.address}</p></div></div></div><div class="intelligence-grid"><div class="intel-tile"><strong>350</strong><span class="muted small">Capacity</span></div><div class="intel-tile"><strong>Weekends</strong><span class="muted small">Popular nights</span></div><div class="intel-tile"><strong>Parking</strong><span class="muted small">Nearby options</span></div><div class="intel-tile"><strong>Smart casual</strong><span class="muted small">Dress code</span></div></div><div class="intelligence-grid"><div class="intel-tile"><strong>18+</strong><span class="muted small">Age policy</span></div><div class="intel-tile"><strong>${events.reduce((s,a)=>s+interestCount(a.slug),0)}</strong><span class="muted small">Average interest</span></div><div class="intel-tile"><strong>${events.reduce((s,a)=>s+rsvpCount(a.slug),0)}</strong><span class="muted small">RSVP activity</span></div><div class="intel-tile"><strong>Nightlife</strong><span class="muted small">Typical events</span></div></div><div class="map-box" style="margin-top:22px"><iframe title="${v.name} map" loading="lazy" src="${mapEmbedUrl(v.address)}"></iframe></div><section class="section"><div class="section-head"><div><p class="kicker">Events</p><h2>Events at this venue.</h2></div></div><div class="grid grid-3">${events.map(card).join("")||`<div class="empty"><h3>No active events listed</h3></div>`}</div></section></div></section>`}
+function savePromoter(slug){if(!savedPromoters.includes(slug))savedPromoters.push(slug);saveAll();toast("Promoter saved")}
+function detailPage(){const ad=ads.find(a=>a.slug===activeSlug);if(!ad)return `<section class="section"><div class="container panel"><h2>Promo not found</h2></div></section>`;ad.views=Number(ad.views||0)+1;saveAll();const promoter=getPromoter(ad.promoter_slug),venue=getVenue(ad.venue_slug),related=activeAds().filter(a=>a.slug!==ad.slug).slice(0,3),activeCampaigns=campaigns.filter(c=>c.promo_slug===ad.slug&&c.status==="active");return `<section class="section"><div class="container detail-shell"><section><div class="detail-image"><img src="${ad.poster_image_url}" alt="${ad.title}"></div><section class="section" style="padding-bottom:0"><div class="section-head"><div><p class="kicker">Campaigns</p><h2>Active campaigns.</h2></div></div><div class="grid grid-3">${activeCampaigns.map(campaignCard).join("")||`<div class="empty"><h3>No active campaigns</h3></div>`}</div></section><section class="section"><div class="section-head"><div><p class="kicker">Related</p><h2>Related promos.</h2></div></div><div class="grid grid-3">${related.map(card).join("")}</div></section></section><aside class="detail-panel"><p class="kicker">${ad.category}</p><h1 class="promo-title">${ad.title}</h1><p class="muted" style="font-size:17px">${ad.description}</p><div class="details">${ad.event_date?`<span>${ad.event_date}${ad.event_time?" • "+ad.event_time:""}${countdown(ad)?" • "+countdown(ad):""}</span>`:""}<span>${venue?`<button class="btn btn-light" style="min-height:30px;padding:6px 10px;width:auto" onclick="location.hash='venue/${venue.slug}'">${ad.venue}</button>`:ad.venue||ad.location}, ${ad.parish}</span><span>${ad.price||"Contact for details"}</span></div><div class="trust-row"><span>Reviewed by YardPromo</span>${promoter?.verified?`<span>Verified promoter</span>`:""}<span>Secure inquiry</span></div>${engagementHtml(ad)}<div class="support-note">Support this promo by sharing, RSVPing, saving, or joining the guest list.</div><div class="primary-actions">${ad.website_link?`<a class="btn btn-gold" href="${ad.website_link}" target="_blank">${ad.call_to_action||"Visit Website"}</a>`:""}${ad.whatsapp?`<a class="btn btn-primary" href="https://wa.me/${cleanPhone(ad.whatsapp)}?text=${encodeURIComponent(publicAdUrl(ad.slug))}" target="_blank">WhatsApp</a>`:""}<button class="btn btn-light" onclick="clickInterest('${ad.slug}')">${hasInterest(ad.slug)?"Interested ✓":"I’m Interested"}</button><button class="btn btn-gold" onclick="openSupportModal('${ad.slug}')">${supportLabel(ad)}</button>${ad.event_date?`<button class="btn btn-primary" onclick="openRsvp('${ad.slug}')">RSVP</button>`:`<button class="btn btn-light" onclick="openInquiry('${ad.slug}')">Send Inquiry</button>`}</div><div class="more-actions"><details><summary>More Actions</summary><div class="more-grid"><button class="btn btn-gold" onclick="openSupportModal('${ad.slug}')">Show Support</button><button class="btn btn-primary" onclick="openSharePack('${ad.slug}')">Open Share Pack</button><button class="btn btn-light" onclick="openPosterStudio('${ad.slug}')">Poster Studio</button><button class="btn btn-light" data-copy="${publicAdUrl(ad.slug)}">Copy link</button><a class="btn btn-light" href="https://wa.me/?text=${encodeURIComponent(shareCaptionForAd(ad))}" target="_blank">Share on WhatsApp</a><button class="btn btn-light" onclick="openSharePreviewTool('${ad.slug}')">Preview share link</button><button class="btn btn-light" onclick="downloadStory('${ad.slug}')">Download story image</button><button class="btn btn-light" onclick="downloadPreview('${ad.slug}')">Download preview image</button><button class="btn btn-light" onclick="openCaption('${ad.slug}')">Create caption</button><button class="btn btn-light" onclick="openInquiry('${ad.slug}')">Send inquiry</button>${ad.event_date?`<button class="btn btn-light" onclick="openCalendarModal('${ad.slug}')">Add to calendar</button><button class="btn btn-light" onclick="getDirections(ad)">Get directions</button><button class="btn btn-light" onclick="savePromo('${ad.slug}')">Save event</button>`:""}${promoter?`<button class="btn btn-light" onclick="location.hash='promoter/${promoter.slug}'">View promoter</button>`:""}${venue?`<button class="btn btn-light" onclick="location.hash='venue/${venue.slug}'">View venue</button>`:""}<button class="btn btn-light" onclick="openClaim('${ad.slug}')">Claim this event</button><button class="btn btn-light" onclick="openYardAlerts('promo','${ad.slug}')">Get alerts</button><button class="btn btn-light" onclick="openBoostPreview('${ad.slug}')">Boost Preview</button><button class="btn btn-light" onclick="toast('Report received')">Report promo</button>${hasInterest(ad.slug)?`<button class="btn btn-light" onclick="removeInterest('${ad.slug}')">Remove interest</button>`:""}</div></details></div><section style="margin-top:22px"><h3>Share Pack</h3><p class="muted">Create polished links, QR codes, captions, and story assets.</p><div class="short-link" style="margin:12px 0"><div><small>Short link</small><br>${shortLinkForAd(ad)}</div><button class="btn btn-gold" data-copy="${shortLinkForAd(ad)}">Copy</button></div>${generateQR(ad.slug)}<div class="action-row"><button class="btn btn-light" data-copy="${publicAdUrl(ad.slug)}">Copy link</button><button class="btn btn-light" onclick="downloadPreview('${ad.slug}')">Download preview</button><button class="btn btn-light" onclick="downloadStory('${ad.slug}')">Download story</button></div><p class="small muted">Your RSVP details are shared only with the organizer.</p></section></aside></div></section>`}
+function clickInterest(slug){const s=sessionKey();if(interestEvents.some(e=>e.promo_slug===slug&&e.session_id===s&&!e.removed_at)){toast("You already marked interest.");return}const ad=ads.find(a=>a.slug===slug)||{};interestEvents=[{id:Date.now(),promo_slug:slug,session_id:s,parish:ad.parish||"",source:"web",created_at:new Date().toLocaleString(),removed_at:null},...interestEvents];saveAll();openReminderPrompt(slug)}
+function removeInterest(slug){const s=sessionKey();interestEvents=interestEvents.map(e=>e.promo_slug===slug&&e.session_id===s&&!e.removed_at?{...e,removed_at:new Date().toLocaleString()}:e);saveAll();render();toast("Interest removed")}
+function openReminderPrompt(slug){const ad=ads.find(a=>a.slug===slug)||{};openModal("Interest saved",`<div class="form-grid"><div class="mini-success">Thanks — we’ll use this to show more relevant promos.</div><p class="muted">Would you like to take another action?</p><div class="action-row">${ad.event_date?`<button class="btn btn-primary" onclick="closeModal();openRsvp('${slug}')">RSVP</button><button class="btn btn-light" onclick="closeModal();openCalendarModal('${slug}')">Add to calendar</button>`:""}<button class="btn btn-light" onclick="addReminder('${slug}')">Remind me</button><button class="btn btn-light" data-copy="${publicAdUrl(slug)}">Share promo</button></div></div>`)}
+function addReminder(slug){reminderEvents=[{id:Date.now(),promo_slug:slug,session_id:sessionKey(),source:"web",created_at:new Date().toLocaleString()},...reminderEvents];saveAll();toast("Reminder saved")}
+function openRsvp(slug){const ad=ads.find(a=>a.slug===slug)||{},status=guestListStatus(slug);if(status.closed){openModal("RSVP",`<p class="muted">Guest list is full for this event.</p>`);return}openModal("RSVP / Join Guest List",`<form id="rsvpForm" class="form-grid"><div class="mini-success">${status.label} • ${guestCount(slug)} of ${ad.rsvp_limit||150} spots reserved</div><div class="form-row"><label>Full name<input name="full_name" required></label><label>Phone / WhatsApp<input name="phone" required></label></div><label>Email optional<input name="email" type="email"></label><div class="form-row"><label>Number of guests<input name="guest_count" type="number" min="1" value="1" required></label><label>Preferred arrival time<input name="preferred_arrival_time" placeholder="Example: 10:30 PM"></label></div><div class="form-row"><label>Ticket type<input name="ticket_type" placeholder="General, VIP, Early bird"></label><label>Interested in VIP/table?<select name="vip_interest"><option>No</option><option>Yes</option></select></label></div><label>Celebrating a birthday?<select name="birthday"><option>No</option><option>Yes</option></select></label><label>Message optional<textarea name="message" rows="3"></textarea></label><label style="display:flex;gap:10px;align-items:flex-start"><input type="checkbox" required style="width:auto;margin-top:4px"> <span>I agree to share my RSVP details with the event organizer.</span></label><button class="btn btn-primary">Submit RSVP</button></form>`);document.querySelector("#rsvpForm").addEventListener("submit",e=>{e.preventDefault();const data=Object.fromEntries(new FormData(e.target).entries());rsvps=[{id:Date.now(),promo_slug:slug,promo_title:ad.title,status:"new",source:"web",created_at:new Date().toLocaleString(),updated_at:new Date().toLocaleString(),...data},...rsvps];saveAll();openModal("You’re on the list",`<div class="form-grid"><div class="mini-success">You’re on the list. The organizer may contact you.</div><div class="action-row"><button class="btn btn-light" data-copy="${publicAdUrl(slug)}">Copy event link</button>${ad.whatsapp?`<a class="btn btn-primary" target="_blank" href="https://wa.me/${cleanPhone(ad.whatsapp)}?text=${encodeURIComponent('Hi, I RSVP’d for '+ad.title+' on YardPromo.')}">Message promoter on WhatsApp</a>`:""}${ad.event_date?`<button class="btn btn-light" onclick="openCalendarModal('${slug}')">Add to calendar</button>`:""}</div></div>`)})}
+function openInquiry(slug){const ad=ads.find(a=>a.slug===slug)||{};openModal("Send Inquiry",`<form id="inquiryForm" class="form-grid"><label>Question<select name="quick"><option>Is this still available?</option><option>How much?</option><option>Where is the location?</option><option>I want more information</option></select></label><div class="form-row"><label>Name<input name="name" required></label><label>Phone / WhatsApp<input name="phone" required></label></div><label>Email optional<input name="email"></label><label>Message<textarea name="message" rows="4" required>${ad.title}</textarea></label><button class="btn btn-primary">Send Inquiry</button></form>`);document.querySelector("#inquiryForm").addEventListener("submit",e=>{e.preventDefault();const data=Object.fromEntries(new FormData(e.target).entries());inquiries=[{id:Date.now(),ad_slug:slug,ad_title:ad.title,status:"unread",created_at:new Date().toLocaleString(),...data},...inquiries];saveAll();closeModal();toast("Your inquiry has been sent.")})}
+function openCalendarModal(slug){const ad=ads.find(a=>a.slug===slug);const start=(ad.event_date||"2026-05-22").replaceAll("-","")+(ad.event_time?("T"+ad.event_time.replace(":","")+"00"):"T180000");const end=(ad.event_date||"2026-05-22").replaceAll("-","")+"T235900";const url=`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(ad.title)}&dates=${start}/${end}&details=${encodeURIComponent(ad.description+" "+publicAdUrl(ad.slug))}&location=${encodeURIComponent((ad.venue||"")+" "+(ad.location||"")+" "+(ad.parish||""))}`;openModal("Add to Calendar",`<div class="form-grid"><a class="btn btn-primary" href="${url}" target="_blank">Google Calendar</a><button class="btn btn-light" onclick="downloadText('${ad.slug}.ics','BEGIN:VCALENDAR\\nVERSION:2.0\\nBEGIN:VEVENT\\nSUMMARY:${ad.title}\\nEND:VEVENT\\nEND:VCALENDAR')">Download iCal</button><a class="btn btn-light" href="${url}" target="_blank">Outlook Calendar</a></div>`)}
+function openCaption(slug){const ad=ads.find(a=>a.slug===slug);openModal("Promo Caption",`<div class="form-grid"><p class="muted">Create ready-to-share captions for WhatsApp, Instagram, Facebook, TikTok, and SMS.</p><label>Platform<select id="captionPlatform"><option>WhatsApp</option><option>Instagram</option><option>TikTok</option><option>Facebook</option><option>SMS</option></select></label><label>Tone<select id="captionTone"><option>Professional</option><option>Short and direct</option><option>Event reminder</option><option>Business promo</option></select></label><textarea id="captionOutput" class="caption-box" rows="7" readonly>${shareCaptionForAd(ad)}</textarea><div class="action-row"><button class="btn btn-primary" data-copy="${shareCaptionForAd(ad)}">Copy Caption</button><button class="btn btn-light" onclick="document.querySelector('#captionOutput').value=shareCaptionForAd(ads.find(a=>a.slug==='${slug}'))">Create Caption</button></div></div>`)}
+function openSharePreviewTool(slug){const ad=ads.find(a=>a.slug===slug);openModal("Preview Share Link",`<div class="form-grid"><p class="muted">See how your link can appear when shared.</p><div class="tabs"><button class="active" onclick="renderPreviewMock('whatsapp','${slug}',this)">WhatsApp link</button><button onclick="renderPreviewMock('status','${slug}',this)">WhatsApp Status</button></div><div id="sharePreviewMock"></div><div class="action-row"><button class="btn btn-primary" data-copy="${publicAdUrl(slug)}">Copy link</button><a class="btn btn-gold" target="_blank" href="https://wa.me/?text=${encodeURIComponent(shareCaptionForAd(ad))}">Share on WhatsApp</a><button class="btn btn-light" onclick="downloadStory('${slug}')">Download story image</button><button class="btn btn-light" onclick="downloadPreview('${slug}')">Download preview image</button><button class="btn btn-light" onclick="toast('Preview refreshed')">Refresh Preview</button></div></div>`);renderPreviewMock("whatsapp",slug)}
+function renderPreviewMock(type,slug,btn){document.querySelectorAll(".tabs button").forEach(b=>b.classList.remove("active"));if(btn)btn.classList.add("active");const ad=ads.find(a=>a.slug===slug),title=ad.title,desc=shareDescriptionForAd(ad);let html="";if(type==="whatsapp"){html=`<div class="whatsapp-mock"><div class="whatsapp-head"><div class="mock-avatar">YP</div><div><strong>YardPromo</strong><br><span class="muted small">shared link</span></div></div><div class="chat-area"><div class="chat-bubble"><p style="margin:0 0 8px">Check out this promo on YardPromo</p><div class="link-card"><img src="${ad.poster_image_url}" alt="${title}"><div class="link-info"><strong>${title}</strong><span>${desc}</span><small>yardpromo.com/p/${ad.slug}</small></div></div></div></div></div>`}else{html=`<div class="status-mock"><div class="status-content" style="--status-img:url('${ad.poster_image_url}')"><div class="status-bars"><span></span><span></span><span></span><span></span></div><div style="display:flex;align-items:center;gap:10px"><div class="mock-avatar">YP</div><div><strong>YardPromo</strong><br><small>Today</small></div></div><div class="status-title"><h2>${title}</h2><p>${ad.category} • ${ad.location||ad.parish}</p><p>${ad.event_date?ad.event_date+(ad.event_time?" • "+ad.event_time:""):"View on YardPromo"}</p></div><div class="status-cta">VIEW ON YARDPROMO<br><span class="small">TAP LINK</span></div></div><div class="status-reply"><div class="reply-pill">Reply</div><span>♡</span><span>↗</span></div></div>`}document.querySelector("#sharePreviewMock").innerHTML=html}
+function openClaim(slug){const ad=ads.find(a=>a.slug===slug);openModal("Claim This Event",`<form id="claimForm" class="form-grid"><div class="form-row"><label>Full name<input name="name" required></label><label>Promoter/business name<input name="business" required></label></div><div class="form-row"><label>Email<input name="email" type="email" required></label><label>Phone / WhatsApp<input name="phone" required></label></div><label>Relationship<select name="relationship"><option>Promoter</option><option>Venue owner</option><option>Artist</option><option>Vendor</option><option>Staff</option><option>Other</option></select></label><label>Proof message<textarea name="message" rows="4" required></textarea></label><button class="btn btn-primary">Submit Claim</button></form>`);document.querySelector("#claimForm").addEventListener("submit",e=>{e.preventDefault();const data=Object.fromEntries(new FormData(e.target).entries());claims=[{id:Date.now(),type:"event",target_slug:slug,target_title:ad.title,status:"Pending review",created_at:new Date().toLocaleString(),...data},...claims];saveAll();closeModal();toast("Claim submitted for review.")})}
+function openVenueClaim(slug){const v=getVenue(slug);openModal("Claim This Venue",`<form id="venueClaimForm" class="form-grid"><label>Full name<input name="name" required></label><label>Business / venue role<input name="business" required></label><label>Email<input name="email" type="email" required></label><label>Phone / WhatsApp<input name="phone" required></label><label>Message<textarea name="message" rows="4" required>I want to claim ${v.name}</textarea></label><button class="btn btn-primary">Submit Claim</button></form>`);document.querySelector("#venueClaimForm").addEventListener("submit",e=>{e.preventDefault();const data=Object.fromEntries(new FormData(e.target).entries());claims=[{id:Date.now(),type:"venue",target_slug:slug,target_title:v.name,status:"pending",created_at:new Date().toLocaleString(),relationship:"Venue owner",...data},...claims];saveAll();closeModal();toast("Venue claim submitted.")})}
+function createPage(){return `<section class="section"><div class="container layout-2"><section class="form-card"><p class="kicker">Post Promo</p><h2>Create a promotion.</h2><p class="muted">Upload your poster, add the details, and submit your promo for review.</p><div class="onboarding-steps"><div class="onboarding-step"><div class="step-number">1</div><strong>Choose promo type</strong><p class="muted small">Event, business, service, product, deal, or venue.</p></div><div class="onboarding-step"><div class="step-number">2</div><strong>Upload poster</strong><p class="muted small">Make your promo visual and shareable.</p></div><div class="onboarding-step"><div class="step-number">3</div><strong>Preview & submit</strong><p class="muted small">Review your promo and open Share Pack.</p></div></div><form id="promoForm" class="form-grid" style="margin-top:22px"><div class="form-section"><h3>Basic Info</h3><div class="form-row" style="margin-top:14px"><label>Promo title<input name="title" required></label><label>Category<select name="category">${categories.map(c=>`<option>${c}</option>`).join("")}</select></label></div><label style="margin-top:14px">Description<textarea name="description" rows="4" required></textarea></label></div><div class="form-section"><h3>Poster</h3><label class="upload-box" style="margin-top:14px">Poster upload<input type="file" id="poster" accept="image/*"></label></div><div class="form-section"><h3>Event Details</h3><div class="form-row" style="margin-top:14px"><label>Event date<input type="date" name="event_date"></label><label>Event time<input type="time" name="event_time"></label></div><div class="form-row" style="margin-top:14px"><label>Parish<select name="parish">${parishes.map(p=>`<option>${p}</option>`).join("")}</select></label><label>Location / venue<input name="location" required></label></div><div class="form-row" style="margin-top:14px"><label>Price / entry fee<input name="price"></label><label>Guest list limit<input name="rsvp_limit" type="number" value="150"></label></div></div><div class="form-section"><h3>Contact & Links</h3><div class="form-row" style="margin-top:14px"><label>WhatsApp number<input name="whatsapp"></label><label>Website / ticket link<input name="website_link"></label></div><div class="form-row" style="margin-top:14px"><label>Instagram / TikTok link<input name="social_link"></label><label>Button text<input name="call_to_action" value="Learn More"></label></div></div><button class="btn btn-primary" type="submit">Submit for Review</button></form></section><aside class="panel"><h3>Preview</h3><p class="muted">Your poster preview will appear here.</p><div id="posterPreview" class="panel" style="margin-top:14px;background:#f8fafc">No poster selected</div><div class="panel" style="margin-top:18px"><h3>Posting checklist</h3><p class="muted small">Add date, parish, WhatsApp, and a clear call-to-action for better results.</p></div></aside></div></section>`}
+function setupCreate(){const preview=document.querySelector("#posterPreview");document.querySelector("#poster").addEventListener("change",e=>{const file=e.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=()=>{uploadedImage=reader.result;preview.innerHTML=`<img src="${uploadedImage}" style="border-radius:18px">`};reader.readAsDataURL(file)});document.querySelector("#promoForm").addEventListener("submit",e=>{e.preventDefault();const data=Object.fromEntries(new FormData(e.target).entries());const slug=slugify(data.title)+"-"+Date.now();const ad={id:Date.now(),slug,status:"pending",is_featured:false,is_weekly_pick:false,views:0,clicks:0,shares:0,interested_seed:0,rsvp_seed:0,guest_seed:0,vip_seed:0,birthday_seed:0,poster_image_url:uploadedImage||"https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=1200&q=80",...data,venue:data.location,phone:"",promoter_slug:"island-vibes-promotions",posted_by:"user"};ads=[ad,...ads];saveAll();uploadedImage="";navigate("dashboard");toast("Promo submitted for review")})}
+function dashboardPage(){const active=ads.filter(a=>a.status==="active").length,totalViews=ads.reduce((s,a)=>s+Number(a.views||0),0),totalRsvp=ads.reduce((s,a)=>s+rsvpCount(a.slug),0),totalInt=ads.reduce((s,a)=>s+interestCount(a.slug),0);return `<section class="section"><div class="container"><div class="section-head"><div><p class="kicker">Dashboard</p><h2>Advertiser dashboard.</h2></div><button class="btn btn-primary" data-route="create">Create Promo</button></div><div class="grid grid-4" style="margin-bottom:22px"><div class="stat"><p class="muted">Active Promos</p><h3>${active}</h3></div><div class="stat"><p class="muted">RSVPs</p><h3>${totalRsvp}</h3></div><div class="stat"><p class="muted">Interested</p><h3>${totalInt}</h3></div><div class="stat"><p class="muted">Views</p><h3>${totalViews.toLocaleString()}</h3></div></div><div class="tabs"><button class="active" onclick="renderDashboardTab('promos',this)">My Promos</button><button onclick="renderDashboardTab('rsvps',this)">RSVPs</button><button onclick="renderDashboardTab('interested',this)">Interested</button><button onclick="renderDashboardTab('support',this)">Support</button><button onclick="renderDashboardTab('inbox',this)">Inbox</button><button onclick="renderDashboardTab('campaigns',this)">Campaigns</button><button onclick="renderDashboardTab('share',this)">Share Pack</button><button onclick="renderDashboardTab('poster',this)">Poster Studio</button><button onclick="renderDashboardTab('boost',this)">Boost Preview</button><button onclick="renderDashboardTab('analytics',this)">Analytics</button><button onclick="renderDashboardTab('profile',this)">Profile</button></div><div id="dashboardContent"></div></div></section>`}
+function renderDashboardTab(tab,btn){document.querySelectorAll(".tabs button").forEach(b=>b.classList.remove("active"));if(btn)btn.classList.add("active");if(tab==="promos")document.querySelector("#dashboardContent").innerHTML=promoTable(false);if(tab==="rsvps")document.querySelector("#dashboardContent").innerHTML=rsvpDashboardList();if(tab==="interested")document.querySelector("#dashboardContent").innerHTML=interestedDashboardList();if(tab==="support")document.querySelector("#dashboardContent").innerHTML=supportDashboardHtml();if(tab==="inbox")document.querySelector("#dashboardContent").innerHTML=inboxList();if(tab==="campaigns")document.querySelector("#dashboardContent").innerHTML=`<div class="section-head"><div><p class="kicker">Campaigns</p><h2>Campaigns.</h2></div><button class="btn btn-primary" onclick="openCreateCampaign()">Create Campaign</button></div>${campaignTable(false)}`;if(tab==="share")document.querySelector("#dashboardContent").innerHTML=`<div class="grid grid-3">${ads.slice(0,6).map(a=>`<div class="share-preview-card"><img src="${a.poster_image_url}" style="height:170px;width:100%;object-fit:cover;border-radius:18px"><h3 style="margin-top:14px">${a.title}</h3><p class="muted">${shareDescriptionForAd(a)}</p><div class="action-row"><button class="btn btn-primary" onclick="openSharePack('${a.slug}')">Open Share Pack</button><button class="btn btn-light" data-copy="${publicAdUrl(a.slug)}">Copy Link</button><button class="btn btn-light" onclick="downloadStory('${a.slug}')">Download Story</button></div></div>`).join("")}</div>`;if(tab==="poster")document.querySelector("#dashboardContent").innerHTML=`<div class="grid grid-3">${ads.slice(0,6).map(a=>`<div class="share-preview-card"><img src="${a.poster_image_url}" style="height:170px;width:100%;object-fit:cover;border-radius:18px"><h3 style="margin-top:14px">${a.title}</h3><p class="muted">Prepare story, square, QR, and preview assets.</p><button class="btn btn-primary" onclick="openPosterStudio(\'${a.slug}\')">Open Poster Studio</button></div>`).join("")}</div>`;if(tab==="boost")document.querySelector("#dashboardContent").innerHTML=`<div class="grid grid-3">${boost_plans.map(p=>`<div class="boost-placement"><h3>${p.name}</h3><p class="muted">Preview premium placement before requesting a boost.</p><button class="btn btn-primary" onclick="openBoostPreview(ads[0].slug)">Request access</button></div>`).join("")}</div>`;if(tab==="analytics"){const views=ads.reduce((s,a)=>s+Number(a.views||0),0),interested=ads.reduce((s,a)=>s+interestCount(a.slug),0),rsvpc=ads.reduce((s,a)=>s+rsvpCount(a.slug),0);document.querySelector("#dashboardContent").innerHTML=`<div class="grid grid-3"><div class="stat"><p class="muted">Views</p><h3>${views.toLocaleString()}</h3></div><div class="stat"><p class="muted">Interested</p><h3>${interested}</h3></div><div class="stat"><p class="muted">RSVPs</p><h3>${rsvpc}</h3></div></div>`}if(tab==="profile")document.querySelector("#dashboardContent").innerHTML=`<div class="form-card"><h3>Profile</h3><p class="muted">Manage your promoter profile.</p><div class="form-grid" style="margin-top:18px"><label>Promoter name<input value="Island Vibes Promotions"></label><label>Bio<textarea rows="4">Kingston-based event promoter.</textarea></label><button class="btn btn-primary">Save Profile</button></div></div>`}
+function promoTable(admin=false,list=ads){return `<div class="table-wrap"><table><thead><tr><th>Promo</th><th>Status</th><th>Interested</th><th>RSVPs</th><th>Actions</th></tr></thead><tbody>${list.map(ad=>`<tr><td><div class="row-ad"><img src="${ad.poster_image_url}" alt="${ad.title}"><div><strong>${ad.title}</strong><br><span class="muted">${ad.parish||""}</span></div></div></td><td><span class="status ${ad.status}">${ad.status}</span></td><td>${interestCount(ad.slug)}</td><td>${rsvpCount(ad.slug)}</td><td><div class="action-row" style="margin-top:0"><button class="btn btn-light" data-copy="${publicAdUrl(ad.slug)}">Copy Link</button><button class="btn btn-light" data-ad="${ad.slug}">View</button>${admin?`<button class="btn btn-primary" onclick="setStatus('${ad.slug}','active')">Approve</button><button class="btn btn-light" onclick="toggleFeature('${ad.slug}')">Feature</button><button class="btn btn-danger" onclick="setStatus('${ad.slug}','rejected')">Reject</button>`:""}</div></td></tr>`).join("")||`<tr><td colspan="5">Nothing to show.</td></tr>`}</tbody></table></div>`}
+function rsvpDashboardList(){return `<div class="action-row" style="justify-content:space-between;margin-bottom:18px"><h3>RSVP List</h3><button class="btn btn-light" onclick="downloadText('yardpromo-rsvps.csv',exportRsvpsCsv())">Export CSV</button></div><div class="grid">${rsvps.length?rsvps.map(rsvpRow).join(""):`<div class="empty"><h3>No RSVPs yet</h3><p class="muted">Submitted RSVPs will appear here.</p></div>`}</div>`}
+function rsvpRow(r){return `<div class="rsvp-row"><div><span class="status ${r.status}">${r.status}</span><h3>${r.full_name}</h3><p class="muted">${r.promo_title} • ${r.phone} ${r.email?`• ${r.email}`:""}</p><p class="small">Guests: ${r.guest_count} • VIP: ${r.vip_interest} • Birthday: ${r.birthday}</p>${r.message?`<p class="small muted">${r.message}</p>`:""}</div><div class="action-row"><a class="btn btn-primary" target="_blank" href="https://wa.me/${cleanPhone(r.phone)}">Reply WhatsApp</a><button class="btn btn-light" onclick="setRsvpStatus(${r.id},'confirmed')">Confirm</button><button class="btn btn-light" onclick="setRsvpStatus(${r.id},'contacted')">Contacted</button></div></div>`}
+function setRsvpStatus(id,status){rsvps=rsvps.map(r=>r.id===id?{...r,status,updated_at:new Date().toLocaleString()}:r);saveAll();renderDashboardTab("rsvps",document.querySelector(".tabs button:nth-child(2)"));toast("RSVP updated")}
+function exportRsvpsCsv(){const header=["promo","name","phone","email","guests","vip","birthday","status","created_at"];const rows=rsvps.map(r=>[r.promo_title,r.full_name,r.phone,r.email,r.guest_count,r.vip_interest,r.birthday,r.status,r.created_at].map(v=>`"${String(v||"").replaceAll('"','""')}"`).join(","));return [header.join(","),...rows].join("\\n")}
+function interestedDashboardList(){const byPromo=ads.map(ad=>({ad,count:interestCount(ad.slug),rsvps:rsvpCount(ad.slug)})).sort((a,b)=>b.count-a.count);return `<div class="grid grid-3">${byPromo.slice(0,9).map(item=>`<div class="panel"><h3>${item.ad.title}</h3><p class="muted">${item.ad.parish||""}</p><div class="engagement-strip" style="grid-template-columns:1fr 1fr"><div class="engagement-stat"><strong>${item.count}</strong><span>Interested</span></div><div class="engagement-stat"><strong>${item.rsvps}</strong><span>RSVPs</span></div></div><button class="btn btn-light">Boost Promo</button></div>`).join("")}</div>`}
+function inboxList(){return `<div class="grid">${inquiries.length?inquiries.map(i=>`<div class="inquiry-row"><div><span class="status ${i.status}">${i.status}</span></div><div><h3>${i.ad_title}</h3><p class="muted">${i.quick} — ${i.message}</p><p class="small">${i.name} • ${i.phone} • ${i.created_at}</p></div><div class="action-row"><a class="btn btn-primary" href="https://wa.me/${cleanPhone(i.phone)}" target="_blank">Reply WhatsApp</a><button class="btn btn-light">Mark Read</button></div></div>`).join(""):`<div class="empty"><h3>No inquiries yet</h3></div>`}</div>`}
+function campaignTable(admin=false){return `<div class="table-wrap"><table><thead><tr><th>Campaign</th><th>Type</th><th>Status</th><th>Participants</th><th>Actions</th></tr></thead><tbody>${campaigns.map(c=>`<tr><td><strong>${c.title}</strong><br><span class="muted">${campaignPromo(c).title}</span></td><td>${c.type}</td><td><span class="status ${c.status}">${c.status}</span></td><td>${c.participants}</td><td><div class="action-row" style="margin-top:0"><button class="btn btn-light" onclick="location.hash='campaign/${c.slug}'">View</button><button class="btn btn-light" data-copy="${campaignUrl(c.slug)}">Copy Link</button>${admin?`<button class="btn btn-primary">Approve</button><button class="btn btn-light">Feature</button>`:""}</div></td></tr>`).join("")}</tbody></table></div>`}
+function adminPage(){const pending=ads.filter(a=>a.status==="pending").length,active=ads.filter(a=>a.status==="active").length,featured=ads.filter(a=>a.is_featured).length;return `<section class="section"><div class="container"><div class="section-head"><div><p class="kicker">Admin</p><h2>Admin dashboard.</h2></div></div><div class="grid grid-4" style="margin-bottom:22px"><div class="stat"><p class="muted">Pending</p><h3>${pending}</h3></div><div class="stat"><p class="muted">Active</p><h3>${active}</h3></div><div class="stat"><p class="muted">Featured</p><h3>${featured}</h3></div><div class="stat"><p class="muted">Claims</p><h3>${claims.length}</h3></div></div><div class="tabs"><button class="active" onclick="renderAdminTab('promos',this)">Pending Promos</button><button onclick="renderAdminTab('claims',this)">Claims</button><button onclick="renderAdminTab('rsvps',this)">RSVPs</button><button onclick="renderAdminTab('interested',this)">Interested</button><button onclick="renderAdminTab('support',this)">Support</button><button onclick="renderAdminTab('inquiries',this)">Inquiries</button><button onclick="renderAdminTab('campaigns',this)">Campaigns</button><button onclick="renderAdminTab('share',this)">Share Images</button><button onclick="renderAdminTab('venues',this)">Venues</button><button onclick="renderAdminTab('promoters',this)">Promoters</button><button onclick="renderAdminTab('roundupbuilder',this)">Roundup Builder</button><button onclick="renderAdminTab('pricing',this)">Pricing</button></div><div id="adminContent"></div></div></section>`}
+function renderAdminTab(tab,btn){document.querySelectorAll(".tabs button").forEach(b=>b.classList.remove("active"));if(btn)btn.classList.add("active");if(tab==="promos")document.querySelector("#adminContent").innerHTML=promoTable(true,ads.filter(a=>a.status==="pending"));if(tab==="claims")document.querySelector("#adminContent").innerHTML=claims.length?claims.map(c=>`<div class="claim-row"><div><span class="status ${c.status}">${c.status}</span></div><div><h3>${c.target_title}</h3><p class="muted">${c.name} • ${c.business}</p></div><div class="action-row"><button class="btn btn-primary">Approve</button><button class="btn btn-danger">Reject</button></div></div>`).join(""):`<div class="empty"><h3>No claims</h3></div>`;if(tab==="rsvps")document.querySelector("#adminContent").innerHTML=rsvpDashboardList();if(tab==="interested")document.querySelector("#adminContent").innerHTML=interestedDashboardList();if(tab==="support")document.querySelector("#adminContent").innerHTML=supportDashboardHtml();if(tab==="inquiries")document.querySelector("#adminContent").innerHTML=inboxList();if(tab==="campaigns")document.querySelector("#adminContent").innerHTML=campaignTable(true);if(tab==="share")document.querySelector("#adminContent").innerHTML=`<div class="grid grid-3">${ads.slice(0,9).map(a=>`<div class="share-preview-card"><img src="${a.poster_image_url}" style="height:160px;width:100%;object-fit:cover;border-radius:18px"><h3 style="margin-top:14px">${a.title}</h3><div class="action-row"><button class="btn btn-light" onclick="openSharePreviewTool('${a.slug}')">Review</button><button class="btn btn-primary" onclick="toast('Preview refreshed')">Refresh Preview</button><button class="btn btn-light" onclick="toast('Approved for sharing')">Approve</button></div></div>`).join("")}</div>`;if(tab==="venues")document.querySelector("#adminContent").innerHTML=`<div class="grid grid-3">${venues.map(v=>`<div class="venue-card"><img src="${v.image}" style="height:160px;width:100%;object-fit:cover;border-radius:18px"><h3>${v.name}</h3><p class="muted">${v.location}, ${v.parish}</p><button class="btn btn-light" onclick="location.hash='venue/${v.slug}'">View Venue</button></div>`).join("")}</div>`;if(tab==="promoters")document.querySelector("#adminContent").innerHTML=`<div class="grid grid-3">${promoters.map(p=>`<div class="profile-card"><img src="${p.image}" style="height:160px;width:100%;object-fit:cover;border-radius:18px"><h3>${p.name}</h3><p class="muted">${p.type} • ${p.parish}</p><button class="btn btn-light" onclick="location.hash='promoter/${p.slug}'">View Promoter</button></div>`).join("")}</div>`;if(tab==="roundupbuilder")document.querySelector("#adminContent").innerHTML=`<div class="grid grid-3">${activeAds().map(a=>`<div class="share-preview-card"><img src="${a.poster_image_url}" style="height:160px;width:100%;object-fit:cover;border-radius:18px"><h3 style="margin-top:14px">${a.title}</h3><div class="action-row"><button class="btn btn-light" onclick="toast(\'Marked Weekend Pick\')">Weekend Pick</button><button class="btn btn-light" onclick="toast(\'Marked Editor’s Pick\')">Editor’s Pick</button><button class="btn btn-light" onclick="toast(\'Marked Parish Highlight\')">Parish Highlight</button></div></div>`).join("")}</div>`;if(tab==="pricing")document.querySelector("#adminContent").innerHTML=pricingCards()}
+function setStatus(slug,status){ads=ads.map(a=>a.slug===slug?{...a,status}:a);saveAll();render();toast("Updated")}
+function toggleFeature(slug){ads=ads.map(a=>a.slug===slug?{...a,is_featured:!a.is_featured}:a);saveAll();render();toast("Updated")}
+function pricingCards(){const plans=[["Free Launch Ad","JMD $0","Public promo page, poster upload, shareable link"],["Weekend Boost","Coming soon","Higher weekend placement"],["Parish Spotlight","Coming soon","Featured by parish"],["Homepage Featured","Coming soon","Premium homepage placement"],["Promoter Monthly Plan","Coming soon","For regular promoters and businesses"]];return `<div class="grid grid-3">${plans.map(p=>`<article class="price-card"><h3>${p[0]}</h3><h2>${p[1]}</h2><p class="muted">${p[2]}</p></article>`).join("")}</div>`}
+function pricingPage(){return `<section class="section"><div class="container"><div class="section-head"><div><p class="kicker">Advertise</p><h2>Free during launch.</h2></div><button class="btn btn-primary" data-route="create">Post Promo</button></div>${pricingCards()}</div></section>`}
+function roundupPage(){const picks=activeAds().filter(a=>a.is_weekly_pick),top=[...activeAds()].sort((a,b)=>heatScore(b)-heatScore(a)),food=activeAds().filter(a=>a.category==="Food"),biz=activeAds().filter(a=>["Business","Services","Fashion","Local Deals"].includes(a.category));const block=(title,items)=>`<section style="margin-top:28px"><div class="section-head"><div><p class="kicker">Roundup Builder</p><h2>${title}</h2></div></div><div class="grid grid-3">${items.slice(0,3).map(a=>`<div class="editor-pick">${card(a)}</div>`).join("")||`<div class="empty"><h3>No picks yet</h3></div>`}</div></section>`;return `<section class="section"><div class="container"><div class="page-hero"><p class="kicker" style="color:#f7c600">Weekly Roundup</p><h2>This Weekend in Jamaica.</h2><p>Editor’s picks, parish highlights, food, music, nightlife, and business deals.</p><div class="action-row"><button class="btn btn-gold" data-copy="${location.origin+location.pathname}#roundup">Share roundup</button><button class="btn btn-light" onclick="downloadText('yardpromo-roundup-caption.txt','Here’s what’s happening in Jamaica this weekend — parties, shows, food, deals, and more.')">Copy roundup caption</button><button class="btn btn-light" onclick="toast('Roundup story image ready')">Download story image</button></div></div>${block("Top events",top)}${block("Parish highlights",picks)}${block("Food & brunch",food)}${block("Music & nightlife",top.filter(a=>["Dancehall","Reggae","Party","Stage Show"].includes(a.category)))}${block("Business deals",biz)}${block("New & notable",[...activeAds()].reverse())}</div></section>`}
+function rankingsPage(){const list=[...activeAds()].sort((a,b)=>heatScore(b)-heatScore(a)).slice(0,10);return `<section class="section"><div class="container"><div class="section-head"><div><p class="kicker">Rankings</p><h2>Top promotions.</h2><p class="muted">Heat Score measures recent engagement and sharing activity.</p></div></div><div class="grid">${list.map((ad,i)=>`<article class="rank-row"><div class="rank-number">#${i+1}</div><img class="rank-img" src="${ad.poster_image_url}" alt="${ad.title}"><div><h3>${ad.title}</h3><p class="muted">${ad.location}, ${ad.parish}</p></div><div class="score">${heatScore(ad)}/100</div><button class="btn btn-primary" data-ad="${ad.slug}">View</button></article>`).join("")}</div></div></section>`}
+
+function forYouPage(){
+  const prefs=JSON.parse(localStorage.getItem("yp_feed_preferences")||"{}");
+  let list=[...activeAds()].sort((a,b)=>heatScore(b)-heatScore(a));
+  if(prefs.parish) list.sort((a,b)=>(b.parish===prefs.parish)-(a.parish===prefs.parish));
+  const labels=["Popular near you","Trending this weekend","Similar to what you viewed","New in Kingston","Food deals near you","Guest list active"];
+  return `<section class="section"><div class="container"><div class="page-hero"><p class="kicker" style="color:#f7c600">For You</p><h2>Your discovery feed.</h2><p>Smart picks based on parish, category, popularity, RSVPs, and recent sharing activity.</p><div class="action-row"><button class="btn btn-gold" onclick="openTuneFeed()">Tune Your Feed</button><button class="btn btn-light" onclick="openYardAlerts('feed')">Get Alerts</button></div></div><div class="grid grid-3">${list.slice(0,6).map((ad,i)=>`<div><span class="heat-badge" style="margin-bottom:10px">${labels[i%labels.length]}</span>${card(ad)}</div>`).join("")}</div></div></section>`
+}
+function pulsePage(){
+  const places=["Kingston","Montego Bay","Portmore","Ocho Rios","Spanish Town","St. Andrew","St. Ann","St. Catherine"];
+  return `<section class="section"><div class="container"><div class="page-hero"><p class="kicker" style="color:#f7c600">Parish Pulse</p><h2>What’s active across Jamaica.</h2><p>See what is trending by area and discover the strongest promos nearby.</p></div><div class="grid grid-4">${places.map(place=>{const s=getParishStats(place);return `<article class="parish-card"><strong>${place}</strong><p class="muted">${s.list.length||1} active promos</p><div class="pulse-meta"><span>Top: ${s.topCat}</span><span>${s.top?interestCount(s.top.slug):0} interested</span><span>Most RSVP’d</span><span>${s.rsvpTop?rsvpCount(s.rsvpTop.slug):0} RSVPs</span></div><button class="btn btn-primary" onclick="window.presetParish='${place==="Montego Bay"?"St. James":place==="Portmore"||place==="Spanish Town"?"St. Catherine":place==="Ocho Rios"?"St. Ann":place}';navigate('browse')">View Promos</button></article>`}).join("")}</div></div></section>`
+}
+function weekendBoardPage(){
+  const list=[...activeAds()].filter(a=>a.event_date).sort((a,b)=>heatScore(b)-heatScore(a));
+  const section=(title,items)=>`<section style="margin-top:26px"><div class="section-head"><div><p class="kicker">Live Weekend Board</p><h2>${title}</h2></div></div><div class="grid">${items.map(ad=>`<article class="board-row"><img src="${ad.poster_image_url}" alt="${ad.title}"><div><h3>${ad.title}</h3><p class="muted">${ad.parish} • ${ad.event_date||"Today"}</p></div><div class="score">${heatScore(ad)}/100 Heat</div><button class="btn btn-primary" data-ad="${ad.slug}">View</button></article>`).join("")||`<div class="empty"><h3>No events listed yet</h3><button class="btn btn-primary" data-route="create">Post Event</button></div>`}</div></section>`;
+  return `<section class="section"><div class="container"><div class="page-hero"><p class="kicker" style="color:#f7c600">Weekend Board</p><h2>Live Weekend Board.</h2><p>A fast scan of rising, shared, RSVP’d, and newly added events.</p></div>${section("Rising Fast",list.slice(0,3))}${section("Most Shared",[...list].sort((a,b)=>Number(b.shares||0)-Number(a.shares||0)).slice(0,3))}${section("Most RSVP’d",[...list].sort((a,b)=>rsvpCount(b.slug)-rsvpCount(a.slug)).slice(0,3))}${section("Popular in Kingston",list.filter(a=>a.parish==="Kingston").slice(0,3))}</div></section>`
+}
+
+function loginPage(){return `<section class="section"><div class="container"><div class="form-card" style="max-width:540px;margin:auto"><p class="kicker">Login</p><h2>Account access.</h2><div class="form-grid" style="margin-top:18px"><label>Email<input type="email"></label><label>Password<input type="password"></label><button class="btn btn-primary" data-route="dashboard">Continue</button><button class="btn btn-light" data-route="admin">Admin Access</button></div></div></div></section>`}
+function simplePage(title,body){return `<section class="section"><div class="container"><div class="panel"><p class="kicker">YardPromo</p><h2>${title}</h2><p class="muted">${body}</p></div></div></section>`}
+function openCreateCampaign(){openModal("Create Campaign",`<form id="createCampaignForm" class="form-grid"><label>Promo<select name="promo_slug">${ads.map(a=>`<option value="${a.slug}">${a.title}</option>`).join("")}</select></label><label>Campaign type<select name="type"><option>Share-to-Win</option><option>Vote / Poll</option><option>RSVP / Guest List</option><option>Hashtag Challenge</option><option>Referral</option></select></label><label>Campaign title<input name="title" required></label><label>Prize / reward<input name="reward"></label><div class="form-row"><label>Start date<input name="start_date" type="date"></label><label>End date<input name="end_date" type="date"></label></div><label>Rules & Terms<textarea name="rules" rows="3" required></textarea></label><button class="btn btn-primary">Launch Campaign</button></form>`);document.querySelector("#createCampaignForm").addEventListener("submit",e=>{e.preventDefault();const data=Object.fromEntries(new FormData(e.target).entries());campaigns=[{id:Date.now(),slug:slugify(data.title)+"-"+Date.now(),status:"active",participants:0,shares:0,votes:0,rsvps:0,referrals:0,hashtag:"",featured:false,...data},...campaigns];closeModal();toast("Campaign created");render()})}
+function openModal(title,body){document.querySelector("#modalRoot").innerHTML=`<div class="modal-backdrop"><div class="modal"><div class="modal-head"><div><p class="kicker">YardPromo</p><h3>${title}</h3></div><button class="close" onclick="closeModal()">×</button></div>${body}</div></div>`}
+function closeModal(){document.querySelector("#modalRoot").innerHTML=""}
+document.body.addEventListener("click",e=>{const r=e.target.closest("[data-route]");if(r)navigate(r.dataset.route);const ad=e.target.closest("[data-ad]");if(ad)location.hash="ad/"+ad.dataset.ad;const c=e.target.closest("[data-copy]");if(c){navigator.clipboard?.writeText(c.dataset.copy);toast("Copied")}})
+window.addEventListener("hashchange",readHash);
+function render(){document.querySelectorAll("[data-route]").forEach(b=>b.classList.toggle("active",b.dataset.route===route));const app=document.querySelector("#app");if(route==="home")app.innerHTML=homePage();else if(route==="browse"){app.innerHTML=browsePage();setupBrowse()}else if(route==="foryou")app.innerHTML=forYouPage();else if(route==="pulse")app.innerHTML=pulsePage();else if(route==="weekendboard")app.innerHTML=weekendBoardPage();else if(route==="calendar"){app.innerHTML=calendarPage();renderCalendar()}else if(route==="weekend")app.innerHTML=weekendPage();else if(route==="campaigns")app.innerHTML=campaignsPage();else if(route==="campaign")app.innerHTML=campaignDetailPage();else if(route==="create"){app.innerHTML=createPage();setupCreate()}else if(route==="dashboard"){app.innerHTML=dashboardPage();renderDashboardTab("promos",document.querySelector(".tabs button"))}else if(route==="admin"){app.innerHTML=adminPage();renderAdminTab("promos",document.querySelector(".tabs button"))}else if(route==="pricing")app.innerHTML=pricingPage();else if(route==="roundup")app.innerHTML=roundupPage();else if(route==="rankings")app.innerHTML=rankingsPage();else if(route==="login")app.innerHTML=loginPage();else if(route==="ad")app.innerHTML=detailPage();else if(route==="promoter")app.innerHTML=profilePage();else if(route==="venue")app.innerHTML=venuePage();else if(route==="about")app.innerHTML=simplePage("About","YardPromo helps people discover promotions, events, venues, and local businesses across Jamaica.");else if(route==="contact")app.innerHTML=simplePage("Contact","For support, partnerships, and advertising opportunities, contact the YardPromo team.");else if(route==="terms")app.innerHTML=simplePage("Terms","Promoters are responsible for accurate event, pricing, and offer information.");else if(route==="privacy")app.innerHTML=simplePage("Privacy","RSVP and inquiry details are shared only with the relevant organizer.");else if(route==="policy")app.innerHTML=simplePage("Personalization Policy","Personalization is based on your selected interests, parish, and browsing context. You can manage preferences anytime.");else app.innerHTML=homePage();document.body.classList.toggle("has-mobile-bar",route==="ad");window.scrollTo(0,0)}
+readHash();
+
+document.body.addEventListener("keydown",e=>{
+  const poster=e.target.closest?.(".mini-poster[data-ad]");
+  if(poster && (e.key==="Enter" || e.key===" ")){
+    e.preventDefault();
+    location.hash="ad/"+poster.dataset.ad;
+  }
+});
+
+</script>
+</body>
+</html>
