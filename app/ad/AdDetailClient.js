@@ -4,6 +4,7 @@ import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import AdsGrid from "../AdsGrid";
 import { createClient } from "@/lib/supabaseClient";
+import { getAdUrl, getCalendarUrl, getMapsSearchUrl, getWhatsAppShareUrl } from "@/lib/routes";
 import {
   eventLabel,
   getAdBySlug,
@@ -26,6 +27,12 @@ export default function AdDetailClient({ slug, ad }) {
   const [posterStudioOpen, setPosterStudioOpen] = useState(false);
   const [directionsModalOpen, setDirectionsModalOpen] = useState(false);
   const [captionModalOpen, setCaptionModalOpen] = useState(false);
+  const [previewModalOpen, setPreviewModalOpen] = useState(false);
+  const [inquiryModalOpen, setInquiryModalOpen] = useState(false);
+  const [claimModalOpen, setClaimModalOpen] = useState(false);
+  const [boostModalOpen, setBoostModalOpen] = useState(false);
+  const [alertsModalOpen, setAlertsModalOpen] = useState(false);
+  const [rsvpModalOpen, setRsvpModalOpen] = useState(false);
   const [generatedCaption, setGeneratedCaption] = useState("");
   const sharePackRef = useRef(null);
 
@@ -135,7 +142,7 @@ export default function AdDetailClient({ slug, ad }) {
   }
 
   function getPublicAdUrl() {
-    return `https://yardpromoja.com/ad/${currentAd?.slug || slug}`;
+    return getAdUrl(currentAd?.slug || slug);
   }
 
   async function handleCopyLink() {
@@ -147,6 +154,30 @@ export default function AdDetailClient({ slug, ad }) {
     } catch (e) {
       showToast("Copy failed. You can copy the URL from the address bar.");
     }
+  }
+
+  function openPreviewModal() {
+    setPreviewModalOpen(true);
+  }
+
+  function openInquiryModal() {
+    setInquiryModalOpen(true);
+  }
+
+  function openClaimModal() {
+    setClaimModalOpen(true);
+  }
+
+  function openBoostModal() {
+    setBoostModalOpen(true);
+  }
+
+  function openAlertsModal() {
+    setAlertsModalOpen(true);
+  }
+
+  function handleRSVP() {
+    setRsvpModalOpen(true);
   }
 
   async function handleSharePromo() {
@@ -202,10 +233,9 @@ export default function AdDetailClient({ slug, ad }) {
     const timeOnly = currentAd.event_time
       ? String(currentAd.event_time).replace(":", "").slice(0, 4)
       : "1900";
-
     const start = `${dateOnly}T${timeOnly}00`;
-    const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&details=${details}&location=${location}&dates=${start}/${start}`;
 
+    const googleCalendarUrl = getCalendarUrl(currentAd);
     window.open(googleCalendarUrl, "_blank", "noopener,noreferrer");
 
     // Also generate a simple .ics file for download
@@ -275,30 +305,16 @@ export default function AdDetailClient({ slug, ad }) {
   }
 
   function handlePreviewShareLink() {
-    const short = getPublicAdUrl();
-    if (typeof window !== "undefined") window.open(short, "_blank", "noopener,noreferrer");
+    openPreviewModal();
   }
 
   function handleWhatsAppShare() {
-    const short = getPublicAdUrl();
-    const text = `${currentAd?.title || "YardPromo Jamaica"} ${short}`;
-    const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
+    const url = getWhatsAppShareUrl(currentAd || { title: "YardPromo Jamaica", slug });
     window.open(url, "_blank", "noopener,noreferrer");
   }
 
   function handleSendInquiry() {
-    const theSlug = currentAd?.slug || slug;
-    if (currentAd?.whatsapp) {
-      const number = String(currentAd.whatsapp).replace(/\D/g, "");
-      const text = `Hi, I saw ${currentAd.title} on YardPromo Jamaica and would like more information.`;
-      const url = `https://wa.me/${number}?text=${encodeURIComponent(text)}`;
-      window.open(url, "_blank", "noopener,noreferrer");
-      return;
-    }
-
-    // fallback to login with next
-    const next = `/ad/${theSlug}`;
-    window.location.href = `/login?next=${encodeURIComponent(next)}`;
+    openInquiryModal();
   }
 
   function handleGetDirections() {
@@ -398,7 +414,7 @@ export default function AdDetailClient({ slug, ad }) {
     if (currentAd?.venue || currentAd?.location) parts.push(`${currentAd?.venue || currentAd?.location}${currentAd?.parish ? ", " + currentAd.parish : ""}`);
     if (currentAd?.price) parts.push(`Price: ${currentAd.price}`);
     if (currentAd?.call_to_action) parts.push(currentAd.call_to_action);
-    parts.push(`https://yardpromoja.com/ad/${theSlug}`);
+    parts.push(getAdUrl(theSlug));
     parts.push("#YardPromo #JamaicaEvents");
     return parts.filter(Boolean).join("\n\n");
   }
@@ -464,7 +480,7 @@ export default function AdDetailClient({ slug, ad }) {
       ctx.fillStyle = "#bbb";
       ctx.font = `${Math.max(12, Math.floor(width / 48))}px sans-serif`;
       const theSlug = currentAd?.slug || slug;
-      ctx.fillText(`yardpromoja.com/ad/${theSlug}`, width / 2, height - 10);
+      ctx.fillText(getAdUrl(theSlug).replace(/^https?:\/\//, ""), width / 2, height - 10);
 
       const url = canvas.toDataURL("image/png");
       const a = document.createElement("a");
@@ -661,13 +677,13 @@ export default function AdDetailClient({ slug, ad }) {
             </button>
 
             {currentAd.event_date ? (
-              <Link className="btn btn-primary" href={`/login?next=/ad/${currentAd.slug || slug}`}>
+              <button type="button" className="btn btn-primary" onClick={handleRSVP}>
                 RSVP
-              </Link>
+              </button>
             ) : (
-              <Link className="btn btn-light" href={`/login?next=/ad/${currentAd.slug || slug}`}>
+              <button type="button" className="btn btn-light" onClick={openInquiryModal}>
                 Send Inquiry
-              </Link>
+              </button>
             )}
           </div>
 
@@ -741,17 +757,17 @@ export default function AdDetailClient({ slug, ad }) {
                 View venue
               </button>
 
-              <Link className="btn btn-light" href={`/login?next=/ad/${currentAd.slug || slug}&claim=1`}>
+              <button type="button" className="btn btn-light" onClick={openClaimModal}>
                 Claim this event
-              </Link>
+              </button>
 
-              <button type="button" className="btn btn-light" onClick={handleRemindMe}>
+              <button type="button" className="btn btn-light" onClick={openAlertsModal}>
                 Get alerts
               </button>
 
-              <Link className="btn btn-light" href="/pricing">
+              <button type="button" className="btn btn-light" onClick={openBoostModal}>
                 Boost Preview
-              </Link>
+              </button>
 
               <button type="button" className="btn btn-light" onClick={openReportModal}>
                 Report promo
@@ -805,9 +821,9 @@ export default function AdDetailClient({ slug, ad }) {
             </p>
 
             <div className="yp-modal-actions">
-              <Link className="btn btn-primary" href={`/login?next=/ad/${currentAd.slug || slug}`}>
+              <button type="button" className="btn btn-primary" onClick={handleRSVP}>
                 RSVP
-              </Link>
+              </button>
 
               <button
                 type="button"
@@ -820,9 +836,9 @@ export default function AdDetailClient({ slug, ad }) {
               <button
                 type="button"
                 className="btn btn-light"
-                onClick={handleRemindMe}
+                onClick={openAlertsModal}
               >
-                Remind me
+                Save alert
               </button>
 
               <button
@@ -865,11 +881,7 @@ export default function AdDetailClient({ slug, ad }) {
               <div className="yp-modal-card-actions">
                 <button className="btn btn-primary" onClick={() => {
                   if (locationQuery) {
-                    window.open(
-                      `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(locationQuery)}`,
-                      "_blank",
-                      "noopener,noreferrer"
-                    );
+                    window.open(getMapsSearchUrl(locationQuery), "_blank", "noopener,noreferrer");
                   }
                 }}>
                   Open in Maps
@@ -910,7 +922,7 @@ export default function AdDetailClient({ slug, ad }) {
                 <h3>{currentAd.title}</h3>
                 <div>{currentAd.event_date} {currentAd.event_time}</div>
                 <div>{currentAd.venue || currentAd.location}</div>
-                <div style={{ marginTop: 8 }}><input readOnly value={`https://yardpromoja.com/ad/${currentAd.slug || slug}`} style={{ width: '100%' }} /></div>
+                <div style={{ marginTop: 8 }}><input readOnly value={getPublicAdUrl()} style={{ width: '100%' }} /></div>
                 <div style={{ marginTop: 12 }}>
                   <button className="btn btn-light" onClick={() => { navigator.clipboard?.writeText(generateCaptionText()); showToast('Caption copied.'); }}>Copy caption</button>
                   <button className="btn btn-light" onClick={downloadPreview} style={{ marginLeft: 8 }}>Download preview</button>
@@ -932,6 +944,131 @@ export default function AdDetailClient({ slug, ad }) {
             <div style={{ marginTop: 10 }}>
               <button className="btn btn-light" onClick={() => { navigator.clipboard?.writeText(generatedCaption || ''); showToast('Caption copied.'); }}>Copy caption</button>
               <button className="btn btn-light" onClick={() => setCaptionModalOpen(false)} style={{ marginLeft: 8 }}>Close</button>
+            </div>
+          </div>
+        </div>
+      ) : null}
+
+      {previewModalOpen ? (
+        <div className="yp-modal-backdrop">
+          <div className="yp-action-modal" role="dialog" aria-modal="true">
+            <button type="button" className="yp-modal-close" onClick={() => setPreviewModalOpen(false)} aria-label="Close preview">×</button>
+            <h2>Preview promo link</h2>
+            <p className="muted">View the public promo URL before sharing it.</p>
+            <div className="yp-modal-grid">
+              <div>
+                <strong>{currentAd.title}</strong>
+                <p className="muted">{currentAd.description}</p>
+                <p>{getPublicAdUrl()}</p>
+              </div>
+              <div className="yp-modal-card-actions">
+                <button className="btn btn-light" onClick={handleCopyLink}>Copy link</button>
+                <button className="btn btn-primary" onClick={() => window.open(getPublicAdUrl(), "_blank", "noopener,noreferrer")}>Open link</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : null}
+
+      {inquiryModalOpen ? (
+        <div className="yp-modal-backdrop">
+          <div className="yp-action-modal" role="dialog" aria-modal="true">
+            <button type="button" className="yp-modal-close" onClick={() => setInquiryModalOpen(false)} aria-label="Close inquiry">×</button>
+            <h2>Send an inquiry</h2>
+            <p className="muted">Ask the promoter a question about this event.</p>
+            <div className="yp-modal-actions">
+              <button className="btn btn-primary" onClick={() => {
+                if (currentAd?.whatsapp) {
+                  const number = String(currentAd.whatsapp).replace(/\D/g, "");
+                  const text = `Hi, I saw ${currentAd.title} on YardPromo Jamaica and would like more information.`;
+                  const url = `https://wa.me/${number}?text=${encodeURIComponent(text)}`;
+                  window.open(url, "_blank", "noopener,noreferrer");
+                } else {
+                  window.location.href = `/login?next=${encodeURIComponent(`/ad/${currentAd.slug || slug}`)}`;
+                }
+              }}>
+                Start inquiry
+              </button>
+              <button className="btn btn-light" onClick={() => setInquiryModalOpen(false)}>Close</button>
+            </div>
+          </div>
+        </div>
+      ) : null}
+
+      {claimModalOpen ? (
+        <div className="yp-modal-backdrop">
+          <div className="yp-action-modal" role="dialog" aria-modal="true">
+            <button type="button" className="yp-modal-close" onClick={() => setClaimModalOpen(false)} aria-label="Close claim">×</button>
+            <h2>Claim this event</h2>
+            <p className="muted">If you are the promoter or business owner, claim this promo page.</p>
+            <div className="yp-modal-actions">
+              <button className="btn btn-primary" onClick={() => window.location.href = `/login?next=${encodeURIComponent(`/ad/${currentAd.slug || slug}`)}&claim=1`}>Login to claim</button>
+              <button className="btn btn-light" onClick={() => setClaimModalOpen(false)}>Close</button>
+            </div>
+          </div>
+        </div>
+      ) : null}
+
+      {boostModalOpen ? (
+        <div className="yp-modal-backdrop">
+          <div className="yp-action-modal" role="dialog" aria-modal="true">
+            <button type="button" className="yp-modal-close" onClick={() => setBoostModalOpen(false)} aria-label="Close boost preview">×</button>
+            <h2>Boost Preview</h2>
+            <p className="muted">Preview premium promotion options for this event.</p>
+            <div className="yp-boost-grid">
+              {[
+                { title: "Homepage Featured", subtitle: "Top visibility on the homepage" },
+                { title: "Weekend Boost", subtitle: "Highlight your event for weekend planners" },
+                { title: "Parish Spotlight", subtitle: "Feature your promo by parish" },
+                { title: "Category Top Spot", subtitle: "Showcase in your event category" },
+                { title: "Weekly Roundup Feature", subtitle: "Be included in editorial picks" },
+                { title: "Campaign Feature", subtitle: "Promote to a wider audience" },
+              ].map((card) => (
+                <div key={card.title} className="yp-boost-card">
+                  <div>
+                    <strong>{card.title}</strong>
+                    <p className="muted">{card.subtitle}</p>
+                  </div>
+                  <Link className="btn btn-primary" href="/advertise">
+                    Request Boost
+                  </Link>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      ) : null}
+
+      {alertsModalOpen ? (
+        <div className="yp-modal-backdrop">
+          <div className="yp-action-modal" role="dialog" aria-modal="true">
+            <button type="button" className="yp-modal-close" onClick={() => setAlertsModalOpen(false)} aria-label="Close alerts">×</button>
+            <h2>Get alerts</h2>
+            <p className="muted">Save this event alert locally and receive reminder information.</p>
+            <div className="yp-modal-actions">
+              <button className="btn btn-primary" onClick={() => {
+                handleRemindMe();
+                setAlertsModalOpen(false);
+              }}>
+                Save alert
+              </button>
+              <button className="btn btn-light" onClick={() => setAlertsModalOpen(false)}>Close</button>
+            </div>
+          </div>
+        </div>
+      ) : null}
+
+      {rsvpModalOpen ? (
+        <div className="yp-modal-backdrop">
+          <div className="yp-action-modal" role="dialog" aria-modal="true">
+            <button type="button" className="yp-modal-close" onClick={() => setRsvpModalOpen(false)} aria-label="Close RSVP">×</button>
+            <h2>RSVP</h2>
+            <p className="muted">RSVP for this promo. Login is required to secure your spot.</p>
+            <div className="yp-modal-actions">
+              <button className="btn btn-primary" onClick={() => window.location.href = `/login?next=${encodeURIComponent(`/ad/${currentAd.slug || slug}`)}`}>
+                Login to RSVP
+              </button>
+              <button className="btn btn-light" onClick={() => setRsvpModalOpen(false)}>Close</button>
             </div>
           </div>
         </div>

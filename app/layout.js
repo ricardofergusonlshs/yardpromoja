@@ -3,6 +3,7 @@ import Link from "next/link";
 import AuthNav from "../components/AuthNav";
 
 export const metadata = {
+  metadataBase: new URL("https://yardpromoja.com"),
   title: "YardPromo Jamaica | Find What’s Happening",
   description:
     "Discover Jamaican events, promos, venues, campaigns, and local deals — or post your own promo link.",
@@ -11,13 +12,13 @@ export const metadata = {
     description: "Find what’s happening in Jamaica or post your own promo link.",
     images: ["/assets/yardpromo-brand-presentation.png"],
     type: "website",
-    url: "https://yardpromo.com",
+    url: "https://yardpromoja.com",
   },
   twitter: {
     card: "summary_large_image",
   },
   alternates: {
-    canonical: "https://yardpromo.com",
+    canonical: "https://yardpromoja.com",
   },
   icons: {
     icon: "/assets/yardpromo-app-icon.png",
@@ -86,7 +87,7 @@ export default function RootLayout({ children }) {
             <div className="footer-links">
               <Link href="/about">About</Link>
               <Link href="/contact">Contact</Link>
-              <Link href="/pricing">Advertise</Link>
+              <Link href="/advertise">Advertise</Link>
               <Link href="/weekend">Weekly Roundup</Link>
               <Link href="/browse">Parish Pulse</Link>
               <Link href="/weekend">Weekend Board</Link>
