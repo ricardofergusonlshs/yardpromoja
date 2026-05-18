@@ -1256,7 +1256,7 @@ return (
             )}
           </div>
 
-      <details className="more-actions" open>
+<details className="more-actions" open>
   <summary>More Actions</summary>
 
   <div className="more-actions-grid">
@@ -1279,87 +1279,10 @@ return (
     <button
       type="button"
       className="btn btn-light"
-      onClick={handleGetDirections}
-    >
-      Get directions
-    </button>
-
-    <button
-      type="button"
-      className="btn btn-light"
       onClick={handleSaveEvent}
     >
       Save event
     </button>
-
-    {promoter ? (
-      <Link
-        className="btn btn-light"
-        href={`/u/${promoter.slug || currentAd.promoter_slug}`}
-      >
-        View promoter
-      </Link>
-    ) : (
-      <button
-        type="button"
-        className="btn btn-light"
-        onClick={handleViewPromoter}
-      >
-        View promoter
-      </button>
-    )}
-
-    {showPromoterTools ? (
-      <>
-        <button
-          type="button"
-          className="btn btn-light"
-          onClick={openPosterStudio}
-        >
-          Poster Studio
-        </button>
-
-        <button
-          type="button"
-          className="btn btn-light"
-          onClick={downloadStory}
-        >
-          Download story
-        </button>
-
-        <button
-          type="button"
-          className="btn btn-light"
-          onClick={downloadPreview}
-        >
-          Download preview
-        </button>
-
-        <button
-          type="button"
-          className="btn btn-light"
-          onClick={openCaptionModal}
-        >
-          Create caption
-        </button>
-
-        <button
-          type="button"
-          className="btn btn-light"
-          onClick={openAlertsModal}
-        >
-          Get alerts
-        </button>
-
-        <button
-          type="button"
-          className="btn btn-light"
-          onClick={openBoostModal}
-        >
-          Boost Preview
-        </button>
-      </>
-    ) : null}
   </div>
 
   <div
@@ -1403,7 +1326,116 @@ return (
   </div>
 </details>
 
-     
+{showPromoterTools ? (
+  <div
+    className="promoter-tools"
+    style={{
+      marginTop: 14,
+      border: "1px solid #e5e7eb",
+      borderRadius: 18,
+      padding: 14,
+      background: "#fff",
+    }}
+  >
+    <p className="kicker" style={{ marginBottom: 8 }}>
+      Promoter tools
+    </p>
+
+    <div className="more-actions-grid">
+      <button
+        type="button"
+        className="btn btn-light"
+        onClick={openPosterStudio}
+      >
+        Poster Studio
+      </button>
+
+      <button
+        type="button"
+        className="btn btn-light"
+        onClick={openCaptionModal}
+      >
+        Create caption
+      </button>
+
+      <button
+        type="button"
+        className="btn btn-light"
+        onClick={openBoostModal}
+      >
+        Boost Preview
+      </button>
+
+      <button
+        type="button"
+        className="btn btn-light"
+        onClick={openAlertsModal}
+      >
+        Get alerts
+      </button>
+    </div>
+  </div>
+) : null}
+
+     {locationQuery ? (
+  <div
+    className="venue-map-card"
+    style={{
+      marginTop: 16,
+      border: "1px solid #e5e7eb",
+      borderRadius: 18,
+      overflow: "hidden",
+      background: "#fff",
+    }}
+  >
+    <div style={{ padding: 14 }}>
+      <p className="kicker" style={{ marginBottom: 4 }}>
+        Venue map
+      </p>
+
+      <strong>{locationQuery}</strong>
+
+      <div style={{ display: "flex", gap: 10, marginTop: 12, flexWrap: "wrap" }}>
+        <button
+          type="button"
+          className="btn btn-primary"
+          onClick={handleGetDirections}
+        >
+          View directions
+        </button>
+
+        <button
+          type="button"
+          className="btn btn-light"
+          onClick={() =>
+            window.open(
+              getMapsSearchUrl(locationQuery),
+              "_blank",
+              "noopener,noreferrer"
+            )
+          }
+        >
+          Open in Maps
+        </button>
+      </div>
+    </div>
+
+    <iframe
+      className="yp-map-frame"
+      src={`https://www.google.com/maps?q=${encodeURIComponent(
+        locationQuery
+      )}&output=embed`}
+      title="Venue map"
+      style={{
+        width: "100%",
+        height: 240,
+        border: 0,
+        display: "block",
+      }}
+      loading="lazy"
+    />
+  </div>
+) : null}
 
           {sharePackModalOpen ? (
             <div className="yp-modal-backdrop">

@@ -1815,3 +1815,347 @@ main > .date-pill {
     width: 100%;
   }
 }
+/* ================================
+   YardPromo mobile polish
+   Safe responsive improvements
+   ================================ */
+
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+img,
+iframe,
+video {
+  max-width: 100%;
+}
+
+/* Tablet and phone */
+@media (max-width: 768px) {
+  .section {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .container {
+    width: calc(100% - 24px);
+    max-width: none;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Header / nav safety */
+  header,
+  .site-header,
+  .navbar,
+  .top-nav {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  nav,
+  .nav,
+  .nav-links,
+  .auth-nav {
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .nav a,
+  .nav-links a,
+  .auth-nav a,
+  .auth-nav button {
+    white-space: nowrap;
+  }
+
+  /* Ad detail page */
+  .detail-shell {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    width: calc(100% - 24px);
+  }
+
+  .detail-shell > section,
+  .detail-panel {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .detail-panel {
+    position: static;
+    border-radius: 24px;
+    padding: 18px;
+  }
+
+  .detail-image {
+    width: 100%;
+    max-width: 100%;
+    border-radius: 24px;
+    overflow: hidden;
+  }
+
+  .detail-image img {
+    width: 100%;
+    height: auto;
+    max-height: 72vh;
+    object-fit: contain;
+    display: block;
+    background: #020617;
+  }
+
+  .promo-title,
+  .detail-panel h1 {
+    font-size: clamp(2rem, 11vw, 3.2rem);
+    line-height: 0.95;
+    word-break: break-word;
+  }
+
+  .detail-panel .muted {
+    font-size: 15px !important;
+    line-height: 1.5;
+  }
+
+  .details {
+    display: grid;
+    gap: 8px;
+  }
+
+  .trust-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .engagement-strip {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .engagement-stat {
+    min-width: 0;
+  }
+
+  /* Main action buttons */
+  .primary-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .primary-actions .btn,
+  .more-actions-grid .btn,
+  .share-pack-buttons .btn,
+  .yp-modal-actions .btn {
+    min-height: 48px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  /* More Actions */
+  .more-actions {
+    width: 100%;
+  }
+
+  .more-actions-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .more-actions-grid .btn,
+  .more-actions-grid a.btn {
+    width: 100%;
+  }
+
+  /* Promoter tools */
+  .promoter-tools {
+    width: 100%;
+  }
+
+  .promoter-tools .more-actions-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  /* Share Pack */
+  .share-pack-row {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .share-pack-row .share-input,
+  .share-input {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .share-pack-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .share-qr,
+  .qr-fallback {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  /* Venue map */
+  .venue-map-card {
+    width: 100%;
+  }
+
+  .venue-map-card iframe,
+  .yp-map-frame {
+    width: 100%;
+    height: 220px;
+    border: 0;
+  }
+
+  /* Related promos / card grids */
+  .ads-grid,
+  .promo-grid,
+  .cards-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  /* Modals */
+  .yp-modal-backdrop {
+    padding: 12px;
+    align-items: flex-start;
+    overflow-y: auto;
+  }
+
+  .yp-modal-card {
+    width: calc(100% - 24px);
+    max-width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    border-radius: 24px;
+    margin: 24px auto;
+  }
+
+  .yp-modal-header {
+    gap: 12px;
+  }
+
+  .yp-modal-header h2 {
+    font-size: clamp(1.8rem, 9vw, 2.7rem);
+    line-height: 1;
+  }
+
+  .yp-modal-body {
+    max-width: 100%;
+  }
+
+  .yp-modal-grid,
+  .yp-action-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .yp-modal-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .yp-modal-actions .btn {
+    width: 100%;
+  }
+
+  /* Poster Studio mobile */
+  .yp-poster-modal .yp-modal-body > div {
+    flex-direction: column !important;
+  }
+
+  .yp-poster-modal .yp-modal-body button {
+    width: 100%;
+    margin-left: 0 !important;
+    margin-top: 8px;
+  }
+
+  .yp-poster-modal input {
+    width: 100%;
+  }
+
+  textarea {
+    max-width: 100%;
+  }
+}
+
+/* Small phones */
+@media (max-width: 480px) {
+  .container {
+    width: calc(100% - 18px);
+  }
+
+  .section {
+    padding-top: 28px;
+    padding-bottom: 28px;
+  }
+
+  .detail-shell {
+    width: calc(100% - 18px);
+    gap: 16px;
+  }
+
+  .detail-panel {
+    padding: 14px;
+    border-radius: 20px;
+  }
+
+  .detail-image {
+    border-radius: 20px;
+  }
+
+  .primary-actions,
+  .more-actions-grid,
+  .promoter-tools .more-actions-grid,
+  .share-pack-buttons,
+  .engagement-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .btn,
+  button.btn,
+  a.btn {
+    width: 100%;
+  }
+
+  .trust-row span {
+    width: 100%;
+    text-align: center;
+  }
+
+  .support-note {
+    font-size: 14px;
+    line-height: 1.35;
+  }
+
+  .yp-modal-card {
+    width: calc(100% - 16px);
+    margin: 16px auto;
+    padding: 18px;
+  }
+
+  .yp-modal-header h2 {
+    font-size: 2rem;
+  }
+
+  .venue-map-card iframe,
+  .yp-map-frame {
+    height: 190px;
+  }
+}
