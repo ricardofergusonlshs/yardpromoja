@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { createClient } from "../lib/supabaseClient";
-import { sampleAds as fallbackAds } from "../lib/yardpromoData";
 
 function getImage(ad) {
   return (
@@ -75,24 +74,24 @@ function formatDate(ad) {
 }
 
 function getInterested(ad) {
-  return ad?.interested_count || ad?.interested || ad?.views || 286;
+  return ad?.interested_count || ad?.interested || ad?.views || 0;
 }
 
 function getRsvps(ad) {
-  return ad?.rsvp_count || ad?.rsvps || ad?.replies || 74;
+  return ad?.rsvp_count || ad?.rsvps || ad?.replies || 0;
 }
 
 function getHeat(ad) {
-  return ad?.heat_score || ad?.heat || "100/100";
+  return ad?.heat_score || ad?.heat || "0/100";
 }
 
 function getPrice(ad) {
-  return ad?.price || ad?.ticket_price || ad?.cost || "JMD $2,500 presold";
+  return ad?.price || ad?.ticket_price || ad?.cost || "Contact for details";
 }
 
 function normalizeAd(ad, index) {
   return {
-    id: ad?.id || `fallback-${index}`,
+    id: ad?.id || `live-${index}`,
     slug: getSlug(ad),
     title: getTitle(ad),
     category: getCategory(ad),
@@ -108,21 +107,19 @@ function normalizeAd(ad, index) {
 }
 
 export default function AdsGrid({ limit = 6, ads: providedAds, section = "" }) {
-  const safeFallbackAds = Array.isArray(fallbackAds) ? fallbackAds : [];
-
-  const [ads, setAds] = useState(() =>
-    (providedAds && providedAds.length ? providedAds : safeFallbackAds)
-      .slice(0, limit)
-      .map(normalizeAd)
-  );
+  const [ads, setAds] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let mounted = true;
 
     async function loadAds() {
+      setLoading(true);
+
       if (providedAds && providedAds.length) {
         if (mounted) {
           setAds(providedAds.slice(0, limit).map(normalizeAd));
+          setLoading(false);
         }
         return;
       }
@@ -131,38 +128,78 @@ export default function AdsGrid({ limit = 6, ads: providedAds, section = "" }) {
         const supabase = createClient();
 
         let query = supabase
-  .from("ads")
-  .select("*")
-  .order("created_at", { ascending: false })
-  .limit(limit);
+          .from("ads")
+          .select("*")
+          .order("created_at", { ascending: false })
+          .limit(limit);
 
-if (section === "premium") {
-  query = query.eq("is_premium", true);
-}
+        if (section === "premium") {
+          query = query.eq("is_premium", true);
+        }
 
-if (section === "weekend") {
-  query = query.eq("is_weekend_pick", true);
-}
+        if (section === "weekend") {
+          query = query.eq("is_weekend_pick", true);
+        }
 
-if (section === "featured") {
-  query = query.eq("is_featured", true);
-}
+        if (section === "featured") {
+          query = query.eq("is_featured", true);
+        }
 
-const { data, error } = await query;
+        const { data, error } = await query;
 
-        if (error || !data || data.length === 0) {
+        if (error) {
+          console.error("AdsGrid Supabase error:", error.message);
           if (mounted) {
-            setAds(safeFallbackAds.slice(0, limit).map(normalizeAd));
+            setAds([]);
+            setLoading(false);
           }
           return;
         }
 
-        if (mounted) {
-          setAds(data.slice(0, limit).map(normalizeAd));
+        if (data && data.length > 0) {
+          if (mounted) {
+            setAds(data.slice(0, limit).map(normalizeAd));
+            setLoading(false);
+          }
+          return;
         }
-      } catch {
+
+        // If Premium or Weekend has no selected ads yet,
+        // show newest live ads instead of showing demo data.
+        if (section === "premium" || section === "weekend") {
+          const { data: fallbackLiveAds, error: fallbackError } = await supabase
+            .from("ads")
+            .select("*")
+            .order("created_at", { ascending: false })
+            .limit(limit);
+
+          if (fallbackError) {
+            console.error("AdsGrid fallback Supabase error:", fallbackError.message);
+            if (mounted) {
+              setAds([]);
+              setLoading(false);
+            }
+            return;
+          }
+
+          if (fallbackLiveAds && fallbackLiveAds.length > 0) {
+            if (mounted) {
+              setAds(fallbackLiveAds.slice(0, limit).map(normalizeAd));
+              setLoading(false);
+            }
+            return;
+          }
+        }
+
         if (mounted) {
-          setAds(safeFallbackAds.slice(0, limit).map(normalizeAd));
+          setAds([]);
+          setLoading(false);
+        }
+      } catch (error) {
+        console.error("AdsGrid load error:", error);
+        if (mounted) {
+          setAds([]);
+          setLoading(false);
         }
       }
     }
@@ -172,7 +209,16 @@ const { data, error } = await query;
     return () => {
       mounted = false;
     };
-  }, [limit, providedAds, safeFallbackAds]);
+  }, [limit, providedAds, section]);
+
+  if (loading) {
+    return (
+      <div className="empty">
+        <h3>Loading promos...</h3>
+        <p className="muted">Fetching the latest YardPromo listings.</p>
+      </div>
+    );
+  }
 
   if (!ads || ads.length === 0) {
     return (
