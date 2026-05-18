@@ -452,87 +452,137 @@ export default function AdDetailClient({ slug, ad }) {
   }
 
   async function downloadCanvasImage(width, height, filename) {
-    // Draw a simple social preview using canvas
-    try {
-      const canvas = document.createElement("canvas");
-      canvas.width = width;
-      canvas.height = height;
-      const ctx = canvas.getContext("2d");
-      // background
-      ctx.fillStyle = "#111";
-      ctx.fillRect(0, 0, width, height);
+  try {
+    const canvas = document.createElement("canvas");
+    canvas.width = width;
+    canvas.height = height;
 
-      // try to draw poster image
-      if (currentAd?.poster_image_url) {
-        const img = new Image();
-        img.crossOrigin = "Anonymous";
-        img.src = currentAd.poster_image_url;
-        await new Promise((res) => {
-          img.onload = () => res(true);
-          img.onerror = () => res(false);
-        });
-        try {
-          const iw = Math.min(width * 0.8, img.width);
-          const ih = (img.height / img.width) * iw;
-          const x = (width - iw) / 2;
-          const y = 40;
-          ctx.drawImage(img, x, y, iw, ih);
-        } catch (e) {
-          // drawing failed
+    const ctx = canvas.getContext("2d");
+    const isStory = height > width;
+    const margin = Math.max(36, Math.floor(width * 0.045));
+
+    // Background
+    const gradient = ctx.createLinearGradient(0, 0, 0, height);
+    gradient.addColorStop(0, "#050816");
+    gradient.addColorStop(0.55, "#101827");
+    gradient.addColorStop(1, "#020617");
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, width, height);
+
+    // YardPromo text branding, no logo file needed
+    ctx.textAlign = "left";
+    ctx.fillStyle = "#ffffff";
+    ctx.font = `bold ${Math.max(34, Math.floor(width / 17))}px sans-serif`;
+    ctx.fillText("YardPromo", margin, isStory ? 82 : 58);
+
+    ctx.fillStyle = "#facc15";
+    ctx.font = `bold ${Math.max(18, Math.floor(width / 42))}px sans-serif`;
+    ctx.fillText("Jamaican promotion platform", margin, isStory ? 120 : 88);
+
+    // Poster image
+    const posterTop = isStory ? 170 : 115;
+    const posterMaxWidth = width - margin * 2;
+    const posterMaxHeight = isStory ? Math.floor(height * 0.58) : Math.floor(height * 0.48);
+
+    if (currentAd?.poster_image_url) {
+      const img = new Image();
+      img.crossOrigin = "Anonymous";
+      img.src = currentAd.poster_image_url;
+
+      await new Promise((resolve) => {
+        img.onload = () => resolve(true);
+        img.onerror = () => resolve(false);
+      });
+
+      if (img.width && img.height) {
+        let drawWidth = posterMaxWidth;
+        let drawHeight = (img.height / img.width) * drawWidth;
+
+        if (drawHeight > posterMaxHeight) {
+          drawHeight = posterMaxHeight;
+          drawWidth = (img.width / img.height) * drawHeight;
         }
-      }
 
-      // title
-      ctx.fillStyle = "#fff";
-      ctx.font = `${Math.max(20, Math.floor(width / 24))}px sans-serif`;
-      ctx.textAlign = "center";
-      ctx.fillText(currentAd?.title || "YardPromo", width / 2, height - 80);
+        const x = (width - drawWidth) / 2;
+        const y = posterTop;
 
-      // date / location
-      ctx.fillStyle = "#ddd";
-      ctx.font = `${Math.max(14, Math.floor(width / 36))}px sans-serif`;
-      ctx.fillText(`${currentAd?.event_date || ""} ${currentAd?.event_time || ""}`.trim(), width / 2, height - 50);
-      ctx.fillText(`${currentAd?.venue || currentAd?.location || ""}`, width / 2, height - 30);
-
-      // short link
-      ctx.fillStyle = "#bbb";
-      ctx.font = `${Math.max(12, Math.floor(width / 48))}px sans-serif`;
-      const theSlug = currentAd?.slug || slug;
-      ctx.fillText(getAdUrl(theSlug).replace(/^https?:\/\//, ""), width / 2, height - 10);
-
-      const url = canvas.toDataURL("image/png");
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-    } catch (e) {
-      // fallback text-only image
-      try {
-        const canvas = document.createElement("canvas");
-        canvas.width = width;
-        canvas.height = height;
-        const ctx = canvas.getContext("2d");
-        ctx.fillStyle = "#222";
-        ctx.fillRect(0, 0, width, height);
-        ctx.fillStyle = "#fff";
-        ctx.font = `20px sans-serif`;
-        ctx.textAlign = "center";
-        ctx.fillText(currentAd?.title || "YardPromo", width / 2, height / 2);
-        const url = canvas.toDataURL("image/png");
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = filename;
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-      } catch (ee) {
-        showToast("Unable to generate image.");
+        ctx.fillStyle = "#111827";
+        ctx.fillRect(x - 8, y - 8, drawWidth + 16, drawHeight + 16);
+        ctx.drawImage(img, x, y, drawWidth, drawHeight);
       }
     }
-  }
 
+    // Bottom information panel
+    const panelHeight = isStory ? 430 : 210;
+    const panelY = height - panelHeight - margin;
+
+    ctx.fillStyle = "rgba(255, 255, 255, 0.96)";
+    ctx.fillRect(margin, panelY, width - margin * 2, panelHeight);
+
+    ctx.textAlign = "left";
+    ctx.fillStyle = "#020617";
+    ctx.font = `bold ${Math.max(34, Math.floor(width / 18))}px sans-serif`;
+
+    const title = currentAd?.title || "YardPromo Jamaica";
+    const titleLines = wrapCanvasText(ctx, title, width - margin * 4);
+    titleLines.slice(0, 3).forEach((line, index) => {
+      ctx.fillText(line, margin * 1.5, panelY + 70 + index * 48);
+    });
+
+    ctx.fillStyle = "#334155";
+    ctx.font = `bold ${Math.max(20, Math.floor(width / 38))}px sans-serif`;
+
+    const details = [
+      `${currentAd?.event_date || ""} ${currentAd?.event_time || ""}`.trim(),
+      `${currentAd?.venue || currentAd?.location || ""}${currentAd?.parish ? ", " + currentAd.parish : ""}`,
+      currentAd?.price || "",
+    ].filter(Boolean);
+
+    details.slice(0, 3).forEach((line, index) => {
+      ctx.fillText(line, margin * 1.5, panelY + 230 + index * 34);
+    });
+
+    // Link footer
+    const theSlug = currentAd?.slug || slug;
+    const publicUrl = getAdUrl(theSlug).replace(/^https?:\/\//, "");
+
+    ctx.fillStyle = "#00843d";
+    ctx.font = `bold ${Math.max(20, Math.floor(width / 42))}px sans-serif`;
+    ctx.fillText(publicUrl, margin * 1.5, height - margin * 1.2);
+
+    const url = canvas.toDataURL("image/png");
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  } catch (e) {
+    showToast("Unable to generate image.");
+  }
+}
+
+function wrapCanvasText(ctx, text, maxWidth) {
+  const words = String(text || "").split(" ");
+  const lines = [];
+  let line = "";
+
+  words.forEach((word) => {
+    const testLine = line ? `${line} ${word}` : word;
+    const width = ctx.measureText(testLine).width;
+
+    if (width > maxWidth && line) {
+      lines.push(line);
+      line = word;
+    } else {
+      line = testLine;
+    }
+  });
+
+  if (line) lines.push(line);
+
+  return lines;
+}
   function downloadPreview() {
     downloadCanvasImage(1200, 630, `${(currentAd?.slug || slug) || "preview"}-preview.png`);
   }
