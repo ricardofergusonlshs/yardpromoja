@@ -3,7 +3,13 @@ import CreateAdClient from "./CreateAdClient";
 
 export const dynamic = "force-dynamic";
 
-export default function CreateAdPage() {
+export default async function CreateAdPage({ searchParams }) {
+  const resolvedSearchParams = await searchParams;
+  const editId =
+    typeof resolvedSearchParams?.edit === "string"
+      ? resolvedSearchParams.edit
+      : "";
+
   return (
     <Suspense
       fallback={
@@ -14,7 +20,7 @@ export default function CreateAdPage() {
         </main>
       }
     >
-      <CreateAdClient />
+      <CreateAdClient editId={editId} />
     </Suspense>
   );
 }
