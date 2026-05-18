@@ -2158,4 +2158,162 @@ video {
   .yp-map-frame {
     height: 190px;
   }
+}/* ================================
+   Mobile overflow fix for homepage
+   Stops side sliding on phones
+   ================================ */
+
+html,
+body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+#__next,
+main,
+section,
+.container,
+.hero,
+.hero-grid,
+.poster-stack,
+.launch-banner,
+.launch-banner-inner {
+  max-width: 100%;
+}
+
+@media (max-width: 768px) {
+  body {
+    overflow-x: hidden;
+  }
+
+  .container {
+    width: calc(100% - 24px);
+    max-width: 100%;
+  }
+
+  .hero {
+    overflow: hidden;
+  }
+
+  .hero-grid {
+    grid-template-columns: 1fr !important;
+    gap: 28px;
+    overflow: hidden;
+  }
+
+  .poster-stack {
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden !important;
+    min-height: 330px;
+  }
+
+  .mini-poster {
+    max-width: 48vw;
+  }
+
+  .mini-poster.main {
+    right: 8px !important;
+    width: 210px !important;
+    height: 270px !important;
+  }
+
+  .mini-poster.two {
+    left: 0 !important;
+    width: 160px !important;
+    height: 220px !important;
+  }
+
+  .mini-poster.three {
+    right: 0 !important;
+    width: 150px !important;
+    height: 195px !important;
+  }
+
+  .launch-banner {
+    overflow: hidden;
+  }
+
+  .launch-banner-inner {
+    width: calc(100% - 24px);
+    max-width: 100%;
+  }
+
+  .nav,
+  .nav-links,
+  .mobile-menu {
+    max-width: 100%;
+  }
+
+  .nav-links,
+  .mobile-menu {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .btn {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .container,
+  .launch-banner-inner {
+    width: calc(100% - 18px);
+  }
+
+  .poster-stack {
+    min-height: 300px;
+  }
+
+  .mini-poster.main {
+    right: 6px !important;
+    width: 195px !important;
+    height: 250px !important;
+  }
+
+  .mini-poster.two {
+    left: 0 !important;
+    width: 145px !important;
+    height: 200px !important;
+  }
+
+  .mini-poster.three {
+    right: 0 !important;
+    width: 135px !important;
+    height: 180px !important;
+  }
+}
+/* ================================
+   Mobile ad page order fix
+   Show details first, poster below
+   ================================ */
+
+@media (max-width: 768px) {
+  .detail-shell {
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  .detail-panel {
+    order: 1 !important;
+    width: 100% !important;
+  }
+
+  .detail-shell > section:first-child {
+    order: 2 !important;
+    width: 100% !important;
+  }
+
+  .detail-image {
+    margin-top: 18px !important;
+  }
+
+  .detail-image img {
+    width: 100% !important;
+    height: auto !important;
+    max-height: 78vh !important;
+    object-fit: contain !important;
+  }
 }
