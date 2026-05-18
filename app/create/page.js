@@ -5,6 +5,7 @@ export const dynamic = "force-dynamic";
 
 export default async function CreateAdPage({ searchParams }) {
   const resolvedSearchParams = await searchParams;
+
   const editId =
     typeof resolvedSearchParams?.edit === "string"
       ? resolvedSearchParams.edit

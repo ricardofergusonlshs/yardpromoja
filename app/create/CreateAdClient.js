@@ -1,16 +1,14 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabaseClient";
 import { categories, parishes, slugify } from "@/lib/utils";
 
-export default function CreateAdClient() {
+export default function CreateAdClient({ editId = "" }) {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const supabase = useMemo(() => createClient(), []);
 
-  const editId = searchParams.get("edit");
   const isEditMode = Boolean(editId);
 
   const [posterFile, setPosterFile] = useState(null);
