@@ -1,239 +1,305 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabaseClient";
 
-const STATUS_LABELS = {
-  pending_review: "Pending Review",
-  active: "Active",
-  rejected: "Rejected",
-  expired: "Expired",
-};
+function getPoster(ad) {
+  return (
+    ad?.poster_image_url ||
+    ad?.image_url ||
+    ad?.posterUrl ||
+    ad?.image ||
+    "/assets/yardpromo-brand-preview.png"
+  );
+}
 
-const STATUS_ORDER = ["pending_review", "active", "rejected", "expired"];
+function statusLabel(status) {
+  const value = String(status || "pending_review").toLowerCase();
+
+  if (value === "approved" || value === "active") return "Active";
+  if (value === "expired" || value === "archived") return "Expired";
+  if (value === "draft") return "Draft";
+  if (value === "rejected") return "Rejected";
+  if (value === "pending_review" || value === "pending") return "Pending";
+
+  return value.charAt(0).toUpperCase() + value.slice(1);
+}
+
+function isExpired(ad) {
+  const status = String(ad?.status || "").toLowerCase();
+  return status === "expired" || status === "archived";
+}
 
 export default function AdminPage() {
   const router = useRouter();
   const supabase = createClient();
+
   const [ads, setAds] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [savingId, setSavingId] = useState("");
   const [message, setMessage] = useState("");
-  const [allowed, setAllowed] = useState(false);
-  const [checking, setChecking] = useState(true);
-
-  async function load() {
-    const { data: sessionData } = await supabase.auth.getSession();
-    const user = sessionData?.session?.user;
-
-    if (!user) {
-      router.push("/login?redirect=/admin");
-      return;
-    }
-
-    const { data: profile, error: profileError } = await supabase
-      .from("profiles")
-      .select("role")
-      .eq("id", user.id)
-      .maybeSingle();
-
-    if (profileError) {
-      setMessage("Unable to verify permissions. Please sign in again.");
-      setChecking(false);
-      return;
-    }
-
-    const role = profile?.role;
-
-    if (!["admin", "super_admin"].includes(role)) {
-      router.push("/dashboard");
-      return;
-    }
-
-    setAllowed(true);
-
-    const { data, error } = await supabase
-      .from("ads")
-      .select("*")
-      .order("created_at", { ascending: false });
-
-    if (error) setMessage("Unable to load ads. Please try again.");
-    else setAds(data || []);
-    setChecking(false);
-  }
 
   useEffect(() => {
-    load();
+    let alive = true;
+
+    async function loadAdminAds() {
+      setLoading(true);
+      setMessage("");
+
+      try {
+        const { data: userData, error: userError } = await supabase.auth.getUser();
+
+        if (userError || !userData?.user) {
+          router.push(`/login?next=${encodeURIComponent("/admin")}`);
+          return;
+        }
+
+        const { data: profileData, error: profileError } = await supabase
+          .from("profiles")
+          .select("role")
+          .eq("id", userData.user.id)
+          .maybeSingle();
+
+        if (profileError) throw profileError;
+
+        const isAdmin = ["admin", "super_admin"].includes(profileData?.role);
+
+        if (!isAdmin) {
+          setMessage("You do not have permission to view the admin page.");
+          setLoading(false);
+          return;
+        }
+
+        const { data, error } = await supabase
+          .from("ads")
+          .select("*")
+          .order("created_at", { ascending: false });
+
+        if (error) throw error;
+
+        if (alive) {
+          setAds(data || []);
+        }
+      } catch (error) {
+        if (alive) {
+          setMessage(error.message || "Unable to load admin ads.");
+        }
+      } finally {
+        if (alive) {
+          setLoading(false);
+        }
+      }
+    }
+
+    loadAdminAds();
+
+    return () => {
+      alive = false;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  async function updateAd(id, changes) {
-    if (!allowed) {
-      setMessage("You do not have permission to perform this action.");
-      return;
-    }
+  async function updateAd(adId, patch) {
+    setSavingId(adId);
+    setMessage("");
 
-    const { data: sessionData } = await supabase.auth.getSession();
-    const user = sessionData?.session?.user;
-    if (!user) {
-      router.push("/login?redirect=/admin");
-      return;
-    }
+    try {
+      const { data, error } = await supabase
+        .from("ads")
+        .update(patch)
+        .eq("id", adId)
+        .select("*")
+        .maybeSingle();
 
-    const { data: profile, error: profileError } = await supabase
-      .from("profiles")
-      .select("role")
-      .eq("id", user.id)
-      .maybeSingle();
+      if (error) throw error;
 
-    if (profileError) {
-      setMessage(profileError.message);
-      return;
-    }
-
-    const role = profile?.role;
-    if (!["admin", "super_admin"].includes(role)) {
-      setMessage("You do not have permission to perform this action.");
-      return;
-    }
-
-    const { error } = await supabase.from("ads").update(changes).eq("id", id);
-    if (error) setMessage(error.message);
-    else {
-      setMessage("Updated.");
-      load();
+      setAds((current) =>
+        current.map((ad) => (ad.id === adId ? { ...ad, ...(data || patch) } : ad))
+      );
+    } catch (error) {
+      setMessage(error.message || "Unable to update promo.");
+    } finally {
+      setSavingId("");
     }
   }
 
-  const sortedAds = [...ads].sort((a, b) => {
-    const aIndex = STATUS_ORDER.indexOf(a.status);
-    const bIndex = STATUS_ORDER.indexOf(b.status);
-    if (aIndex !== bIndex) return aIndex - bIndex;
-    return new Date(b.created_at) - new Date(a.created_at);
-  });
+  function toggleFeatured(ad) {
+    return updateAd(ad.id, {
+      is_featured: !Boolean(ad.is_featured),
+    });
+  }
 
-  function renderActions(ad) {
-    const commonButtons = (
-      <>
-        <button className="btn btn-light" onClick={() => updateAd(ad.id, { is_featured: !ad.is_featured })}>
-          {ad.is_featured ? "Unfeature" : "Feature"}
-        </button>
-      </>
+  function togglePremium(ad) {
+    return updateAd(ad.id, {
+      is_premium: !Boolean(ad.is_premium),
+    });
+  }
+
+  function toggleWeekend(ad) {
+    return updateAd(ad.id, {
+      is_weekend_pick: !Boolean(ad.is_weekend_pick),
+    });
+  }
+
+  function expireAd(ad) {
+    return updateAd(ad.id, {
+      status: "expired",
+      is_featured: false,
+      is_premium: false,
+      is_weekend_pick: false,
+    });
+  }
+
+  function restoreAd(ad) {
+    return updateAd(ad.id, {
+      status: "approved",
+    });
+  }
+
+  if (loading) {
+    return (
+      <main className="section">
+        <div className="container">
+          <div className="toast">Loading admin ads...</div>
+        </div>
+      </main>
     );
-
-    switch (ad.status) {
-      case "pending_review":
-        return (
-          <>
-            <button className="btn btn-primary" onClick={() => updateAd(ad.id, { status: "active", approved_at: new Date().toISOString() })}>
-              Approve
-            </button>
-            {commonButtons}
-            <button className="btn btn-danger" onClick={() => updateAd(ad.id, { status: "rejected", rejection_reason: "Rejected by admin." })}>
-              Reject
-            </button>
-            <button className="btn btn-light" onClick={() => updateAd(ad.id, { status: "expired" })}>
-              Expire
-            </button>
-          </>
-        );
-      case "active":
-        return (
-          <>
-            <span className="btn btn-light" style={{ cursor: "default", opacity: 0.8 }}>Active</span>
-            {commonButtons}
-            <button className="btn btn-light" onClick={() => updateAd(ad.id, { status: "expired" })}>
-              Expire
-            </button>
-          </>
-        );
-      case "rejected":
-        return (
-          <>
-            <span className="btn btn-danger" style={{ cursor: "default", opacity: 0.9 }}>Rejected</span>
-            <button className="btn btn-light" onClick={() => updateAd(ad.id, { status: "pending_review" })}>
-              Restore
-            </button>
-            <button className="btn btn-primary" onClick={() => updateAd(ad.id, { status: "active", approved_at: new Date().toISOString() })}>
-              Approve
-            </button>
-          </>
-        );
-      case "expired":
-        return (
-          <>
-            <span className="btn btn-light" style={{ cursor: "default", opacity: 0.8 }}>Expired</span>
-            <button className="btn btn-light" onClick={() => updateAd(ad.id, { status: "pending_review" })}>
-              Restore
-            </button>
-          </>
-        );
-      default:
-        return (
-          <>
-            <button className="btn btn-light" onClick={() => updateAd(ad.id, { status: "pending_review" })}>
-              Restore
-            </button>
-          </>
-        );
-    }
   }
 
   return (
     <main className="section">
       <div className="container">
-        <div className="section-head">
-          <div>
-            <p className="kicker">Admin</p>
-            <h2>Approve and manage YardPromo ads.</h2>
+        <p className="kicker">Admin</p>
+        <h2>Approve and manage YardPromo ads.</h2>
+
+        {message ? (
+          <div className="toast error" style={{ marginTop: 14 }}>
+            {message}
           </div>
-        </div>
+        ) : null}
 
-        {checking && <div className="toast">Checking admin access...</div>}
-        {!checking && message && <div className="toast">{message}</div>}
+        <div className="card" style={{ marginTop: 22, overflowX: "auto" }}>
+          <table style={{ width: "100%", borderCollapse: "collapse" }}>
+            <thead>
+              <tr>
+                <th style={{ textAlign: "left", padding: 14 }}>Ad</th>
+                <th style={{ textAlign: "left", padding: 14 }}>Status</th>
+                <th style={{ textAlign: "left", padding: 14 }}>Category</th>
+                <th style={{ textAlign: "left", padding: 14 }}>Premium</th>
+                <th style={{ textAlign: "left", padding: 14 }}>Weekend</th>
+                <th style={{ textAlign: "left", padding: 14 }}>Featured</th>
+                <th style={{ textAlign: "left", padding: 14 }}>Actions</th>
+              </tr>
+            </thead>
 
-        {allowed && !checking && (
-          <div className="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Ad</th>
-                  <th>Status</th>
-                  <th>Category</th>
-                  <th>Featured</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {sortedAds.map((ad) => (
-                  <tr key={ad.id}>
-                    <td>
-                      <div className="row-ad">
-                        <img src={ad.poster_image_url || "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=1200&q=80"} alt={ad.title} />
+            <tbody>
+              {ads.map((ad) => {
+                const disabled = savingId === ad.id;
+
+                return (
+                  <tr key={ad.id} style={{ borderTop: "1px solid #e5e7eb" }}>
+                    <td style={{ padding: 14, minWidth: 300 }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                        <img
+                          src={getPoster(ad)}
+                          alt={ad.title || "Promo poster"}
+                          style={{
+                            width: 54,
+                            height: 54,
+                            borderRadius: 12,
+                            objectFit: "cover",
+                            background: "#f1f5f9",
+                          }}
+                        />
+
                         <div>
-                          <strong>{ad.title}</strong>
-                          <br />
-                          <span className="muted">{ad.parish}</span>
+                          <strong>{ad.title || "Untitled promo"}</strong>
+                          <div className="muted small">
+                            {ad.parish || ad.location || "Jamaica"}
+                          </div>
                         </div>
                       </div>
                     </td>
-                    <td>{STATUS_LABELS[ad.status] || ad.status}</td>
-                    <td>{ad.category}</td>
-                    <td>{ad.is_featured ? "Yes" : "No"}</td>
-                    <td>
-                      <div className="actions" style={{ marginTop: 0 }}>
-                        {renderActions(ad)}
+
+                    <td style={{ padding: 14 }}>{statusLabel(ad.status)}</td>
+                    <td style={{ padding: 14 }}>{ad.category || "Promo"}</td>
+                    <td style={{ padding: 14 }}>{ad.is_premium ? "Yes" : "No"}</td>
+                    <td style={{ padding: 14 }}>{ad.is_weekend_pick ? "Yes" : "No"}</td>
+                    <td style={{ padding: 14 }}>{ad.is_featured ? "Yes" : "No"}</td>
+
+                    <td style={{ padding: 14, minWidth: 430 }}>
+                      <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                        <button
+                          type="button"
+                          className="btn btn-light"
+                          disabled={disabled}
+                          onClick={() => togglePremium(ad)}
+                        >
+                          {ad.is_premium ? "Remove Premium" : "Premium"}
+                        </button>
+
+                        <button
+                          type="button"
+                          className="btn btn-light"
+                          disabled={disabled}
+                          onClick={() => toggleWeekend(ad)}
+                        >
+                          {ad.is_weekend_pick ? "Remove Weekend" : "Weekend"}
+                        </button>
+
+                        <button
+                          type="button"
+                          className="btn btn-light"
+                          disabled={disabled}
+                          onClick={() => toggleFeatured(ad)}
+                        >
+                          {ad.is_featured ? "Unfeature" : "Feature"}
+                        </button>
+
+                        <Link className="btn btn-light" href={`/create?edit=${ad.id}`}>
+                          Edit
+                        </Link>
+
+                        {isExpired(ad) ? (
+                          <button
+                            type="button"
+                            className="btn btn-light"
+                            disabled={disabled}
+                            onClick={() => restoreAd(ad)}
+                          >
+                            Restore
+                          </button>
+                        ) : (
+                          <button
+                            type="button"
+                            className="btn btn-light"
+                            disabled={disabled}
+                            onClick={() => expireAd(ad)}
+                          >
+                            Expire
+                          </button>
+                        )}
                       </div>
                     </td>
                   </tr>
-                ))}
-                {!sortedAds.length && (
-                  <tr>
-                    <td colSpan="5">No ads found.</td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-        )}
+                );
+              })}
+
+              {!ads.length ? (
+                <tr>
+                  <td colSpan={7} style={{ padding: 18 }}>
+                    <div className="empty">
+                      <h3>No promos yet</h3>
+                      <p className="muted">Uploaded promos will appear here.</p>
+                    </div>
+                  </td>
+                </tr>
+              ) : null}
+            </tbody>
+          </table>
+        </div>
       </div>
     </main>
   );
