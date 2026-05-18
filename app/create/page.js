@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { Suspense, useState, useEffect, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabaseClient";
 import { categories, parishes, slugify } from "@/lib/utils";
 
-export default function CreateAdPage() {
+function CreateAdClient() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const supabase = createClient();
@@ -994,5 +994,20 @@ export default function CreateAdPage() {
         </aside>
       </div>
     </main>
+  );
+}
+export default function CreateAdPage() {
+  return (
+    <Suspense
+      fallback={
+        <main className="section create-page">
+          <div className="container">
+            <div className="toast">Loading create page...</div>
+          </div>
+        </main>
+      }
+    >
+      <CreateAdClient />
+    </Suspense>
   );
 }
