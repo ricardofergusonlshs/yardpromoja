@@ -451,7 +451,7 @@ export default function AdDetailClient({ slug, ad }) {
     }
   }
 
-  async function downloadCanvasImage(width, height, filename) {
+async function downloadCanvasImage(width, height, filename) {
   try {
     const canvas = document.createElement("canvas");
     canvas.width = width;
@@ -459,30 +459,33 @@ export default function AdDetailClient({ slug, ad }) {
 
     const ctx = canvas.getContext("2d");
     const isStory = height > width;
-    const margin = Math.max(36, Math.floor(width * 0.045));
+    const margin = isStory ? 64 : 48;
 
     // Background
     const gradient = ctx.createLinearGradient(0, 0, 0, height);
-    gradient.addColorStop(0, "#050816");
-    gradient.addColorStop(0.55, "#101827");
+    gradient.addColorStop(0, "#020617");
+    gradient.addColorStop(0.55, "#0f172a");
     gradient.addColorStop(1, "#020617");
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, width, height);
 
-    // YardPromo text branding, no logo file needed
+    // YardPromo text branding
     ctx.textAlign = "left";
     ctx.fillStyle = "#ffffff";
-    ctx.font = `bold ${Math.max(34, Math.floor(width / 17))}px sans-serif`;
-    ctx.fillText("YardPromo", margin, isStory ? 82 : 58);
+    ctx.font = `bold ${isStory ? 58 : 42}px sans-serif`;
+    ctx.fillText("YardPromo", margin, isStory ? 88 : 62);
 
     ctx.fillStyle = "#facc15";
-    ctx.font = `bold ${Math.max(18, Math.floor(width / 42))}px sans-serif`;
-    ctx.fillText("Jamaican promotion platform", margin, isStory ? 120 : 88);
+    ctx.font = `bold ${isStory ? 28 : 20}px sans-serif`;
+    ctx.fillText("Jamaican promotion platform", margin, isStory ? 126 : 92);
 
-    // Poster image
-    const posterTop = isStory ? 170 : 115;
-    const posterMaxWidth = width - margin * 2;
-    const posterMaxHeight = isStory ? Math.floor(height * 0.58) : Math.floor(height * 0.48);
+    // Poster area
+    const posterTop = isStory ? 170 : 120;
+    const posterBoxWidth = width - margin * 2;
+    const posterBoxHeight = isStory ? Math.floor(height * 0.62) : Math.floor(height * 0.5);
+
+    ctx.fillStyle = "#111827";
+    ctx.fillRect(margin, posterTop, posterBoxWidth, posterBoxHeight);
 
     if (currentAd?.poster_image_url) {
       const img = new Image();
@@ -495,43 +498,43 @@ export default function AdDetailClient({ slug, ad }) {
       });
 
       if (img.width && img.height) {
-        let drawWidth = posterMaxWidth;
-        let drawHeight = (img.height / img.width) * drawWidth;
+        const scale = Math.min(posterBoxWidth / img.width, posterBoxHeight / img.height);
+        const drawWidth = img.width * scale;
+        const drawHeight = img.height * scale;
+        const x = margin + (posterBoxWidth - drawWidth) / 2;
+        const y = posterTop + (posterBoxHeight - drawHeight) / 2;
 
-        if (drawHeight > posterMaxHeight) {
-          drawHeight = posterMaxHeight;
-          drawWidth = (img.width / img.height) * drawHeight;
-        }
-
-        const x = (width - drawWidth) / 2;
-        const y = posterTop;
-
-        ctx.fillStyle = "#111827";
-        ctx.fillRect(x - 8, y - 8, drawWidth + 16, drawHeight + 16);
         ctx.drawImage(img, x, y, drawWidth, drawHeight);
       }
     }
 
-    // Bottom information panel
-    const panelHeight = isStory ? 430 : 210;
-    const panelY = height - panelHeight - margin;
+    // Bottom info panel
+    const panelTop = posterTop + posterBoxHeight + 42;
+    const panelHeight = height - panelTop - margin;
 
     ctx.fillStyle = "rgba(255, 255, 255, 0.96)";
-    ctx.fillRect(margin, panelY, width - margin * 2, panelHeight);
+    ctx.fillRect(margin, panelTop, width - margin * 2, panelHeight);
 
+    const innerX = margin + 42;
+    const innerWidth = width - margin * 2 - 84;
+
+    // Event title
     ctx.textAlign = "left";
     ctx.fillStyle = "#020617";
-    ctx.font = `bold ${Math.max(34, Math.floor(width / 18))}px sans-serif`;
+    ctx.font = `bold ${isStory ? 48 : 34}px sans-serif`;
 
     const title = currentAd?.title || "YardPromo Jamaica";
-    const titleLines = wrapCanvasText(ctx, title, width - margin * 4);
+    const titleLines = wrapCanvasText(ctx, title, innerWidth);
+
     titleLines.slice(0, 3).forEach((line, index) => {
-      ctx.fillText(line, margin * 1.5, panelY + 70 + index * 48);
+      ctx.fillText(line, innerX, panelTop + 74 + index * (isStory ? 56 : 42));
     });
 
+    // Event details
     ctx.fillStyle = "#334155";
-    ctx.font = `bold ${Math.max(20, Math.floor(width / 38))}px sans-serif`;
+    ctx.font = `bold ${isStory ? 30 : 22}px sans-serif`;
 
+    const detailsStartY = panelTop + (isStory ? 250 : 160);
     const details = [
       `${currentAd?.event_date || ""} ${currentAd?.event_time || ""}`.trim(),
       `${currentAd?.venue || currentAd?.location || ""}${currentAd?.parish ? ", " + currentAd.parish : ""}`,
@@ -539,16 +542,23 @@ export default function AdDetailClient({ slug, ad }) {
     ].filter(Boolean);
 
     details.slice(0, 3).forEach((line, index) => {
-      ctx.fillText(line, margin * 1.5, panelY + 230 + index * 34);
+      const detailLines = wrapCanvasText(ctx, line, innerWidth);
+      detailLines.slice(0, 1).forEach((detailLine) => {
+        ctx.fillText(detailLine, innerX, detailsStartY + index * (isStory ? 44 : 32));
+      });
     });
 
-    // Link footer
+    // Website link
     const theSlug = currentAd?.slug || slug;
     const publicUrl = getAdUrl(theSlug).replace(/^https?:\/\//, "");
 
     ctx.fillStyle = "#00843d";
-    ctx.font = `bold ${Math.max(20, Math.floor(width / 42))}px sans-serif`;
-    ctx.fillText(publicUrl, margin * 1.5, height - margin * 1.2);
+    ctx.font = `bold ${isStory ? 26 : 18}px sans-serif`;
+
+    const urlLines = wrapCanvasText(ctx, publicUrl, innerWidth);
+    urlLines.slice(0, 2).forEach((line, index) => {
+      ctx.fillText(line, innerX, height - margin - 36 + index * 30);
+    });
 
     const url = canvas.toDataURL("image/png");
     const a = document.createElement("a");
@@ -569,9 +579,8 @@ function wrapCanvasText(ctx, text, maxWidth) {
 
   words.forEach((word) => {
     const testLine = line ? `${line} ${word}` : word;
-    const width = ctx.measureText(testLine).width;
 
-    if (width > maxWidth && line) {
+    if (ctx.measureText(testLine).width > maxWidth && line) {
       lines.push(line);
       line = word;
     } else {
@@ -583,7 +592,6 @@ function wrapCanvasText(ctx, text, maxWidth) {
 
   return lines;
 }
-  function downloadPreview() {
     downloadCanvasImage(1200, 630, `${(currentAd?.slug || slug) || "preview"}-preview.png`);
   }
 
