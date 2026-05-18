@@ -1,213 +1,226 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { Suspense, useEffect, useMemo, useState } from "react";
+import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabaseClient";
 
-const SIGNUP_SUCCESS_MESSAGE = "Account created. Please check your email to confirm your account.";
-const ACCOUNT_EXISTS_MESSAGE = "This account already exists. Please log in.";
-const USERNAME_TAKEN_MESSAGE = "That username is already taken.";
-const GENERIC_LOGIN_ERROR = "Unable to log in. Please check your email and password.";
+function safeNext(value) {
+  if (!value) return "/dashboard";
 
-export default function LoginClient() {
+  const next = String(value);
+
+  if (!next.startsWith("/")) return "/dashboard";
+  if (next.startsWith("//")) return "/dashboard";
+
+  return next;
+}
+
+function LoginPageInner() {
   const router = useRouter();
-  const supabase = createClient();
-  const [mode, setMode] = useState("login");
+  const searchParams = useSearchParams();
+  const supabase = useMemo(() => createClient(), []);
+
+  const nextParam = safeNext(searchParams.get("next"));
+  const modeParam = searchParams.get("mode");
+
+  const [mode, setMode] = useState(modeParam === "signup" ? "signup" : "login");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
-  const [form, setForm] = useState({
-    email: "",
-    password: "",
-    fullName: "",
-    username: "",
-    role: "member",
-  });
 
-  function update(field, value) {
-    setForm((prev) => ({ ...prev, [field]: value }));
-  }
-
-  async function handleSignup() {
-    const role = form.role === "advertiser" ? "advertiser" : "member";
-    const username = form.username?.trim() || form.email.split("@")[0];
-
-    const { data, error } = await supabase.auth.signUp({
-      email: form.email,
-      password: form.password,
-      options: {
-        data: {
-          full_name: form.fullName,
-          username,
-        },
-      },
-    });
-
-    if (error) {
-      const normalized = error.message?.toLowerCase() || "";
-      if (normalized.includes("username") && normalized.includes("already")) {
-        setMessage(USERNAME_TAKEN_MESSAGE);
-      } else if (normalized.includes("already") || normalized.includes("registered") || normalized.includes("account")) {
-        setMessage(ACCOUNT_EXISTS_MESSAGE);
-      } else {
-        setMessage(error.message);
-      }
-      return;
+  useEffect(() => {
+    if (modeParam === "signup") {
+      setMode("signup");
     }
+  }, [modeParam]);
 
-    const user = data?.user;
-    const session = data?.session;
-
-    if (user?.id && session) {
-      const profilePayload = {
-        id: user.id,
-        email: user.email,
-        role,
-        full_name: form.fullName,
-        username,
-      };
-
-      const { error: profileError } = await supabase
-        .from("profiles")
-        .upsert(profilePayload, { returning: "minimal" });
-
-      if (profileError) {
-        const profileText = profileError.message?.toLowerCase() || "";
-        if (!profileText.includes("duplicate") && !profileText.includes("already")) {
-          console.error("Profile upsert error", profileError);
-        }
-      }
-    }
-
-    setMessage(SIGNUP_SUCCESS_MESSAGE);
-    setMode("login");
-  }
-
-  async function handleLogin() {
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email: form.email,
-      password: form.password,
-    });
-
-    if (error) {
-      const normalized = error.message?.toLowerCase() || "";
-      if (normalized.includes("invalid") || normalized.includes("credentials")) {
-        setMessage("Invalid email or password.");
-      } else {
-        setMessage(GENERIC_LOGIN_ERROR);
-      }
-      return;
-    }
-
-    const user = data?.user;
-    if (!user) {
-      setMessage(GENERIC_LOGIN_ERROR);
-      return;
-    }
-
-    const { data: profile, error: profileError } = await supabase
-      .from("profiles")
-      .select("role")
-      .eq("id", user.id)
-      .maybeSingle();
-
-    if (profileError) {
-      console.error("Profile load error", profileError);
-    }
-
-    const role = profile?.role;
-
-    if (role === "admin" || role === "super_admin") {
-      router.push("/admin");
-      return;
-    }
-
-    router.push("/dashboard");
-  }
-
-  async function submit(event) {
+  async function handleLogin(event) {
     event.preventDefault();
+    setLoading(true);
     setMessage("");
 
-    if (mode === "signup") {
-      await handleSignup();
-      return;
-    }
+    try {
+      const { error } = await supabase.auth.signInWithPassword({
+        email: email.trim(),
+        password,
+      });
 
-    await handleLogin();
+      if (error) throw error;
+
+      router.push(nextParam);
+      router.refresh();
+    } catch (error) {
+      setMessage(error.message || "Unable to log in.");
+    } finally {
+      setLoading(false);
+    }
   }
+
+  async function handleSignup(event) {
+    event.preventDefault();
+    setLoading(true);
+    setMessage("");
+
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email: email.trim(),
+        password,
+        options: {
+          data: {
+            full_name: fullName.trim(),
+          },
+        },
+      });
+
+      if (error) throw error;
+
+      if (data?.user?.id) {
+        await supabase.from("profiles").upsert(
+          {
+            id: data.user.id,
+            email: email.trim(),
+            full_name: fullName.trim(),
+            role: "user",
+          },
+          { onConflict: "id" }
+        );
+      }
+
+      const { data: sessionData } = await supabase.auth.getSession();
+
+      if (sessionData?.session) {
+        router.push(nextParam);
+        router.refresh();
+        return;
+      }
+
+      setMessage(
+        "Account created. Please check your email to confirm your account, then log in to continue."
+      );
+      setMode("login");
+    } catch (error) {
+      setMessage(error.message || "Unable to create account.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  const isSignup = mode === "signup";
 
   return (
     <main className="section">
       <div className="container">
-        <div className="form-card" style={{ maxWidth: 560, margin: "0 auto" }}>
-          <p className="kicker">{mode === "signup" ? "Create account" : "Login"}</p>
-          <h2>{mode === "signup" ? "Sign up for YardPromo." : "Log in to YardPromo."}</h2>
+        <div className="auth-card panel">
+          <p className="kicker">{isSignup ? "Create account" : "Login"}</p>
 
-          <form onSubmit={submit} className="form-grid" style={{ marginTop: 20 }}>
-            {mode === "signup" && (
-              <>
-                <label>
-                  Full name
-                  <input value={form.fullName} onChange={(e) => update("fullName", e.target.value)} required />
-                </label>
-                <label>
-                  Username
-                  <input value={form.username} onChange={(e) => update("username", e.target.value)} placeholder="yourname" />
-                </label>
-                <fieldset>
-                  <legend>Account type</legend>
-                  <label>
-                    <input
-                      type="radio"
-                      name="role"
-                      value="member"
-                      checked={form.role === "member"}
-                      onChange={(e) => update("role", e.target.value)}
-                    />
-                    I want to discover promos
-                  </label>
-                  <label>
-                    <input
-                      type="radio"
-                      name="role"
-                      value="advertiser"
-                      checked={form.role === "advertiser"}
-                      onChange={(e) => update("role", e.target.value)}
-                    />
-                    I want to post a promo
-                  </label>
-                </fieldset>
-              </>
-            )}
+          <h1>{isSignup ? "Create your YardPromo account." : "Log in to YardPromo."}</h1>
+
+          <p className="muted">
+            {nextParam !== "/dashboard"
+              ? "After signing in, you’ll continue to the page you requested."
+              : "Access your dashboard, saved promos, claims, and reports."}
+          </p>
+
+          {message ? (
+            <div className={message.toLowerCase().includes("unable") ? "toast error" : "toast"}>
+              {message}
+            </div>
+          ) : null}
+
+          <form
+            className="auth-form"
+            onSubmit={isSignup ? handleSignup : handleLogin}
+          >
+            {isSignup ? (
+              <label>
+                Name
+                <input
+                  value={fullName}
+                  onChange={(event) => setFullName(event.target.value)}
+                  placeholder="Your name"
+                  required
+                />
+              </label>
+            ) : null}
 
             <label>
               Email
-              <input type="email" value={form.email} onChange={(e) => update("email", e.target.value)} required />
+              <input
+                type="email"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                placeholder="you@example.com"
+                required
+              />
             </label>
 
             <label>
               Password
-              <input type="password" value={form.password} onChange={(e) => update("password", e.target.value)} required minLength={6} />
+              <input
+                type="password"
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+                placeholder="Your password"
+                required
+                minLength={6}
+              />
             </label>
 
-            <button className="btn btn-primary" type="submit">
-              {mode === "signup" ? "Create Account" : "Log In"}
+            <button className="btn btn-primary" type="submit" disabled={loading}>
+              {loading ? "Please wait..." : isSignup ? "Create account" : "Log In"}
             </button>
           </form>
 
-          <button
-            className="btn btn-light"
-            style={{ marginTop: 12 }}
-            onClick={() => {
-              setMode(mode === "signup" ? "login" : "signup");
-              setMessage("");
-            }}
-          >
-            {mode === "signup" ? "I already have an account" : "Create a new account"}
-          </button>
+          <div className="auth-switch-row">
+            {isSignup ? (
+              <button
+                type="button"
+                className="btn btn-light"
+                onClick={() => {
+                  setMode("login");
+                  setMessage("");
+                }}
+              >
+                Already have an account? Log in
+              </button>
+            ) : (
+              <button
+                type="button"
+                className="btn btn-light"
+                onClick={() => {
+                  setMode("signup");
+                  setMessage("");
+                }}
+              >
+                Create a new account
+              </button>
+            )}
 
-          {message && <div className={`toast ${message.toLowerCase().includes("error") ? "error" : ""}`}>{message}</div>}
+            <Link className="btn btn-light" href="/">
+              Back home
+            </Link>
+          </div>
         </div>
       </div>
     </main>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense
+      fallback={
+        <main className="section">
+          <div className="container">
+            <div className="toast">Loading login...</div>
+          </div>
+        </main>
+      }
+    >
+      <LoginPageInner />
+    </Suspense>
   );
 }

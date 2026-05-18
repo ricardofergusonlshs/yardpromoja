@@ -66,7 +66,7 @@ After signing up through the app, go to Supabase SQL Editor and run:
 ```sql
 update public.profiles
 set role = 'admin'
-where email = 'ricardofergusonlshs@gmail.com';
+where email = 'yardpromoja@gmail.com';
 ```
 
 ## 6. Important
