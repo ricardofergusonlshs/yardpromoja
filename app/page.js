@@ -1,14 +1,52 @@
-import { getLiveAds } from "@/lib/liveAds";
 import Link from "next/link";
 import AdsGrid from "./AdsGrid";
 import HeroStack from "./components/HeroStack";
-import { activeAds, categories, isWeekend, sampleAds } from "@/lib/yardpromoData";
+import { categories } from "@/lib/yardpromoData";
 
-export default async function Home() {
-  const ads = activeAds(sampleAds);
-  const featured = ads.filter((ad) => ad.is_featured).slice(0, 3);
-  const weekend = ads.filter(isWeekend).slice(0, 3);
-const liveAds = await getLiveAds({ limit: 12 });
+const moodLinks = [
+  {
+    label: "Party tonight",
+    href: "/browse?category=Party",
+  },
+  {
+    label: "Food & brunch",
+    href: "/browse?category=Food",
+  },
+  {
+    label: "Live music",
+    href: "/browse?category=Concert",
+  },
+  {
+    label: "Family friendly",
+    href: "/browse?category=Family",
+  },
+  {
+    label: "Business deals",
+    href: "/browse?category=Business",
+  },
+  {
+    label: "Beauty & grooming",
+    href: "/browse?category=Beauty",
+  },
+  {
+    label: "VIP nightlife",
+    href: "/browse?category=VIP",
+  },
+  {
+    label: "Free entry",
+    href: "/browse?price=free",
+  },
+  {
+    label: "Date night",
+    href: "/browse?category=Date%20Night",
+  },
+  {
+    label: "Things to do this weekend",
+    href: "/weekend",
+  },
+];
+
+export default function Home() {
   return (
     <>
       <section className="hero">
@@ -22,16 +60,21 @@ const liveAds = await getLiveAds({ limit: 12 });
                 <small>Discover • Promote • Connect</small>
               </span>
             </div>
+
             <span className="eyebrow">Free launch posting</span>
+
             <h1>Find what’s happening in Jamaica.</h1>
+
             <p>
               Discover parties, shows, businesses, services, food deals, venues,
               and campaigns — or post your own promo link in minutes.
             </p>
+
             <div className="hero-actions">
               <Link className="btn btn-gold" href="/create">
                 Post Your Promo
               </Link>
+
               <Link className="btn btn-light" href="/browse">
                 Browse Promos
               </Link>
@@ -49,11 +92,13 @@ const liveAds = await getLiveAds({ limit: 12 });
               <p className="kicker">Featured this week</p>
               <h2>Premium picks.</h2>
             </div>
+
             <Link className="btn btn-light" href="/browse">
               View All
             </Link>
           </div>
-         <AdsGrid limit={3} section="premium" />
+
+          <AdsGrid limit={3} section="premium" />
         </div>
       </section>
 
@@ -64,10 +109,12 @@ const liveAds = await getLiveAds({ limit: 12 });
               <p className="kicker">Weekend</p>
               <h2>What’s hot this weekend.</h2>
             </div>
+
             <Link className="btn btn-light" href="/weekend">
               See Weekend
             </Link>
           </div>
+
           <AdsGrid limit={3} section="weekend" />
         </div>
       </section>
@@ -78,38 +125,34 @@ const liveAds = await getLiveAds({ limit: 12 });
             <p className="kicker" style={{ color: "#f7c600" }}>
               For You
             </p>
+
             <h2>Your smart discovery feed.</h2>
+
             <p className="muted">
               Find promos based on parish, category, popularity, RSVPs, and
               what’s moving this weekend.
             </p>
+
             <div className="action-row">
               <Link className="btn btn-gold" href="/for-you">
                 Open For You
               </Link>
+
               <Link className="btn btn-light" href="/for-you">
                 Tune Your Feed
               </Link>
             </div>
           </div>
+
           <div className="smart-card">
             <p className="kicker">Mood</p>
+
             <h2>What are you looking for?</h2>
+
             <div className="mood-grid">
-              {[
-                "Party tonight",
-                "Food & brunch",
-                "Live music",
-                "Family friendly",
-                "Business deals",
-                "Beauty & grooming",
-                "VIP nightlife",
-                "Free entry",
-                "Date night",
-                "Things to do this weekend",
-              ].map((mood) => (
-                <Link className="mood-pill" href="/browse" key={mood}>
-                  {mood}
+              {moodLinks.map((mood) => (
+                <Link className="mood-pill" href={mood.href} key={mood.label}>
+                  {mood.label}
                 </Link>
               ))}
             </div>
@@ -125,15 +168,20 @@ const liveAds = await getLiveAds({ limit: 12 });
               <h2>Popular categories.</h2>
             </div>
           </div>
+
           <div className="grid grid-4">
-            {categories.slice(0, 8).map((category, index) => (
-              <Link className="category-card" href="/browse" key={category}>
-                <span className="category-icon">{index + 1}</span>
+            {categories.slice(0, 8).map((category) => (
+              <Link
+                className="category-card"
+                href={`/browse?category=${encodeURIComponent(category)}`}
+                key={category}
+              >
                 <strong>{category}</strong>
                 <p className="muted small">Browse promos</p>
               </Link>
             ))}
           </div>
+
           <div className="trust-band">
             <div className="trust-tile">
               <strong>For promoters</strong>
@@ -141,12 +189,14 @@ const liveAds = await getLiveAds({ limit: 12 });
                 Post events, collect RSVPs, and share clean promo links.
               </p>
             </div>
+
             <div className="trust-tile">
               <strong>For businesses</strong>
               <p className="muted small">
                 Promote services, offers, products, and local deals.
               </p>
             </div>
+
             <div className="trust-tile">
               <strong>For venues</strong>
               <p className="muted small">

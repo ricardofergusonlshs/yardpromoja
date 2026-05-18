@@ -1,6 +1,6 @@
 import "./globals.css";
 import Link from "next/link";
-import AuthNav from "../components/AuthNav";
+import AuthNav from "./components/AuthNav";
 
 export const metadata = {
   metadataBase: new URL("https://yardpromoja.com"),
@@ -32,12 +32,17 @@ export default function RootLayout({ children }) {
       <body>
         <header className="header">
           <div className="container nav">
-            <Link href="/" className="brand brand-logo" aria-label="YardPromo home">
+            <Link
+              href="/"
+              className="brand brand-logo"
+              aria-label="YardPromo home"
+            >
               <img
                 className="brand-icon-img"
                 src="/assets/yardpromo-app-icon.png"
                 alt="YardPromo logo"
               />
+
               <span className="brand-copy">
                 <img
                   className="brand-wordmark-img"
@@ -52,6 +57,7 @@ export default function RootLayout({ children }) {
               <Link href="/">Home</Link>
               <Link href="/browse">Browse</Link>
               <Link href="/weekend">Weekend</Link>
+              <Link href="/calendar">Calendar</Link>
               <Link href="/create">Post Promo</Link>
               <AuthNav />
             </nav>
@@ -66,6 +72,7 @@ export default function RootLayout({ children }) {
                   everywhere.
                 </span>
               </div>
+
               <Link href="/create">Post Your Promo</Link>
             </div>
           </div>
@@ -78,12 +85,16 @@ export default function RootLayout({ children }) {
             <div>
               <div className="footer-logo-row">
                 <img src="/assets/yardpromo-app-icon.png" alt="YardPromo" />
-                <strong style={{ color: "#07111f" }}>YardPromo Jamaica</strong>
+                <strong style={{ color: "#07111f" }}>
+                  YardPromo Jamaica
+                </strong>
               </div>
+
               <p className="muted">
                 Built for promoters, venues, businesses, and event organizers.
               </p>
             </div>
+
             <div className="footer-links">
               <Link href="/about">About</Link>
               <Link href="/contact">Contact</Link>

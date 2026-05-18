@@ -1,7 +1,6 @@
 import AdsGrid from "../AdsGrid";
-import { activeAds, isWeekend, sampleAds } from "@/lib/yardpromoData";
 
-function WeekendBlock({ title, ads }) {
+function WeekendBlock({ title, section = "", limit = 3 }) {
   return (
     <section className="section" style={{ padding: "28px 0" }}>
       <div className="section-head">
@@ -10,26 +9,13 @@ function WeekendBlock({ title, ads }) {
           <h2>{title}</h2>
         </div>
       </div>
-      {ads.length ? (
-        <AdsGrid ads={ads} limit={ads.length} />
-      ) : (
-        <div className="empty">
-          <h3>No promos listed yet</h3>
-          <p className="muted">Check back soon or post your own promo.</p>
-        </div>
-      )}
+
+      <AdsGrid limit={limit} section={section} />
     </section>
   );
 }
 
 export default function WeekendPage() {
-  const list = activeAds(sampleAds).filter(isWeekend);
-  const featured = list.filter((ad) => ad.is_featured || ad.is_weekly_pick);
-  const trending = [...list].sort((a, b) => Number(b.views || 0) - Number(a.views || 0));
-  const friday = list.filter((ad) => new Date(`${ad.event_date}T00:00:00`).getDay() === 5);
-  const saturday = list.filter((ad) => new Date(`${ad.event_date}T00:00:00`).getDay() === 6);
-  const sunday = list.filter((ad) => new Date(`${ad.event_date}T00:00:00`).getDay() === 0);
-
   return (
     <section className="section">
       <div className="container">
@@ -43,11 +29,17 @@ export default function WeekendPage() {
             happening Friday through Sunday.
           </p>
         </div>
-        <WeekendBlock title="Featured Weekend Picks" ads={featured} />
-        <WeekendBlock title="Tonight" ads={friday} />
-        <WeekendBlock title="Saturday" ads={saturday} />
-        <WeekendBlock title="Sunday" ads={sunday} />
-        <WeekendBlock title="Trending" ads={trending.slice(0, 3)} />
+
+        <WeekendBlock
+          title="Featured Weekend Picks"
+          section="weekend"
+          limit={3}
+        />
+
+        <WeekendBlock
+          title="Latest Promos"
+          limit={6}
+        />
       </div>
     </section>
   );

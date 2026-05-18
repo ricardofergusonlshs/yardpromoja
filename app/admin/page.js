@@ -9,6 +9,8 @@ function getPoster(ad) {
   return (
     ad?.poster_image_url ||
     ad?.image_url ||
+    ad?.flyer_url ||
+    ad?.cover_image ||
     ad?.posterUrl ||
     ad?.image ||
     "/assets/yardpromo-brand-preview.png"
@@ -27,9 +29,14 @@ function statusLabel(status) {
   return value.charAt(0).toUpperCase() + value.slice(1);
 }
 
-function isExpired(ad) {
-  const status = String(ad?.status || "").toLowerCase();
-  return status === "expired" || status === "archived";
+function isApprovedStatus(status) {
+  const value = String(status || "").toLowerCase();
+  return value === "active" || value === "approved";
+}
+
+function isExpiredStatus(status) {
+  const value = String(status || "").toLowerCase();
+  return value === "expired" || value === "archived";
 }
 
 export default function AdminPage() {
@@ -49,7 +56,8 @@ export default function AdminPage() {
       setMessage("");
 
       try {
-        const { data: userData, error: userError } = await supabase.auth.getUser();
+        const { data: userData, error: userError } =
+          await supabase.auth.getUser();
 
         if (userError || !userData?.user) {
           router.push(`/login?next=${encodeURIComponent("/admin")}`);
@@ -116,13 +124,21 @@ export default function AdminPage() {
       if (error) throw error;
 
       setAds((current) =>
-        current.map((ad) => (ad.id === adId ? { ...ad, ...(data || patch) } : ad))
+        current.map((ad) =>
+          ad.id === adId ? { ...ad, ...(data || patch) } : ad
+        )
       );
     } catch (error) {
       setMessage(error.message || "Unable to update promo.");
     } finally {
       setSavingId("");
     }
+  }
+
+  function approveAd(ad) {
+    return updateAd(ad.id, {
+      status: "active",
+    });
   }
 
   function toggleFeatured(ad) {
@@ -154,7 +170,7 @@ export default function AdminPage() {
 
   function restoreAd(ad) {
     return updateAd(ad.id, {
-      status: "approved",
+      status: "active",
     });
   }
 
@@ -197,11 +213,19 @@ export default function AdminPage() {
             <tbody>
               {ads.map((ad) => {
                 const disabled = savingId === ad.id;
+                const approved = isApprovedStatus(ad.status);
+                const expired = isExpiredStatus(ad.status);
 
                 return (
                   <tr key={ad.id} style={{ borderTop: "1px solid #e5e7eb" }}>
                     <td style={{ padding: 14, minWidth: 300 }}>
-                      <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 12,
+                        }}
+                      >
                         <img
                           src={getPoster(ad)}
                           alt={ad.title || "Promo poster"}
@@ -226,11 +250,37 @@ export default function AdminPage() {
                     <td style={{ padding: 14 }}>{statusLabel(ad.status)}</td>
                     <td style={{ padding: 14 }}>{ad.category || "Promo"}</td>
                     <td style={{ padding: 14 }}>{ad.is_premium ? "Yes" : "No"}</td>
-                    <td style={{ padding: 14 }}>{ad.is_weekend_pick ? "Yes" : "No"}</td>
-                    <td style={{ padding: 14 }}>{ad.is_featured ? "Yes" : "No"}</td>
+                    <td style={{ padding: 14 }}>
+                      {ad.is_weekend_pick ? "Yes" : "No"}
+                    </td>
+                    <td style={{ padding: 14 }}>
+                      {ad.is_featured ? "Yes" : "No"}
+                    </td>
 
-                    <td style={{ padding: 14, minWidth: 430 }}>
-                      <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                    <td style={{ padding: 14, minWidth: 520 }}>
+                      <div
+                        className="admin-actions"
+                        style={{ display: "flex", gap: 8, flexWrap: "wrap" }}
+                      >
+                        {!approved ? (
+                          <button
+                            type="button"
+                            className="btn btn-primary"
+                            disabled={disabled}
+                            onClick={() => approveAd(ad)}
+                          >
+                            Approve
+                          </button>
+                        ) : (
+                          <button
+                            type="button"
+                            className="btn btn-light"
+                            disabled
+                          >
+                            Approved
+                          </button>
+                        )}
+
                         <button
                           type="button"
                           className="btn btn-light"
@@ -258,11 +308,14 @@ export default function AdminPage() {
                           {ad.is_featured ? "Unfeature" : "Feature"}
                         </button>
 
-                        <Link className="btn btn-light" href={`/create?edit=${ad.id}`}>
+                        <Link
+                          className="btn btn-light"
+                          href={`/create?edit=${ad.id}`}
+                        >
                           Edit
                         </Link>
 
-                        {isExpired(ad) ? (
+                        {expired ? (
                           <button
                             type="button"
                             className="btn btn-light"
