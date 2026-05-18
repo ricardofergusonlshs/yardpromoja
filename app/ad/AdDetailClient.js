@@ -37,7 +37,17 @@ export default function AdDetailClient({ slug, ad }) {
   const [rsvpModalOpen, setRsvpModalOpen] = useState(false);
   const [sharePackModalOpen, setSharePackModalOpen] = useState(false);
   const [generatedCaption, setGeneratedCaption] = useState("");
-
+const [claimForm, setClaimForm] = useState({
+  name: "",
+  contact: "",
+  email: "",
+  role: "",
+  proof: "",
+});
+const [claimSaving, setClaimSaving] = useState(false);
+const [claimSubmitted, setClaimSubmitted] = useState(false);
+const [claimMessage, setClaimMessage] = useState("");
+const [loggedInUser, setLoggedInUser] = useState(null);
   useEffect(() => {
     let alive = true;
 
@@ -105,7 +115,59 @@ export default function AdDetailClient({ slug, ad }) {
       alive = false;
     };
   }, [slug]);
+useEffect(() => {
+  if (typeof window === "undefined") return;
 
+  const params = new URLSearchParams(window.location.search);
+  const isClaimReturn = params.get("claim") === "1";
+
+  if (!isClaimReturn) return;
+
+  try {
+    const pendingClaim = JSON.parse(
+      localStorage.getItem("yardpromo_pending_claim") || "null"
+    );
+
+    if (pendingClaim?.slug === slug) {
+      setClaimForm({
+        name: pendingClaim.name || "",
+        contact: pendingClaim.contact || "",
+        email: pendingClaim.email || "",
+        role: pendingClaim.role || "",
+        proof: pendingClaim.proof || "",
+      });
+    }
+  } catch (e) {
+    // ignore bad stored data
+  }
+
+  setClaimMessage("You can now finish your claim request.");
+  setClaimModalOpen(true);
+}, [slug]);
+useEffect(() => {
+  let alive = true;
+
+  async function checkLoggedInUser() {
+    try {
+      const supabase = createClient();
+      const { data } = await supabase.auth.getUser();
+
+      if (alive) {
+        setLoggedInUser(data?.user || null);
+      }
+    } catch (e) {
+      if (alive) {
+        setLoggedInUser(null);
+      }
+    }
+  }
+
+  checkLoggedInUser();
+
+  return () => {
+    alive = false;
+  };
+}, []);
   function handleInterest() {
     // Save interest locally and show modal + toast.
     if (!currentAd?.slug && !slug) {
@@ -182,12 +244,144 @@ export default function AdDetailClient({ slug, ad }) {
   }
 
   function openClaimModal() {
-    setClaimModalOpen(true);
+  setClaimSubmitted(false);
+  setClaimMessage("");
+  setClaimModalOpen(true);
+}
+
+function updateClaimField(field, value) {
+setClaimForm((current) => ({
+  ...current,
+  [field]: value,
+}));
+}
+
+function savePendingClaimLocally() {
+  const pendingClaim = {
+    slug: currentAd?.slug || slug,
+    title: currentAd?.title || "",
+    name: claimForm.name || "",
+    contact: claimForm.contact || "",
+    email: claimForm.email || "",
+    role: claimForm.role || "",
+    proof: claimForm.proof || "",
+    created_at: new Date().toISOString(),
+  };
+
+  try {
+    localStorage.setItem("yardpromo_pending_claim", JSON.stringify(pendingClaim));
+
+    const allClaims = JSON.parse(localStorage.getItem("yardpromo_claims") || "[]");
+    allClaims.push(pendingClaim);
+    localStorage.setItem("yardpromo_claims", JSON.stringify(allClaims));
+  } catch (e) {
+    // localStorage may be unavailable; ignore
   }
 
-  function openBoostModal() {
-    setBoostModalOpen(true);
+  return pendingClaim;
+}
+
+async function handleLoginToClaim() {
+  savePendingClaimLocally();
+
+  const nextPath = `/ad/${currentAd?.slug || slug}`;
+  window.location.href = `/login?next=${encodeURIComponent(nextPath)}&claim=1`;
+}
+
+async function submitClaimRequest() {
+  if (!currentAd?.slug && !slug) {
+    showToast("Unable to claim unknown promo.");
+    return;
   }
+
+  if (!claimForm.name.trim() || !claimForm.contact.trim()) {
+    setClaimMessage("Please enter your name/business name and WhatsApp or phone.");
+    return;
+  }
+
+  setClaimSaving(true);
+  setClaimMessage("");
+
+  const localClaim = savePendingClaimLocally();
+
+  try {
+    const supabase = createClient();
+    const { data: userData } = await supabase.auth.getUser();
+    const user = userData?.user;
+
+    if (!user) {
+      setClaimMessage(
+        "Claim details saved. Please log in so YardPromo can connect this claim to your account."
+      );
+      setClaimSaving(false);
+      return;
+    }
+
+    const claimPayload = {
+      slug: localClaim.slug,
+      promo_slug: localClaim.slug,
+      promo_title: localClaim.title,
+      user_id: user.id,
+      name: claimForm.name.trim(),
+      contact: claimForm.contact.trim(),
+      email: claimForm.email.trim(),
+      role: claimForm.role.trim(),
+      proof: claimForm.proof.trim(),
+      status: "pending",
+      created_at: new Date().toISOString(),
+    };
+
+    let saved = false;
+
+    try {
+      const { error } = await supabase.from("promo_claims").insert(claimPayload);
+      if (!error) saved = true;
+    } catch (e) {
+      // table may not exist
+    }
+
+    if (!saved) {
+      try {
+        const { error } = await supabase.from("ad_claims").insert(claimPayload);
+        if (!error) saved = true;
+      } catch (e) {
+        // table may not exist
+      }
+    }
+
+    try {
+      localStorage.removeItem("yardpromo_pending_claim");
+    } catch (e) {
+      // ignore
+    }
+
+    setClaimSubmitted(true);
+
+    if (saved) {
+      setClaimMessage(
+        "Claim request submitted. YardPromo will review and contact you."
+      );
+      showToast("Claim request submitted.");
+    } else {
+      setClaimMessage(
+        "Claim request saved locally. YardPromo will review this manually."
+      );
+      showToast("Claim request saved locally.");
+    }
+  } catch (e) {
+    setClaimSubmitted(true);
+    setClaimMessage(
+      "Claim request saved locally. YardPromo will review this manually."
+    );
+    showToast("Claim request saved locally.");
+  } finally {
+    setClaimSaving(false);
+  }
+}
+
+function openBoostModal() {
+  setBoostModalOpen(true);
+}
 
   function openAlertsModal() {
     setAlertsModalOpen(true);
@@ -451,127 +645,6 @@ export default function AdDetailClient({ slug, ad }) {
     }
   }
 
-async function downloadCanvasImage(width, height, filename) {
-  try {
-    const canvas = document.createElement("canvas");
-    canvas.width = width;
-    canvas.height = height;
-
-    const ctx = canvas.getContext("2d");
-    const isStory = height > width;
-    const margin = isStory ? 64 : 48;
-
-    // Background
-    const gradient = ctx.createLinearGradient(0, 0, 0, height);
-    gradient.addColorStop(0, "#020617");
-    gradient.addColorStop(0.55, "#0f172a");
-    gradient.addColorStop(1, "#020617");
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, width, height);
-
-    // YardPromo text branding
-    ctx.textAlign = "left";
-    ctx.fillStyle = "#ffffff";
-    ctx.font = `bold ${isStory ? 58 : 42}px sans-serif`;
-    ctx.fillText("YardPromo", margin, isStory ? 88 : 62);
-
-    ctx.fillStyle = "#facc15";
-    ctx.font = `bold ${isStory ? 28 : 20}px sans-serif`;
-    ctx.fillText("Jamaican promotion platform", margin, isStory ? 126 : 92);
-
-    // Poster area
-    const posterTop = isStory ? 170 : 120;
-    const posterBoxWidth = width - margin * 2;
-    const posterBoxHeight = isStory ? Math.floor(height * 0.62) : Math.floor(height * 0.5);
-
-    ctx.fillStyle = "#111827";
-    ctx.fillRect(margin, posterTop, posterBoxWidth, posterBoxHeight);
-
-    if (currentAd?.poster_image_url) {
-      const img = new Image();
-      img.crossOrigin = "Anonymous";
-      img.src = currentAd.poster_image_url;
-
-      await new Promise((resolve) => {
-        img.onload = () => resolve(true);
-        img.onerror = () => resolve(false);
-      });
-
-      if (img.width && img.height) {
-        const scale = Math.min(posterBoxWidth / img.width, posterBoxHeight / img.height);
-        const drawWidth = img.width * scale;
-        const drawHeight = img.height * scale;
-        const x = margin + (posterBoxWidth - drawWidth) / 2;
-        const y = posterTop + (posterBoxHeight - drawHeight) / 2;
-
-        ctx.drawImage(img, x, y, drawWidth, drawHeight);
-      }
-    }
-
-    // Bottom info panel
-    const panelTop = posterTop + posterBoxHeight + 42;
-    const panelHeight = height - panelTop - margin;
-
-    ctx.fillStyle = "rgba(255, 255, 255, 0.96)";
-    ctx.fillRect(margin, panelTop, width - margin * 2, panelHeight);
-
-    const innerX = margin + 42;
-    const innerWidth = width - margin * 2 - 84;
-
-    // Event title
-    ctx.textAlign = "left";
-    ctx.fillStyle = "#020617";
-    ctx.font = `bold ${isStory ? 48 : 34}px sans-serif`;
-
-    const title = currentAd?.title || "YardPromo Jamaica";
-    const titleLines = wrapCanvasText(ctx, title, innerWidth);
-
-    titleLines.slice(0, 3).forEach((line, index) => {
-      ctx.fillText(line, innerX, panelTop + 74 + index * (isStory ? 56 : 42));
-    });
-
-    // Event details
-    ctx.fillStyle = "#334155";
-    ctx.font = `bold ${isStory ? 30 : 22}px sans-serif`;
-
-    const detailsStartY = panelTop + (isStory ? 250 : 160);
-    const details = [
-      `${currentAd?.event_date || ""} ${currentAd?.event_time || ""}`.trim(),
-      `${currentAd?.venue || currentAd?.location || ""}${currentAd?.parish ? ", " + currentAd.parish : ""}`,
-      currentAd?.price || "",
-    ].filter(Boolean);
-
-    details.slice(0, 3).forEach((line, index) => {
-      const detailLines = wrapCanvasText(ctx, line, innerWidth);
-      detailLines.slice(0, 1).forEach((detailLine) => {
-        ctx.fillText(detailLine, innerX, detailsStartY + index * (isStory ? 44 : 32));
-      });
-    });
-
-    // Website link
-    const theSlug = currentAd?.slug || slug;
-    const publicUrl = getAdUrl(theSlug).replace(/^https?:\/\//, "");
-
-    ctx.fillStyle = "#00843d";
-    ctx.font = `bold ${isStory ? 26 : 18}px sans-serif`;
-
-    const urlLines = wrapCanvasText(ctx, publicUrl, innerWidth);
-    urlLines.slice(0, 2).forEach((line, index) => {
-      ctx.fillText(line, innerX, height - margin - 36 + index * 30);
-    });
-
-    const url = canvas.toDataURL("image/png");
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-  } catch (e) {
-    showToast("Unable to generate image.");
-  }
-}
-
 function wrapCanvasText(ctx, text, maxWidth) {
   const words = String(text || "").split(" ");
   const lines = [];
@@ -592,12 +665,431 @@ function wrapCanvasText(ctx, text, maxWidth) {
 
   return lines;
 }
-    downloadCanvasImage(1200, 630, `${(currentAd?.slug || slug) || "preview"}-preview.png`);
-  }
 
-  function downloadStory() {
-    downloadCanvasImage(1080, 1920, `${(currentAd?.slug || slug) || "story"}-story.png`);
+async function loadPosterImage(imageUrl) {
+  if (!imageUrl) return null;
+
+  const img = new Image();
+  img.crossOrigin = "Anonymous";
+  img.src = imageUrl;
+
+  const loaded = await new Promise((resolve) => {
+    img.onload = () => resolve(true);
+    img.onerror = () => resolve(false);
+  });
+
+  if (!loaded || !img.width || !img.height) return null;
+
+  return img;
+}
+
+function downloadCanvas(canvas, filename) {
+  const url = canvas.toDataURL("image/png");
+  const a = document.createElement("a");
+
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+}
+
+async function downloadPreview() {
+  try {
+    const width = 1200;
+    const height = 630;
+    const margin = 36;
+
+    const canvas = document.createElement("canvas");
+    canvas.width = width;
+    canvas.height = height;
+
+    const ctx = canvas.getContext("2d");
+
+    ctx.fillStyle = "#020617";
+    ctx.fillRect(0, 0, width, height);
+
+    ctx.textAlign = "left";
+    ctx.fillStyle = "#ffffff";
+    ctx.font = "bold 34px sans-serif";
+    ctx.fillText("YardPromo", margin, 52);
+
+    ctx.fillStyle = "#facc15";
+    ctx.font = "bold 18px sans-serif";
+    ctx.fillText("Jamaican promotion platform", margin, 80);
+
+    const img = await loadPosterImage(currentAd?.poster_image_url);
+
+    if (img) {
+      const boxX = 340;
+      const boxY = 34;
+      const boxWidth = 500;
+      const boxHeight = 560;
+
+      ctx.fillStyle = "#111827";
+      ctx.fillRect(boxX - 12, boxY - 12, boxWidth + 24, boxHeight + 24);
+
+      const scale = Math.min(boxWidth / img.width, boxHeight / img.height);
+      const drawWidth = img.width * scale;
+      const drawHeight = img.height * scale;
+      const x = boxX + (boxWidth - drawWidth) / 2;
+      const y = boxY + (boxHeight - drawHeight) / 2;
+
+      ctx.drawImage(img, x, y, drawWidth, drawHeight);
+    }
+
+    const infoX = 875;
+    const infoWidth = 280;
+
+    ctx.fillStyle = "#ffffff";
+    ctx.font = "bold 30px sans-serif";
+    ctx.textAlign = "left";
+
+    const title = currentAd?.title || "YardPromo Jamaica";
+    const titleLines = wrapCanvasText(ctx, title, infoWidth);
+
+    titleLines.slice(0, 3).forEach((line, index) => {
+      ctx.fillText(line, infoX, 175 + index * 38);
+    });
+
+    ctx.fillStyle = "#cbd5e1";
+    ctx.font = "bold 20px sans-serif";
+
+    const details = [
+      `${currentAd?.event_date || ""} ${currentAd?.event_time || ""}`.trim(),
+      `${currentAd?.venue || currentAd?.location || ""}${
+        currentAd?.parish ? ", " + currentAd.parish : ""
+      }`,
+      currentAd?.price || "",
+    ].filter(Boolean);
+
+    details.slice(0, 3).forEach((line, index) => {
+      const detailLines = wrapCanvasText(ctx, line, infoWidth);
+      ctx.fillText(detailLines[0] || "", infoX, 320 + index * 30);
+    });
+
+    const theSlug = currentAd?.slug || slug;
+    const publicUrl = getAdUrl(theSlug).replace(/^https?:\/\//, "");
+
+    ctx.fillStyle = "#facc15";
+    ctx.font = "bold 17px sans-serif";
+
+    const urlLines = wrapCanvasText(ctx, publicUrl, infoWidth);
+    urlLines.slice(0, 2).forEach((line, index) => {
+      ctx.fillText(line, infoX, 515 + index * 24);
+    });
+
+    downloadCanvas(
+      canvas,
+      `${(currentAd?.slug || slug) || "preview"}-preview.png`
+    );
+  } catch (e) {
+    showToast("Unable to generate preview image.");
   }
+}
+
+async function downloadStory() {
+  try {
+    const width = 1080;
+    const height = 1920;
+    const margin = 64;
+    const canvas = document.createElement("canvas");
+
+    canvas.width = width;
+    canvas.height = height;
+
+    const ctx = canvas.getContext("2d");
+    const img = await loadPosterImage(currentAd?.poster_image_url);
+    const theSlug = currentAd?.slug || slug;
+    const publicUrl = getAdUrl(theSlug).replace(/^https?:\/\//, "");
+
+    const title = String(currentAd?.title || "YardPromo Jamaica").trim();
+    const category = String(currentAd?.category || "Event").trim().toUpperCase();
+    const parish = String(
+      currentAd?.parish || currentAd?.location || currentAd?.venue || "Jamaica"
+    )
+      .trim()
+      .toUpperCase();
+    const dateText = String(currentAd?.event_date || "").trim();
+    const timeText = String(currentAd?.event_time || "").trim();
+    const venueText = String(currentAd?.venue || currentAd?.location || "").trim();
+
+    function drawRoundedImage(image, x, y, w, h, radius) {
+      ctx.save();
+      roundRect(ctx, x, y, w, h, radius);
+      ctx.clip();
+      ctx.drawImage(image, x, y, w, h);
+      ctx.restore();
+    }
+
+    function drawCenteredLines(lines, startY, lineHeight, color, font) {
+      ctx.save();
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillStyle = color;
+      ctx.font = font;
+
+      lines.forEach((line, index) => {
+        ctx.fillText(line, width / 2, startY + index * lineHeight);
+      });
+
+      ctx.restore();
+    }
+
+    // Base background
+    ctx.fillStyle = "#020617";
+    ctx.fillRect(0, 0, width, height);
+
+    // Blurred poster background
+    if (img) {
+      const bgScale = Math.max(width / img.width, height / img.height);
+      const bgW = img.width * bgScale;
+      const bgH = img.height * bgScale;
+      const bgX = (width - bgW) / 2;
+      const bgY = (height - bgH) / 2;
+
+      ctx.save();
+      ctx.filter = "blur(28px) brightness(0.55)";
+      ctx.drawImage(img, bgX, bgY, bgW, bgH);
+      ctx.restore();
+    }
+
+    // Dark overlay + vignette
+    ctx.fillStyle = "rgba(0, 0, 0, 0.50)";
+    ctx.fillRect(0, 0, width, height);
+
+    const vignette = ctx.createRadialGradient(
+      width / 2,
+      height / 2,
+      220,
+      width / 2,
+      height / 2,
+      1100
+    );
+    vignette.addColorStop(0, "rgba(0,0,0,0.00)");
+    vignette.addColorStop(1, "rgba(0,0,0,0.48)");
+    ctx.fillStyle = vignette;
+    ctx.fillRect(0, 0, width, height);
+
+    const topGlow = ctx.createLinearGradient(0, 0, 0, 420);
+    topGlow.addColorStop(0, "rgba(0,0,0,0.35)");
+    topGlow.addColorStop(1, "rgba(0,0,0,0)");
+    ctx.fillStyle = topGlow;
+    ctx.fillRect(0, 0, width, 420);
+
+    // Story progress bars
+    const progressTop = 34;
+    const progressGap = 10;
+    const progressCount = 5;
+    const progressWidth =
+      (width - margin * 2 - progressGap * (progressCount - 1)) / progressCount;
+
+    for (let i = 0; i < progressCount; i += 1) {
+      ctx.fillStyle = i === 0 ? "#ffffff" : "rgba(255,255,255,0.32)";
+      roundRect(
+        ctx,
+        margin + i * (progressWidth + progressGap),
+        progressTop,
+        progressWidth,
+        8,
+        4,
+        4
+      );
+      ctx.fill();
+    }
+
+    // Header avatar
+    const avatarX = margin + 16;
+    const avatarY = 104;
+    const avatarR = 28;
+
+    ctx.beginPath();
+    ctx.arc(avatarX, avatarY, avatarR, 0, Math.PI * 2);
+    ctx.fillStyle = "#06110b";
+    ctx.fill();
+    ctx.lineWidth = 4;
+    ctx.strokeStyle = "#22c55e";
+    ctx.stroke();
+
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.font = "bold 11px sans-serif";
+    ctx.fillStyle = "#ffffff";
+    ctx.fillText("YARD", avatarX, avatarY - 6);
+    ctx.fillStyle = "#22c55e";
+    ctx.fillText("PROMO", avatarX, avatarY + 10);
+
+    // Header text
+    ctx.textAlign = "left";
+    ctx.textBaseline = "alphabetic";
+    ctx.fillStyle = "#ffffff";
+    ctx.font = "bold 34px sans-serif";
+    ctx.fillText("YardPromo", margin + 60, 100);
+
+    ctx.fillStyle = "rgba(255,255,255,0.82)";
+    ctx.font = "24px sans-serif";
+    ctx.fillText("Today", margin + 60, 132);
+
+    
+    // Main poster card
+    const posterAreaWidth = width - 180;
+    const posterAreaHeight = 1120;
+    const posterTop = 200;
+
+    if (img) {
+      const scale = Math.min(
+        posterAreaWidth / img.width,
+        posterAreaHeight / img.height
+      );
+
+      const posterW = img.width * scale;
+      const posterH = img.height * scale;
+      const posterX = (width - posterW) / 2;
+      const posterY = posterTop + (posterAreaHeight - posterH) / 2;
+
+      // soft glow
+      ctx.save();
+      ctx.shadowColor = "rgba(0, 0, 0, 0.45)";
+      ctx.shadowBlur = 40;
+      ctx.shadowOffsetY = 18;
+      ctx.fillStyle = "rgba(255,255,255,0.05)";
+      roundRect(ctx, posterX - 10, posterY - 10, posterW + 20, posterH + 20, 34);
+      ctx.fill();
+      ctx.restore();
+
+      // border
+      ctx.fillStyle = "rgba(2, 6, 23, 0.90)";
+      roundRect(ctx, posterX - 8, posterY - 8, posterW + 16, posterH + 16, 34);
+      ctx.fill();
+
+      ctx.strokeStyle = "rgba(255,255,255,0.12)";
+      ctx.lineWidth = 2;
+      roundRect(ctx, posterX - 8, posterY - 8, posterW + 16, posterH + 16, 34);
+      ctx.stroke();
+
+      drawRoundedImage(img, posterX, posterY, posterW, posterH, 28);
+    } else {
+      ctx.fillStyle = "rgba(15,23,42,0.92)";
+      roundRect(ctx, 130, posterTop + 80, width - 260, 920, 28);
+      ctx.fill();
+
+      ctx.textAlign = "center";
+      ctx.fillStyle = "rgba(255,255,255,0.75)";
+      ctx.font = "bold 38px sans-serif";
+      ctx.fillText("Poster unavailable", width / 2, posterTop + 540);
+    }
+
+    // Bottom text area
+    ctx.fillStyle = "rgba(0, 0, 0, 0.24)";
+    roundRect(ctx, 56, 1370, width - 112, 470, 36);
+    ctx.fill();
+
+    // Title
+    ctx.font = "900 58px sans-serif";
+    const titleLines = wrapCanvasText(ctx, title.toUpperCase(), width - 180).slice(0, 2);
+    drawCenteredLines(titleLines, 1450, 68, "#ffffff", "900 58px sans-serif");
+
+    // Category / location
+    const subText = [category, parish].filter(Boolean).join(" • ");
+    ctx.fillStyle = "#facc15";
+    ctx.textAlign = "center";
+    ctx.font = "900 28px sans-serif";
+    ctx.fillText(subText || "JAMAICA EVENT", width / 2, 1540);
+
+    // Info pill
+    const pillText = [venueText, dateText, timeText].filter(Boolean).join("  •  ");
+    const pillX = 140;
+    const pillY = 1578;
+    const pillW = width - 280;
+    const pillH = 68;
+
+    ctx.fillStyle = "rgba(0, 0, 0, 0.45)";
+    ctx.strokeStyle = "rgba(250, 204, 21, 0.95)";
+    ctx.lineWidth = 2;
+    roundRect(ctx, pillX, pillY, pillW, pillH, 18);
+    ctx.fill();
+    ctx.stroke();
+
+    ctx.fillStyle = "#ffffff";
+    ctx.textAlign = "center";
+    ctx.font = "bold 24px sans-serif";
+    ctx.fillText(pillText || "YardPromo Jamaica", width / 2, pillY + 43);
+
+    // Vibe line
+    ctx.fillStyle = "rgba(255,255,255,0.88)";
+    ctx.font = "bold 18px sans-serif";
+    ctx.fillText("GOOD PEOPLE  •  GOOD VIBES  •  GOOD MUSIC", width / 2, 1700);
+
+    // CTA button
+    const buttonW = 500;
+    const buttonH = 92;
+    const buttonX = (width - buttonW) / 2;
+    const buttonY = 1750;
+
+    ctx.fillStyle = "rgba(0, 0, 0, 0.78)";
+    ctx.strokeStyle = "#facc15";
+    ctx.lineWidth = 3;
+    roundRect(ctx, buttonX, buttonY, buttonW, buttonH, 28);
+    ctx.fill();
+    ctx.stroke();
+
+    // Icon circle
+    ctx.beginPath();
+    ctx.arc(buttonX + 54, buttonY + buttonH / 2, 22, 0, Math.PI * 2);
+    ctx.fillStyle = "#facc15";
+    ctx.fill();
+
+    ctx.fillStyle = "#111827";
+    ctx.textAlign = "center";
+    ctx.font = "bold 22px sans-serif";
+    ctx.fillText("↗", buttonX + 54, buttonY + 54);
+
+    // CTA text
+    ctx.textAlign = "left";
+    ctx.fillStyle = "#ffffff";
+    ctx.font = "bold 24px sans-serif";
+    ctx.fillText("VIEW ON", buttonX + 92, buttonY + 38);
+
+    ctx.font = "900 34px sans-serif";
+    ctx.fillText("YARD", buttonX + 92, buttonY + 72);
+    ctx.fillStyle = "#22c55e";
+    ctx.fillText("PROMO", buttonX + 195, buttonY + 72);
+
+    // URL
+    ctx.textAlign = "center";
+    ctx.fillStyle = "rgba(255,255,255,0.78)";
+    ctx.font = "bold 14px sans-serif";
+    const urlLines = wrapCanvasText(ctx, publicUrl, width - 180).slice(0, 2);
+    urlLines.forEach((line, index) => {
+      ctx.fillText(line, width / 2, 1865 + index * 18);
+    });
+
+    // Swipe hint
+    ctx.fillStyle = "#ffffff";
+    ctx.font = "bold 22px sans-serif";
+    ctx.fillText("⌃", width / 2, 1888);
+    ctx.font = "bold 18px sans-serif";
+    ctx.fillText("SWIPE UP / TAP LINK", width / 2, 1910);
+
+    downloadCanvas(
+      canvas,
+      `${(currentAd?.slug || slug) || "story"}-story.png`
+    );
+  } catch (e) {
+    showToast("Unable to generate story image.");
+  }
+}
+function roundRect(ctx, x, y, width, height, radius) {
+  const r = Math.min(radius, width / 2, height / 2);
+
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.arcTo(x + width, y, x + width, y + height, r);
+  ctx.arcTo(x + width, y + height, x, y + height, r);
+  ctx.arcTo(x, y + height, x, y, r);
+  ctx.arcTo(x, y, x + width, y, r);
+  ctx.closePath();
+}
 
   if (loading) {
     return (
@@ -625,12 +1117,13 @@ function wrapCanvasText(ctx, text, maxWidth) {
     );
   }
 
-  const promoter = getPromoter(currentAd.promoter_slug);
-  const venue = getVenue(currentAd.venue_slug);
-  const related = relatedAds(currentAd.slug, 3);
-  const locationQuery = currentAd?.venue || currentAd?.location || currentAd?.parish || "";
+ const promoter = getPromoter(currentAd.promoter_slug);
+const venue = getVenue(currentAd.venue_slug);
+const related = relatedAds(currentAd.slug, 3);
+const locationQuery = currentAd?.venue || currentAd?.location || currentAd?.parish || "";
+const showPromoterTools = Boolean(loggedInUser);
 
-  return (
+return (
     <section className="section">
       <div className="container">
         {message ? <div className="toast">{message}</div> : null}
@@ -763,113 +1256,154 @@ function wrapCanvasText(ctx, text, maxWidth) {
             )}
           </div>
 
-          <details className="more-actions" open>
-            <summary>More Actions</summary>
+      <details className="more-actions" open>
+  <summary>More Actions</summary>
 
-            <div className="more-actions-grid">
-              <button type="button" className="btn btn-gold" onClick={handleInterest}>
-                Show Support
-              </button>
+  <div className="more-actions-grid">
+    <button
+      type="button"
+      className="btn btn-primary"
+      onClick={handleOpenSharePack}
+    >
+      Open Share Pack
+    </button>
 
-              <button type="button" className="btn btn-primary" onClick={handleOpenSharePack}>
-                Open Share Pack
-              </button>
+    <button
+      type="button"
+      className="btn btn-light"
+      onClick={handleAddToCalendar}
+    >
+      Add to calendar
+    </button>
 
-              <button type="button" className="btn btn-light" onClick={openPosterStudio}>
-                Poster Studio
-              </button>
+    <button
+      type="button"
+      className="btn btn-light"
+      onClick={handleGetDirections}
+    >
+      Get directions
+    </button>
 
-              <button type="button" className="btn btn-light" onClick={handleCopyLink}>
-                Copy link
-              </button>
+    <button
+      type="button"
+      className="btn btn-light"
+      onClick={handleSaveEvent}
+    >
+      Save event
+    </button>
 
-              <button type="button" className="btn btn-light" onClick={handleWhatsAppShare}>
-                Share on WhatsApp
-              </button>
+    {promoter ? (
+      <Link
+        className="btn btn-light"
+        href={`/u/${promoter.slug || currentAd.promoter_slug}`}
+      >
+        View promoter
+      </Link>
+    ) : (
+      <button
+        type="button"
+        className="btn btn-light"
+        onClick={handleViewPromoter}
+      >
+        View promoter
+      </button>
+    )}
 
-              <button type="button" className="btn btn-light" onClick={handlePreviewShareLink}>
-                Preview share link
-              </button>
+    {showPromoterTools ? (
+      <>
+        <button
+          type="button"
+          className="btn btn-light"
+          onClick={openPosterStudio}
+        >
+          Poster Studio
+        </button>
 
-              <button type="button" className="btn btn-light" onClick={downloadStory}>
-                Download story image
-              </button>
+        <button
+          type="button"
+          className="btn btn-light"
+          onClick={downloadStory}
+        >
+          Download story
+        </button>
 
-              <button type="button" className="btn btn-light" onClick={downloadPreview}>
-                Download preview image
-              </button>
+        <button
+          type="button"
+          className="btn btn-light"
+          onClick={downloadPreview}
+        >
+          Download preview
+        </button>
 
-              <button type="button" className="btn btn-light" onClick={openCaptionModal}>
-                Create caption
-              </button>
+        <button
+          type="button"
+          className="btn btn-light"
+          onClick={openCaptionModal}
+        >
+          Create caption
+        </button>
 
-              <button type="button" className="btn btn-light" onClick={handleSendInquiry}>
-                Send inquiry
-              </button>
+        <button
+          type="button"
+          className="btn btn-light"
+          onClick={openAlertsModal}
+        >
+          Get alerts
+        </button>
 
-              <button type="button" className="btn btn-light" onClick={handleAddToCalendar}>
-                Add to calendar
-              </button>
+        <button
+          type="button"
+          className="btn btn-light"
+          onClick={openBoostModal}
+        >
+          Boost Preview
+        </button>
+      </>
+    ) : null}
+  </div>
 
-              <button type="button" className="btn btn-light" onClick={handleGetDirections}>
-                Get directions
-              </button>
+  <div
+    style={{
+      display: "flex",
+      gap: 12,
+      flexWrap: "wrap",
+      marginTop: 12,
+      fontSize: 14,
+    }}
+  >
+    <button
+      type="button"
+      onClick={openClaimModal}
+      style={{
+        border: 0,
+        background: "transparent",
+        color: "#00843d",
+        fontWeight: 800,
+        cursor: "pointer",
+        padding: 0,
+      }}
+    >
+      Claim this promo
+    </button>
 
-              <button type="button" className="btn btn-light" onClick={handleSaveEvent}>
-                Save event
-              </button>
+    <button
+      type="button"
+      onClick={openReportModal}
+      style={{
+        border: 0,
+        background: "transparent",
+        color: "#64748b",
+        fontWeight: 800,
+        cursor: "pointer",
+        padding: 0,
+      }}
+    >
+      Report promo
+    </button>
+  </div>
+</details>
 
-              {promoter ? (
-                <Link className="btn btn-light" href={`/u/${promoter.slug || currentAd.promoter_slug}`}>
-                  View promoter
-                </Link>
-              ) : (
-                <button type="button" className="btn btn-light" onClick={handleViewPromoter}>
-                  View promoter
-                </button>
-              )}
-
-              <button type="button" className="btn btn-light" onClick={handleViewVenue}>
-                View venue
-              </button>
-
-              <button type="button" className="btn btn-light" onClick={openClaimModal}>
-                Claim this event
-              </button>
-
-              <button type="button" className="btn btn-light" onClick={openAlertsModal}>
-                Get alerts
-              </button>
-
-              <button type="button" className="btn btn-light" onClick={openBoostModal}>
-                Boost Preview
-              </button>
-
-              <button type="button" className="btn btn-light" onClick={openReportModal}>
-                Report promo
-              </button>
-            </div>
-          </details>
-
-          <div className="share-pack">
-            <h3>Share Pack</h3>
-            <p className="muted">Share this promo quickly</p>
-
-            <div className="share-pack-row">
-              <input readOnly value={getPublicAdUrl()} className="share-input" />
-              <button className="btn btn-light" onClick={handleCopyLink}>Copy</button>
-            </div>
-
-            <div className="share-pack-buttons">
-              <button className="btn btn-light" onClick={downloadPreview}>Download preview</button>
-              <button className="btn btn-light" onClick={downloadStory}>Download story</button>
-              <button className="btn btn-light" onClick={openCaptionModal}>Copy caption</button>
-            </div>
-
-            <div className="share-qr">
-              <div className="qr-fallback">{getPublicAdUrl()}</div>
-            </div>
-          </div>
+     
 
           {sharePackModalOpen ? (
             <div className="yp-modal-backdrop">
@@ -885,10 +1419,11 @@ function wrapCanvasText(ctx, text, maxWidth) {
                     <button className="btn btn-light" onClick={handleCopyLink}>Copy</button>
                   </div>
                   <div className="share-pack-buttons">
-                    <button className="btn btn-light" onClick={downloadPreview}>Download preview</button>
-                    <button className="btn btn-light" onClick={downloadStory}>Download story</button>
-                    <button className="btn btn-light" onClick={openCaptionModal}>Copy caption</button>
-                  </div>
+  <button className="btn btn-light" onClick={handleWhatsAppShare}>Share on WhatsApp</button>
+  <button className="btn btn-light" onClick={downloadPreview}>Download preview</button>
+  <button className="btn btn-light" onClick={downloadStory}>Download story</button>
+  <button className="btn btn-light" onClick={openCaptionModal}>Copy caption</button>
+</div>
                   <div className="share-qr">
                     <div className="qr-fallback">{getPublicAdUrl()}</div>
                   </div>
@@ -989,7 +1524,7 @@ function wrapCanvasText(ctx, text, maxWidth) {
                   <div style={{ marginTop: 12 }}>
                     <button className="btn btn-light" onClick={() => { navigator.clipboard?.writeText(generateCaptionText()); showToast('Caption copied.'); }}>Copy caption</button>
                     <button className="btn btn-light" onClick={downloadPreview} style={{ marginLeft: 8 }}>Download preview</button>
-                    <button className="btn btn-light" onClick={downloadStory} style={{ marginLeft: 8 }}>Download preview</button>
+                    <button className="btn btn-light" onClick={downloadStory} style={{ marginLeft: 8 }}>Download story</button>
                     <button className="btn btn-primary" onClick={closePosterStudio} style={{ marginLeft: 8 }}>Close</button>
                   </div>
                 </div>
@@ -1070,22 +1605,111 @@ function wrapCanvasText(ctx, text, maxWidth) {
       )}
 
       {claimModalOpen && (
-        <div className="yp-modal-backdrop">
-          <div className="yp-modal-card yp-action-modal" role="dialog" aria-modal="true">
-            <div className="yp-modal-header">
-              <h2>Claim this event</h2>
-              <button type="button" className="yp-modal-close" onClick={() => setClaimModalOpen(false)} aria-label="Close claim">×</button>
-            </div>
-            <div className="yp-modal-body">
-              <p className="muted">If you are the promoter or business owner, claim this promo page.</p>
-              <div className="yp-modal-actions">
-                <button className="btn btn-primary" onClick={() => window.location.href = `/login?next=${encodeURIComponent(`/ad/${currentAd.slug || slug}`)}&claim=1`}>Login to claim</button>
-                <button className="btn btn-light" onClick={() => setClaimModalOpen(false)}>Close</button>
-              </div>
-            </div>
-          </div>
+  <div className="yp-modal-backdrop">
+    <div className="yp-modal-card yp-action-modal" role="dialog" aria-modal="true">
+      <div className="yp-modal-header">
+        <div>
+          <p className="kicker">YardPromo</p>
+          <h2>Claim this promo</h2>
         </div>
-      )}
+        <button
+          type="button"
+          className="yp-modal-close"
+          onClick={() => setClaimModalOpen(false)}
+          aria-label="Close claim"
+        >
+          ×
+        </button>
+      </div>
+
+      <div className="yp-modal-body">
+        <p className="muted">
+          Are you the owner, promoter, venue, artist manager, business owner, or
+          authorized representative for this event?
+        </p>
+
+        <p>
+          Submit a claim request so YardPromo can verify and connect this promo to
+          your account.
+        </p>
+
+        <div className="yp-modal-success" style={{ marginBottom: 12 }}>
+          <strong>{currentAd?.title || "This promo"}</strong>
+        </div>
+
+        {claimMessage ? (
+          <div className={claimSubmitted ? "yp-modal-success" : "toast"}>
+            {claimMessage}
+          </div>
+        ) : null}
+
+        <div className="yp-form-grid" style={{ display: "grid", gap: 10 }}>
+          <input
+            value={claimForm.name}
+            onChange={(e) => updateClaimField("name", e.target.value)}
+            placeholder="Name or business name"
+            className="share-input"
+          />
+
+          <input
+            value={claimForm.contact}
+            onChange={(e) => updateClaimField("contact", e.target.value)}
+            placeholder="WhatsApp or phone"
+            className="share-input"
+          />
+
+          <input
+            value={claimForm.email}
+            onChange={(e) => updateClaimField("email", e.target.value)}
+            placeholder="Email"
+            className="share-input"
+          />
+
+          <input
+            value={claimForm.role}
+            onChange={(e) => updateClaimField("role", e.target.value)}
+            placeholder="Role, for example: promoter, venue owner, artist manager"
+            className="share-input"
+          />
+
+          <textarea
+            value={claimForm.proof}
+            onChange={(e) => updateClaimField("proof", e.target.value)}
+            placeholder="Short proof note, for example: I created this event or I manage this promoter"
+            rows={4}
+            style={{ width: "100%" }}
+          />
+        </div>
+
+        <div className="yp-modal-actions" style={{ marginTop: 14 }}>
+          <button
+            className="btn btn-primary"
+            onClick={submitClaimRequest}
+            disabled={claimSaving}
+          >
+            {claimSaving ? "Submitting..." : "Submit claim request"}
+          </button>
+
+          <button
+            className="btn btn-light"
+            onClick={handleLoginToClaim}
+            disabled={claimSaving}
+          >
+            Login to claim
+          </button>
+
+          <button
+            className="btn btn-light"
+            onClick={() => setClaimModalOpen(false)}
+            disabled={claimSaving}
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+)}
 
       {boostModalOpen && (
         <div className="yp-modal-backdrop">
