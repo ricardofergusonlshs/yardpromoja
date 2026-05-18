@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import AdsGrid from "../AdsGrid";
 import { createClient } from "@/lib/supabaseClient";
@@ -21,6 +21,8 @@ export default function AdDetailClient({ slug, ad }) {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(true);
   const [interestModalOpen, setInterestModalOpen] = useState(false);
+  const [interestCountState, setInterestCountState] = useState(interestCount(ad));
+  const [interestSaving, setInterestSaving] = useState(false);
   const [shareMessage, setShareMessage] = useState("");
   const [reportModalOpen, setReportModalOpen] = useState(false);
   const [reportReason, setReportReason] = useState("");
@@ -33,8 +35,8 @@ export default function AdDetailClient({ slug, ad }) {
   const [boostModalOpen, setBoostModalOpen] = useState(false);
   const [alertsModalOpen, setAlertsModalOpen] = useState(false);
   const [rsvpModalOpen, setRsvpModalOpen] = useState(false);
+  const [sharePackModalOpen, setSharePackModalOpen] = useState(false);
   const [generatedCaption, setGeneratedCaption] = useState("");
-  const sharePackRef = useRef(null);
 
   useEffect(() => {
     let alive = true;
@@ -61,6 +63,7 @@ export default function AdDetailClient({ slug, ad }) {
 
           const fallback = getAdBySlug(slug);
           setCurrentAd(fallback);
+          setInterestCountState(interestCount(fallback));
           setMessage("Promo details are unavailable, showing demo content.");
           setLoading(false);
           return;
@@ -68,12 +71,14 @@ export default function AdDetailClient({ slug, ad }) {
 
         if (data) {
           setCurrentAd(data);
+          setInterestCountState(interestCount(data));
           setMessage("");
         } else {
           const fallback = getAdBySlug(slug);
 
           if (fallback && fallback.slug === slug) {
             setCurrentAd(fallback);
+            setInterestCountState(interestCount(fallback));
             setMessage(
               "Promo not found in the live database; demo content is displayed."
             );
@@ -87,6 +92,7 @@ export default function AdDetailClient({ slug, ad }) {
 
         const fallback = getAdBySlug(slug);
         setCurrentAd(fallback);
+        setInterestCountState(interestCount(fallback));
         setMessage("Unable to load promo details right now.");
       } finally {
         if (alive) setLoading(false);
@@ -108,12 +114,21 @@ export default function AdDetailClient({ slug, ad }) {
     }
 
     const theSlug = currentAd?.slug || slug;
+    if (interestSaving) return;
+    const key = `yardpromo_interest_${theSlug}`;
+
     try {
-      const key = `yardpromo_interest_${theSlug}`;
+      if (localStorage.getItem(key)) {
+        showToast("Interest already recorded.");
+        return;
+      }
       localStorage.setItem(key, JSON.stringify({ slug: theSlug, date: Date.now() }));
     } catch (e) {
       // ignore
     }
+
+    setInterestCountState((current) => current + 1);
+    setInterestSaving(true);
 
     // Try to persist to Supabase but fail silently.
     (async () => {
@@ -125,6 +140,8 @@ export default function AdDetailClient({ slug, ad }) {
         }
       } catch (e) {
         // table might not exist — ignore
+      } finally {
+        setInterestSaving(false);
       }
     })();
 
@@ -209,10 +226,11 @@ export default function AdDetailClient({ slug, ad }) {
   }
 
   function handleOpenSharePack() {
-    if (sharePackRef.current && typeof sharePackRef.current.scrollIntoView === "function") {
-      sharePackRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
-      showToast("Share Pack opened.");
-    }
+    setSharePackModalOpen(true);
+  }
+
+  function handleCloseSharePackModal() {
+    setSharePackModalOpen(false);
   }
 
   function handleAddToCalendar() {
@@ -620,7 +638,7 @@ export default function AdDetailClient({ slug, ad }) {
 
           <div className="engagement-strip">
             <div className="engagement-stat">
-              <strong>{interestCount(currentAd)}</strong>
+              <strong>{interestCountState}</strong>
               <span>Interested</span>
             </div>
 
@@ -775,7 +793,7 @@ export default function AdDetailClient({ slug, ad }) {
             </div>
           </details>
 
-          <div ref={sharePackRef} className="share-pack">
+          <div className="share-pack">
             <h3>Share Pack</h3>
             <p className="muted">Share this promo quickly</p>
 
@@ -794,285 +812,290 @@ export default function AdDetailClient({ slug, ad }) {
               <div className="qr-fallback">{getPublicAdUrl()}</div>
             </div>
           </div>
+
+          {sharePackModalOpen ? (
+            <div className="yp-modal-backdrop">
+              <div className="yp-modal-card" role="dialog" aria-modal="true">
+                <div className="yp-modal-header">
+                  <h2>Share Pack</h2>
+                  <button type="button" className="yp-modal-close" onClick={handleCloseSharePackModal} aria-label="Close share pack modal">×</button>
+                </div>
+                <div className="yp-modal-body">
+                  <p className="muted">Share this promo quickly.</p>
+                  <div className="share-pack-row">
+                    <input readOnly value={getPublicAdUrl()} className="share-input" />
+                    <button className="btn btn-light" onClick={handleCopyLink}>Copy</button>
+                  </div>
+                  <div className="share-pack-buttons">
+                    <button className="btn btn-light" onClick={downloadPreview}>Download preview</button>
+                    <button className="btn btn-light" onClick={downloadStory}>Download story</button>
+                    <button className="btn btn-light" onClick={openCaptionModal}>Copy caption</button>
+                  </div>
+                  <div className="share-qr">
+                    <div className="qr-fallback">{getPublicAdUrl()}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ) : null}
         </aside>
       </div>
 
-      {interestModalOpen ? (
+      {/* Centralized modal/card rendering for ad actions */}
+      {interestModalOpen && (
         <div className="yp-modal-backdrop">
-          <div className="yp-interest-modal" role="dialog" aria-modal="true">
-            <button
-              type="button"
-              className="yp-modal-close"
-              onClick={handleCloseInterestModal}
-              aria-label="Close interest popup"
-            >
-              ×
-            </button>
-
-            <p className="kicker">YardPromo</p>
-            <h2>Interest saved</h2>
-
-            <div className="yp-modal-success">
-              Thanks — we’ll use this to show more relevant promos.
-            </div>
-
-            <p className="yp-modal-question">
-              Would you like to take another action?
-            </p>
-
-            <div className="yp-modal-actions">
-              <button type="button" className="btn btn-primary" onClick={handleRSVP}>
-                RSVP
-              </button>
-
-              <button
-                type="button"
-                className="btn btn-light"
-                onClick={handleAddToCalendar}
-              >
-                Add to calendar
-              </button>
-
-              <button
-                type="button"
-                className="btn btn-light"
-                onClick={openAlertsModal}
-              >
-                Save alert
-              </button>
-
-              <button
-                type="button"
-                className="btn btn-light"
-                onClick={handleSharePromo}
-              >
-                Share promo
-              </button>
-            </div>
-          </div>
-        </div>
-      ) : null}
-
-      {reportModalOpen ? (
-        <div className="yp-modal-backdrop">
-          <div className="yp-report-modal" role="dialog" aria-modal="true">
-            <button type="button" className="yp-modal-close" onClick={() => setReportModalOpen(false)} aria-label="Close report dialog">×</button>
-            <h2>Report promo</h2>
-            <textarea value={reportReason} onChange={(e) => setReportReason(e.target.value)} placeholder="Reason for reporting" rows={5} style={{ width: '100%' }} />
-            <div style={{ marginTop: 10 }}>
-              <button className="btn btn-light" onClick={() => setReportModalOpen(false)}>Cancel</button>
-              <button className="btn btn-primary" onClick={submitReport} style={{ marginLeft: 8 }}>Submit report</button>
-            </div>
-          </div>
-        </div>
-      ) : null}
-
-      {directionsModalOpen ? (
-        <div className="yp-modal-backdrop">
-          <div className="yp-action-modal" role="dialog" aria-modal="true">
-            <button type="button" className="yp-modal-close" onClick={() => setDirectionsModalOpen(false)} aria-label="Close directions modal">×</button>
-            <h2>Directions</h2>
-            <p className="muted">Preview the venue and get directions in-app.</p>
-            <div className="yp-modal-grid">
+          <div className="yp-modal-card yp-interest-modal" role="dialog" aria-modal="true">
+            <div className="yp-modal-header">
               <div>
-                <strong>{locationQuery || "Location unavailable"}</strong>
-                <p className="muted">Search powered by Google Maps.</p>
+                <p className="kicker">YardPromo</p>
+                <h2>Interest saved</h2>
               </div>
-              <div className="yp-modal-card-actions">
-                <button className="btn btn-primary" onClick={() => {
-                  if (locationQuery) {
-                    window.open(getMapsSearchUrl(locationQuery), "_blank", "noopener,noreferrer");
-                  }
-                }}>
-                  Open in Maps
-                </button>
-                <button className="btn btn-light" onClick={async () => {
-                  try {
-                    await navigator.clipboard.writeText(locationQuery);
-                    showToast("Location copied.");
-                  } catch {
-                    showToast("Unable to copy location.");
-                  }
-                }}>
-                  Copy address
-                </button>
+              <button type="button" className="yp-modal-close" onClick={handleCloseInterestModal} aria-label="Close interest popup">×</button>
+            </div>
+            <div className="yp-modal-body">
+              <div className="yp-modal-success">Thanks — we’ll use this to show more relevant promos.</div>
+              <p className="yp-modal-question">Would you like to take another action?</p>
+              <div className="yp-modal-actions">
+                <button type="button" className="btn btn-primary" onClick={handleRSVP}>RSVP</button>
+                <button type="button" className="btn btn-light" onClick={handleAddToCalendar}>Add to calendar</button>
+                <button type="button" className="btn btn-light" onClick={() => { setInterestModalOpen(false); setAlertsModalOpen(true); }}>Save alert</button>
+                <button type="button" className="btn btn-light" onClick={handleSharePromo}>Share promo</button>
               </div>
             </div>
-            {locationQuery ? (
-              <iframe
-                className="yp-map-frame"
-                src={`https://www.google.com/maps?q=${encodeURIComponent(locationQuery)}&output=embed`}
-                title="Venue directions"
-              />
-            ) : null}
           </div>
         </div>
-      ) : null}
+      )}
 
-      {posterStudioOpen ? (
+      {reportModalOpen && (
         <div className="yp-modal-backdrop">
-          <div className="yp-poster-modal" role="dialog" aria-modal="true">
-            <button type="button" className="yp-modal-close" onClick={closePosterStudio} aria-label="Close poster studio">×</button>
-            <h2>Poster Studio</h2>
-            <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
-              <div style={{ width: 180, height: 320, background: '#eee', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                {currentAd.poster_image_url ? <img src={currentAd.poster_image_url} alt="poster" style={{ maxWidth: '100%', maxHeight: '100%' }} /> : <div>No image</div>}
+          <div className="yp-modal-card yp-report-modal" role="dialog" aria-modal="true">
+            <div className="yp-modal-header">
+              <h2>Report promo</h2>
+              <button type="button" className="yp-modal-close" onClick={() => setReportModalOpen(false)} aria-label="Close report dialog">×</button>
+            </div>
+            <div className="yp-modal-body">
+              <textarea value={reportReason} onChange={(e) => setReportReason(e.target.value)} placeholder="Reason for reporting" rows={5} style={{ width: '100%' }} />
+              <div style={{ marginTop: 10 }}>
+                <button className="btn btn-light" onClick={() => setReportModalOpen(false)}>Cancel</button>
+                <button className="btn btn-primary" onClick={submitReport} style={{ marginLeft: 8 }}>Submit report</button>
               </div>
-              <div style={{ flex: 1 }}>
-                <h3>{currentAd.title}</h3>
-                <div>{currentAd.event_date} {currentAd.event_time}</div>
-                <div>{currentAd.venue || currentAd.location}</div>
-                <div style={{ marginTop: 8 }}><input readOnly value={getPublicAdUrl()} style={{ width: '100%' }} /></div>
-                <div style={{ marginTop: 12 }}>
-                  <button className="btn btn-light" onClick={() => { navigator.clipboard?.writeText(generateCaptionText()); showToast('Caption copied.'); }}>Copy caption</button>
-                  <button className="btn btn-light" onClick={downloadPreview} style={{ marginLeft: 8 }}>Download preview</button>
-                  <button className="btn btn-light" onClick={downloadStory} style={{ marginLeft: 8 }}>Download preview</button>
-                  <button className="btn btn-primary" onClick={closePosterStudio} style={{ marginLeft: 8 }}>Close</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {directionsModalOpen && (
+        <div className="yp-modal-backdrop">
+          <div className="yp-modal-card yp-action-modal" role="dialog" aria-modal="true">
+            <div className="yp-modal-header">
+              <h2>Directions</h2>
+              <button type="button" className="yp-modal-close" onClick={() => setDirectionsModalOpen(false)} aria-label="Close directions modal">×</button>
+            </div>
+            <div className="yp-modal-body">
+              <p className="muted">Preview the venue and get directions in-app.</p>
+              <div className="yp-modal-grid">
+                <div>
+                  <strong>{locationQuery || "Location unavailable"}</strong>
+                  <p className="muted">Search powered by Google Maps.</p>
+                </div>
+                <div className="yp-modal-card-actions">
+                  <button className="btn btn-primary" onClick={() => { if (locationQuery) window.open(getMapsSearchUrl(locationQuery), "_blank", "noopener,noreferrer"); }}>Open in Maps</button>
+                  <button className="btn btn-light" onClick={async () => { try { await navigator.clipboard.writeText(locationQuery); showToast("Location copied."); } catch { showToast("Unable to copy location."); } }}>Copy address</button>
                 </div>
               </div>
+              {locationQuery && (
+                <iframe className="yp-map-frame" src={`https://www.google.com/maps?q=${encodeURIComponent(locationQuery)}&output=embed`} title="Venue directions" />
+              )}
             </div>
           </div>
         </div>
-      ) : null}
+      )}
 
-      {captionModalOpen ? (
+      {posterStudioOpen && (
         <div className="yp-modal-backdrop">
-          <div className="yp-caption-modal" role="dialog" aria-modal="true">
-            <button type="button" className="yp-modal-close" onClick={() => setCaptionModalOpen(false)} aria-label="Close caption">×</button>
-            <h2>Caption</h2>
-            <textarea value={generatedCaption} onChange={(e) => setGeneratedCaption(e.target.value)} rows={8} style={{ width: '100%' }} />
-            <div style={{ marginTop: 10 }}>
-              <button className="btn btn-light" onClick={() => { navigator.clipboard?.writeText(generatedCaption || ''); showToast('Caption copied.'); }}>Copy caption</button>
-              <button className="btn btn-light" onClick={() => setCaptionModalOpen(false)} style={{ marginLeft: 8 }}>Close</button>
+          <div className="yp-modal-card yp-poster-modal" role="dialog" aria-modal="true">
+            <div className="yp-modal-header">
+              <h2>Poster Studio</h2>
+              <button type="button" className="yp-modal-close" onClick={closePosterStudio} aria-label="Close poster studio">×</button>
             </div>
-          </div>
-        </div>
-      ) : null}
-
-      {previewModalOpen ? (
-        <div className="yp-modal-backdrop">
-          <div className="yp-action-modal" role="dialog" aria-modal="true">
-            <button type="button" className="yp-modal-close" onClick={() => setPreviewModalOpen(false)} aria-label="Close preview">×</button>
-            <h2>Preview promo link</h2>
-            <p className="muted">View the public promo URL before sharing it.</p>
-            <div className="yp-modal-grid">
-              <div>
-                <strong>{currentAd.title}</strong>
-                <p className="muted">{currentAd.description}</p>
-                <p>{getPublicAdUrl()}</p>
-              </div>
-              <div className="yp-modal-card-actions">
-                <button className="btn btn-light" onClick={handleCopyLink}>Copy link</button>
-                <button className="btn btn-primary" onClick={() => window.open(getPublicAdUrl(), "_blank", "noopener,noreferrer")}>Open link</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      ) : null}
-
-      {inquiryModalOpen ? (
-        <div className="yp-modal-backdrop">
-          <div className="yp-action-modal" role="dialog" aria-modal="true">
-            <button type="button" className="yp-modal-close" onClick={() => setInquiryModalOpen(false)} aria-label="Close inquiry">×</button>
-            <h2>Send an inquiry</h2>
-            <p className="muted">Ask the promoter a question about this event.</p>
-            <div className="yp-modal-actions">
-              <button className="btn btn-primary" onClick={() => {
-                if (currentAd?.whatsapp) {
-                  const number = String(currentAd.whatsapp).replace(/\D/g, "");
-                  const text = `Hi, I saw ${currentAd.title} on YardPromo Jamaica and would like more information.`;
-                  const url = `https://wa.me/${number}?text=${encodeURIComponent(text)}`;
-                  window.open(url, "_blank", "noopener,noreferrer");
-                } else {
-                  window.location.href = `/login?next=${encodeURIComponent(`/ad/${currentAd.slug || slug}`)}`;
-                }
-              }}>
-                Start inquiry
-              </button>
-              <button className="btn btn-light" onClick={() => setInquiryModalOpen(false)}>Close</button>
-            </div>
-          </div>
-        </div>
-      ) : null}
-
-      {claimModalOpen ? (
-        <div className="yp-modal-backdrop">
-          <div className="yp-action-modal" role="dialog" aria-modal="true">
-            <button type="button" className="yp-modal-close" onClick={() => setClaimModalOpen(false)} aria-label="Close claim">×</button>
-            <h2>Claim this event</h2>
-            <p className="muted">If you are the promoter or business owner, claim this promo page.</p>
-            <div className="yp-modal-actions">
-              <button className="btn btn-primary" onClick={() => window.location.href = `/login?next=${encodeURIComponent(`/ad/${currentAd.slug || slug}`)}&claim=1`}>Login to claim</button>
-              <button className="btn btn-light" onClick={() => setClaimModalOpen(false)}>Close</button>
-            </div>
-          </div>
-        </div>
-      ) : null}
-
-      {boostModalOpen ? (
-        <div className="yp-modal-backdrop">
-          <div className="yp-action-modal" role="dialog" aria-modal="true">
-            <button type="button" className="yp-modal-close" onClick={() => setBoostModalOpen(false)} aria-label="Close boost preview">×</button>
-            <h2>Boost Preview</h2>
-            <p className="muted">Preview premium promotion options for this event.</p>
-            <div className="yp-boost-grid">
-              {[
-                { title: "Homepage Featured", subtitle: "Top visibility on the homepage" },
-                { title: "Weekend Boost", subtitle: "Highlight your event for weekend planners" },
-                { title: "Parish Spotlight", subtitle: "Feature your promo by parish" },
-                { title: "Category Top Spot", subtitle: "Showcase in your event category" },
-                { title: "Weekly Roundup Feature", subtitle: "Be included in editorial picks" },
-                { title: "Campaign Feature", subtitle: "Promote to a wider audience" },
-              ].map((card) => (
-                <div key={card.title} className="yp-boost-card">
-                  <div>
-                    <strong>{card.title}</strong>
-                    <p className="muted">{card.subtitle}</p>
+            <div className="yp-modal-body">
+              <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start', flexWrap: 'wrap' }}>
+                <div style={{ width: 180, height: 320, background: '#eee', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  {currentAd.poster_image_url ? <img src={currentAd.poster_image_url} alt="poster" style={{ maxWidth: '100%', maxHeight: '100%' }} /> : <div>No image</div>}
+                </div>
+                <div style={{ flex: 1 }}>
+                  <h3>{currentAd.title}</h3>
+                  <div>{currentAd.event_date} {currentAd.event_time}</div>
+                  <div>{currentAd.venue || currentAd.location}</div>
+                  <div style={{ marginTop: 8 }}><input readOnly value={getPublicAdUrl()} style={{ width: '100%' }} /></div>
+                  <div style={{ marginTop: 12 }}>
+                    <button className="btn btn-light" onClick={() => { navigator.clipboard?.writeText(generateCaptionText()); showToast('Caption copied.'); }}>Copy caption</button>
+                    <button className="btn btn-light" onClick={downloadPreview} style={{ marginLeft: 8 }}>Download preview</button>
+                    <button className="btn btn-light" onClick={downloadStory} style={{ marginLeft: 8 }}>Download preview</button>
+                    <button className="btn btn-primary" onClick={closePosterStudio} style={{ marginLeft: 8 }}>Close</button>
                   </div>
-                  <Link className="btn btn-primary" href="/advertise">
-                    Request Boost
-                  </Link>
                 </div>
-              ))}
+              </div>
             </div>
           </div>
         </div>
-      ) : null}
+      )}
 
-      {alertsModalOpen ? (
+      {captionModalOpen && (
         <div className="yp-modal-backdrop">
-          <div className="yp-action-modal" role="dialog" aria-modal="true">
-            <button type="button" className="yp-modal-close" onClick={() => setAlertsModalOpen(false)} aria-label="Close alerts">×</button>
-            <h2>Get alerts</h2>
-            <p className="muted">Save this event alert locally and receive reminder information.</p>
-            <div className="yp-modal-actions">
-              <button className="btn btn-primary" onClick={() => {
-                handleRemindMe();
-                setAlertsModalOpen(false);
-              }}>
-                Save alert
-              </button>
-              <button className="btn btn-light" onClick={() => setAlertsModalOpen(false)}>Close</button>
+          <div className="yp-modal-card yp-caption-modal" role="dialog" aria-modal="true">
+            <div className="yp-modal-header">
+              <h2>Caption</h2>
+              <button type="button" className="yp-modal-close" onClick={() => setCaptionModalOpen(false)} aria-label="Close caption">×</button>
+            </div>
+            <div className="yp-modal-body">
+              <textarea value={generatedCaption} onChange={(e) => setGeneratedCaption(e.target.value)} rows={8} style={{ width: '100%' }} />
+              <div style={{ marginTop: 10 }}>
+                <button className="btn btn-light" onClick={() => { navigator.clipboard?.writeText(generatedCaption || ''); showToast('Caption copied.'); }}>Copy caption</button>
+                <button className="btn btn-light" onClick={() => setCaptionModalOpen(false)} style={{ marginLeft: 8 }}>Close</button>
+              </div>
             </div>
           </div>
         </div>
-      ) : null}
+      )}
 
-      {rsvpModalOpen ? (
+      {previewModalOpen && (
         <div className="yp-modal-backdrop">
-          <div className="yp-action-modal" role="dialog" aria-modal="true">
-            <button type="button" className="yp-modal-close" onClick={() => setRsvpModalOpen(false)} aria-label="Close RSVP">×</button>
-            <h2>RSVP</h2>
-            <p className="muted">RSVP for this promo. Login is required to secure your spot.</p>
-            <div className="yp-modal-actions">
-              <button className="btn btn-primary" onClick={() => window.location.href = `/login?next=${encodeURIComponent(`/ad/${currentAd.slug || slug}`)}`}>
-                Login to RSVP
-              </button>
-              <button className="btn btn-light" onClick={() => setRsvpModalOpen(false)}>Close</button>
+          <div className="yp-modal-card yp-action-modal" role="dialog" aria-modal="true">
+            <div className="yp-modal-header">
+              <h2>Preview promo link</h2>
+              <button type="button" className="yp-modal-close" onClick={() => setPreviewModalOpen(false)} aria-label="Close preview">×</button>
+            </div>
+            <div className="yp-modal-body">
+              <p className="muted">View the public promo URL before sharing it.</p>
+              <div className="yp-modal-grid">
+                <div>
+                  <strong>{currentAd.title}</strong>
+                  <p className="muted">{currentAd.description}</p>
+                  <p>{getPublicAdUrl()}</p>
+                </div>
+                <div className="yp-modal-card-actions">
+                  <button className="btn btn-light" onClick={handleCopyLink}>Copy link</button>
+                  <button className="btn btn-primary" onClick={() => window.open(getPublicAdUrl(), "_blank", "noopener,noreferrer")}>Open link</button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      ) : null}
+      )}
+
+      {inquiryModalOpen && (
+        <div className="yp-modal-backdrop">
+          <div className="yp-modal-card yp-action-modal" role="dialog" aria-modal="true">
+            <div className="yp-modal-header">
+              <h2>Send an inquiry</h2>
+              <button type="button" className="yp-modal-close" onClick={() => setInquiryModalOpen(false)} aria-label="Close inquiry">×</button>
+            </div>
+            <div className="yp-modal-body">
+              <p className="muted">Ask the promoter a question about this event.</p>
+              <div className="yp-modal-actions">
+                <button className="btn btn-primary" onClick={() => {
+                  if (currentAd?.whatsapp) {
+                    const number = String(currentAd.whatsapp).replace(/\D/g, "");
+                    const text = `Hi, I saw ${currentAd.title} on YardPromo Jamaica and would like more information.`;
+                    const url = `https://wa.me/${number}?text=${encodeURIComponent(text)}`;
+                    window.open(url, "_blank", "noopener,noreferrer");
+                  } else {
+                    window.location.href = `/login?next=${encodeURIComponent(`/ad/${currentAd.slug || slug}`)}`;
+                  }
+                }}>Start inquiry</button>
+                <button className="btn btn-light" onClick={() => setInquiryModalOpen(false)}>Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {claimModalOpen && (
+        <div className="yp-modal-backdrop">
+          <div className="yp-modal-card yp-action-modal" role="dialog" aria-modal="true">
+            <div className="yp-modal-header">
+              <h2>Claim this event</h2>
+              <button type="button" className="yp-modal-close" onClick={() => setClaimModalOpen(false)} aria-label="Close claim">×</button>
+            </div>
+            <div className="yp-modal-body">
+              <p className="muted">If you are the promoter or business owner, claim this promo page.</p>
+              <div className="yp-modal-actions">
+                <button className="btn btn-primary" onClick={() => window.location.href = `/login?next=${encodeURIComponent(`/ad/${currentAd.slug || slug}`)}&claim=1`}>Login to claim</button>
+                <button className="btn btn-light" onClick={() => setClaimModalOpen(false)}>Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {boostModalOpen && (
+        <div className="yp-modal-backdrop">
+          <div className="yp-modal-card yp-action-modal" role="dialog" aria-modal="true">
+            <div className="yp-modal-header">
+              <h2>Boost Preview</h2>
+              <button type="button" className="yp-modal-close" onClick={() => setBoostModalOpen(false)} aria-label="Close boost preview">×</button>
+            </div>
+            <div className="yp-modal-body">
+              <p className="muted">Preview premium promotion options for this event.</p>
+              <div className="yp-action-grid">
+                {[
+                  { title: "Homepage Featured", subtitle: "Top visibility on the homepage" },
+                  { title: "Weekend Boost", subtitle: "Highlight your event for weekend planners" },
+                  { title: "Parish Spotlight", subtitle: "Feature your promo by parish" },
+                  { title: "Category Top Spot", subtitle: "Showcase in your event category" },
+                  { title: "Weekly Roundup Feature", subtitle: "Be included in editorial picks" },
+                  { title: "Campaign Feature", subtitle: "Promote to a wider audience" },
+                ].map((card) => (
+                  <div key={card.title} className="yp-boost-card">
+                    <div>
+                      <strong>{card.title}</strong>
+                      <p className="muted">{card.subtitle}</p>
+                    </div>
+                    <Link className="btn btn-primary" href="/advertise">Request Boost</Link>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {alertsModalOpen && (
+        <div className="yp-modal-backdrop">
+          <div className="yp-modal-card yp-action-modal" role="dialog" aria-modal="true">
+            <div className="yp-modal-header">
+              <h2>Get alerts</h2>
+              <button type="button" className="yp-modal-close" onClick={() => setAlertsModalOpen(false)} aria-label="Close alerts">×</button>
+            </div>
+            <div className="yp-modal-body">
+              <p className="muted">Save this event alert locally and receive reminder information.</p>
+              <div className="yp-modal-actions">
+                <button className="btn btn-primary" onClick={() => { handleRemindMe(); setAlertsModalOpen(false); }}>Save alert</button>
+                <button className="btn btn-light" onClick={() => setAlertsModalOpen(false)}>Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {rsvpModalOpen && (
+        <div className="yp-modal-backdrop">
+          <div className="yp-modal-card yp-action-modal" role="dialog" aria-modal="true">
+            <div className="yp-modal-header">
+              <h2>RSVP</h2>
+              <button type="button" className="yp-modal-close" onClick={() => setRsvpModalOpen(false)} aria-label="Close RSVP">×</button>
+            </div>
+            <div className="yp-modal-body">
+              <p className="muted">RSVP for this promo. Login is required to secure your spot.</p>
+              <div className="yp-modal-actions">
+                <button className="btn btn-primary" onClick={() => window.location.href = `/login?next=${encodeURIComponent(`/ad/${currentAd.slug || slug}`)}`}>Login to RSVP</button>
+                <button className="btn btn-light" onClick={() => setRsvpModalOpen(false)}>Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }

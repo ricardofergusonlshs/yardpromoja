@@ -13,6 +13,7 @@ export default function DashboardPage() {
   const [profile, setProfile] = useState(null);
   const [role, setRole] = useState(null);
   const [ads, setAds] = useState([]);
+  const [metrics, setMetrics] = useState({});
   const [savedPromos, setSavedPromos] = useState([]);
   const [rsvps, setRsvps] = useState([]);
   const [interestedPromos, setInterestedPromos] = useState([]);
@@ -21,6 +22,8 @@ export default function DashboardPage() {
   const [alerts, setAlerts] = useState([]);
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(true);
+  const [deletingId, setDeletingId] = useState(null);
+  const [duplicatingId, setDuplicatingId] = useState(null);
 
   useEffect(() => {
     async function load() {
@@ -76,7 +79,72 @@ export default function DashboardPage() {
         setMessage("Unable to load your ads.");
       } else {
         setAds(data || []);
+        computeMetrics(data || []);
       }
+    }
+
+    async function computeMetrics(adList) {
+      const adIds = (adList || []).map((a) => a.id).filter(Boolean);
+
+      const totalPromos = adList.length;
+      const approvedPromos = adList.filter((a) => (a.status || '').toLowerCase() === 'approved').length;
+      const pendingPromos = adList.filter((a) => (a.status || '').toLowerCase() === 'pending').length;
+      const activePromos = adList.filter((a) => (a.status || '').toLowerCase() === 'active' || (a.status || '').toLowerCase() === 'approved').length;
+
+      const totalViews = adList.reduce((s, a) => s + (Number(a.views) || 0), 0);
+      const totalLinkClicks = adList.reduce((s, a) => s + (Number(a.link_clicks) || 0), 0);
+
+      // counts that live in separate tables
+      let supportCount = 0;
+      let rsvpCount = 0;
+      let inquiryCount = 0;
+
+      try {
+        if (adIds.length) {
+          const { count: support } = await supabase
+            .from('interest_events')
+            .select('id', { count: 'exact', head: true })
+            .in('ad_id', adIds);
+
+          const { count: rsvp } = await supabase
+            .from('rsvps')
+            .select('id', { count: 'exact', head: true })
+            .in('ad_id', adIds);
+
+          const { count: inquiries } = await supabase
+            .from('inquiries')
+            .select('id', { count: 'exact', head: true })
+            .in('ad_id', adIds);
+
+          supportCount = Number(support) || 0;
+          rsvpCount = Number(rsvp) || 0;
+          inquiryCount = Number(inquiries) || 0;
+        }
+      } catch (e) {
+        console.warn('Metrics load error', e);
+      }
+
+      const shareCount = adList.reduce((s, a) => s + (Number(a.share_count) || Number(a.shares) || 0), 0) || totalLinkClicks;
+
+      // simple heat score
+      const heatScore = Math.round(totalViews * 0.1 + supportCount * 2 + rsvpCount * 3 + shareCount * 1.5 + inquiryCount * 4);
+
+      // pick best performing by simple composite (views + link clicks weighted)
+      const best = adList.slice().sort((x, y) => ((Number(y.views) || 0) + (Number(y.link_clicks) || 0) * 10) - ((Number(x.views) || 0) + (Number(x.link_clicks) || 0) * 10))[0];
+
+      setMetrics({
+        totalPromos,
+        approvedPromos,
+        pendingPromos,
+        activePromos,
+        totalViews,
+        supportCount,
+        rsvpCount,
+        shareCount,
+        inquiryCount,
+        heatScore,
+        bestPromo: best || null,
+      });
     }
 
     async function loadMemberData(userId) {
@@ -167,7 +235,59 @@ export default function DashboardPage() {
 
         {isAdvertiser && !loading && (
           <>
-            <div className="table-wrap">
+            <section className="section">
+              <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fit,minmax(160px,1fr))', gap: 12, marginBottom: 18 }}>
+                <div className="panel">
+                  <h4>Total promos</h4>
+                  <div className="stats-large">{metrics.totalPromos ?? ads.length}</div>
+                </div>
+                <div className="panel">
+                  <h4>Active</h4>
+                  <div className="stats-large">{metrics.activePromos ?? 0}</div>
+                </div>
+                <div className="panel">
+                  <h4>Pending</h4>
+                  <div className="stats-large">{metrics.pendingPromos ?? 0}</div>
+                </div>
+                <div className="panel">
+                  <h4>Approved</h4>
+                  <div className="stats-large">{metrics.approvedPromos ?? 0}</div>
+                </div>
+                <div className="panel">
+                  <h4>Views</h4>
+                  <div className="stats-large">{metrics.totalViews ?? 0}</div>
+                </div>
+                <div className="panel">
+                  <h4>Support</h4>
+                  <div className="stats-large">{metrics.supportCount ?? 0}</div>
+                </div>
+                <div className="panel">
+                  <h4>RSVPs</h4>
+                  <div className="stats-large">{metrics.rsvpCount ?? 0}</div>
+                </div>
+                <div className="panel">
+                  <h4>Shares</h4>
+                  <div className="stats-large">{metrics.shareCount ?? 0}</div>
+                </div>
+                <div className="panel">
+                  <h4>Inquiries</h4>
+                  <div className="stats-large">{metrics.inquiryCount ?? 0}</div>
+                </div>
+                <div className="panel">
+                  <h4>Heat</h4>
+                  <div className="stats-large">{metrics.heatScore ?? 0}</div>
+                </div>
+              </div>
+
+              <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 12 }}>
+                <Link className="btn btn-primary" href="/create">Create Promo</Link>
+                <a className="btn btn-light" href="#ads-table">View My Promos</a>
+                <a className="btn btn-light" href="/advertise">Boost Promo</a>
+                <a className="btn btn-light" href="#" onClick={(e) => { e.preventDefault(); window.location.href = '/dashboard'; }}>Edit Promo</a>
+                <a className="btn btn-light" href="#" onClick={(e) => { e.preventDefault(); window.location.href = '/'; }}>View Analytics</a>
+              </div>
+            </section>
+            <div className="table-wrap" id="ads-table">
               <table>
                 <thead>
                   <tr>
@@ -177,6 +297,7 @@ export default function DashboardPage() {
                     <th>Views</th>
                     <th>Clicks</th>
                     <th>Share</th>
+                    <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -198,6 +319,42 @@ export default function DashboardPage() {
                       <td>{ad.link_clicks}</td>
                       <td>
                         <button className="btn btn-light" onClick={() => copyLink(ad.slug)}>Copy Link</button>
+                      </td>
+                      <td>
+                        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                          <button className="btn btn-light" onClick={() => router.push(`/create?edit=${ad.id}`)}>Edit</button>
+                          <button className="btn btn-light" onClick={async () => {
+                            if (!confirm('Delete this promo? This action cannot be undone.')) return;
+                            setDeletingId(ad.id);
+                            try {
+                              const { error } = await supabase.from('ads').delete().eq('id', ad.id);
+                              if (error) throw error;
+                              setAds((prev) => prev.filter((a) => a.id !== ad.id));
+                              setMessage('Promo deleted.');
+                            } catch (e) {
+                              console.warn('Delete error', e);
+                              setMessage('Unable to delete promo.');
+                            } finally {
+                              setDeletingId(null);
+                            }
+                          }}>{deletingId === ad.id ? 'Deleting...' : 'Delete'}</button>
+                          <button className="btn btn-light" onClick={async () => {
+                            setDuplicatingId(ad.id);
+                            try {
+                              const slug = `${ad.slug || ad.title}-copy-${Date.now()}`.replace(/\s+/g, '-').toLowerCase();
+                              const { data, error } = await supabase.from('ads').insert([{ ...ad, title: `Copy of ${ad.title}`, slug, status: 'draft' }]).select();
+                              if (error) throw error;
+                              const newAd = data && data[0] ? data[0] : null;
+                              if (newAd) setAds((prev) => [newAd, ...prev]);
+                              setMessage('Promo duplicated as draft.');
+                            } catch (e) {
+                              console.warn('Duplicate error', e);
+                              setMessage('Unable to duplicate promo.');
+                            } finally {
+                              setDuplicatingId(null);
+                            }
+                          }}>{duplicatingId === ad.id ? 'Duplicating...' : 'Duplicate'}</button>
+                        </div>
                       </td>
                     </tr>
                   ))}
