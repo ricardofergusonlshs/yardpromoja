@@ -191,22 +191,30 @@ export default function AdminPage() {
         <h2>Approve and manage YardPromo ads.</h2>
 
         {message ? (
-          <div className="toast error" style={{ marginTop: 14 }}>
-            {message}
-          </div>
+          <div className="toast error admin-message">{message}</div>
         ) : null}
 
-        <div className="card" style={{ marginTop: 22, overflowX: "auto" }}>
-          <table style={{ width: "100%", borderCollapse: "collapse" }}>
+        <div className="admin-table-wrap">
+          <table className="admin-table">
+            <colgroup>
+              <col className="admin-col-ad" />
+              <col className="admin-col-status" />
+              <col className="admin-col-category" />
+              <col className="admin-col-small" />
+              <col className="admin-col-small" />
+              <col className="admin-col-small" />
+              <col className="admin-col-actions" />
+            </colgroup>
+
             <thead>
               <tr>
-                <th style={{ textAlign: "left", padding: 14 }}>Ad</th>
-                <th style={{ textAlign: "left", padding: 14 }}>Status</th>
-                <th style={{ textAlign: "left", padding: 14 }}>Category</th>
-                <th style={{ textAlign: "left", padding: 14 }}>Premium</th>
-                <th style={{ textAlign: "left", padding: 14 }}>Weekend</th>
-                <th style={{ textAlign: "left", padding: 14 }}>Featured</th>
-                <th style={{ textAlign: "left", padding: 14 }}>Actions</th>
+                <th>Ad</th>
+                <th>Status</th>
+                <th>Category</th>
+                <th>Premium</th>
+                <th>Weekend</th>
+                <th>Featured</th>
+                <th>Actions</th>
               </tr>
             </thead>
 
@@ -217,55 +225,46 @@ export default function AdminPage() {
                 const expired = isExpiredStatus(ad.status);
 
                 return (
-                  <tr key={ad.id} style={{ borderTop: "1px solid #e5e7eb" }}>
-                    <td style={{ padding: 14, minWidth: 300 }}>
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: 12,
-                        }}
-                      >
+                  <tr key={ad.id}>
+                    <td>
+                      <div className="admin-ad-cell">
                         <img
                           src={getPoster(ad)}
                           alt={ad.title || "Promo poster"}
-                          style={{
-                            width: 54,
-                            height: 54,
-                            borderRadius: 12,
-                            objectFit: "cover",
-                            background: "#f1f5f9",
-                          }}
                         />
 
-                        <div>
+                        <div className="admin-ad-copy">
                           <strong>{ad.title || "Untitled promo"}</strong>
-                          <div className="muted small">
-                            {ad.parish || ad.location || "Jamaica"}
-                          </div>
+                          <span>{ad.parish || ad.location || "Jamaica"}</span>
                         </div>
                       </div>
                     </td>
 
-                    <td style={{ padding: 14 }}>{statusLabel(ad.status)}</td>
-                    <td style={{ padding: 14 }}>{ad.category || "Promo"}</td>
-                    <td style={{ padding: 14 }}>{ad.is_premium ? "Yes" : "No"}</td>
-                    <td style={{ padding: 14 }}>
-                      {ad.is_weekend_pick ? "Yes" : "No"}
-                    </td>
-                    <td style={{ padding: 14 }}>
-                      {ad.is_featured ? "Yes" : "No"}
+                    <td>
+                      <span
+                        className={`admin-status-badge ${
+                          approved
+                            ? "is-active"
+                            : expired
+                            ? "is-expired"
+                            : "is-pending"
+                        }`}
+                      >
+                        {statusLabel(ad.status)}
+                      </span>
                     </td>
 
-                    <td style={{ padding: 14, minWidth: 520 }}>
-                      <div
-                        className="admin-actions"
-                        style={{ display: "flex", gap: 8, flexWrap: "wrap" }}
-                      >
+                    <td>{ad.category || "Promo"}</td>
+                    <td>{ad.is_premium ? "Yes" : "No"}</td>
+                    <td>{ad.is_weekend_pick ? "Yes" : "No"}</td>
+                    <td>{ad.is_featured ? "Yes" : "No"}</td>
+
+                    <td>
+                      <div className="admin-actions">
                         {!approved ? (
                           <button
                             type="button"
-                            className="btn btn-primary"
+                            className="admin-action-btn admin-action-primary"
                             disabled={disabled}
                             onClick={() => approveAd(ad)}
                           >
@@ -274,7 +273,7 @@ export default function AdminPage() {
                         ) : (
                           <button
                             type="button"
-                            className="btn btn-light"
+                            className="admin-action-btn admin-action-muted"
                             disabled
                           >
                             Approved
@@ -283,25 +282,25 @@ export default function AdminPage() {
 
                         <button
                           type="button"
-                          className="btn btn-light"
+                          className="admin-action-btn"
                           disabled={disabled}
                           onClick={() => togglePremium(ad)}
                         >
-                          {ad.is_premium ? "Remove Premium" : "Premium"}
+                          {ad.is_premium ? "Unpremium" : "Premium"}
                         </button>
 
                         <button
                           type="button"
-                          className="btn btn-light"
+                          className="admin-action-btn"
                           disabled={disabled}
                           onClick={() => toggleWeekend(ad)}
                         >
-                          {ad.is_weekend_pick ? "Remove Weekend" : "Weekend"}
+                          {ad.is_weekend_pick ? "Unweekend" : "Weekend"}
                         </button>
 
                         <button
                           type="button"
-                          className="btn btn-light"
+                          className="admin-action-btn"
                           disabled={disabled}
                           onClick={() => toggleFeatured(ad)}
                         >
@@ -309,7 +308,7 @@ export default function AdminPage() {
                         </button>
 
                         <Link
-                          className="btn btn-light"
+                          className="admin-action-btn"
                           href={`/create?edit=${ad.id}`}
                         >
                           Edit
@@ -318,7 +317,7 @@ export default function AdminPage() {
                         {expired ? (
                           <button
                             type="button"
-                            className="btn btn-light"
+                            className="admin-action-btn"
                             disabled={disabled}
                             onClick={() => restoreAd(ad)}
                           >
@@ -327,7 +326,7 @@ export default function AdminPage() {
                         ) : (
                           <button
                             type="button"
-                            className="btn btn-light"
+                            className="admin-action-btn"
                             disabled={disabled}
                             onClick={() => expireAd(ad)}
                           >
@@ -342,7 +341,7 @@ export default function AdminPage() {
 
               {!ads.length ? (
                 <tr>
-                  <td colSpan={7} style={{ padding: 18 }}>
+                  <td colSpan={7}>
                     <div className="empty">
                       <h3>No promos yet</h3>
                       <p className="muted">Uploaded promos will appear here.</p>
