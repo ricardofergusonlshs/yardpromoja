@@ -1,4 +1,3 @@
-import Link from "next/link";
 import AdDetailClient from "../AdDetailClient";
 import { getAdBySlug } from "@/lib/yardpromoData";
 
@@ -82,9 +81,9 @@ export default async function AdDetailPage({ params }) {
               This promo link may be unavailable, unpublished, or removed. Browse active YardPromo
               listings instead.
             </p>
-            <Link className="btn btn-primary" href="/browse">
+            <a className="btn btn-primary" href="/browse">
               Browse Promos
-            </Link>
+            </a>
           </div>
         </div>
       </main>
