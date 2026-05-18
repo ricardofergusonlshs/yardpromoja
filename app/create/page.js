@@ -1,6 +1,18 @@
-"use client";
+import { Suspense } from "react";
+import CreateAdClient from "./CreateAdClient";
 
-import { useState, useEffect, useRef } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { createClient } from "@/lib/supabaseClient";
-import { categories, parishes, slugify } from "@/lib/utils";
+export default function CreateAdPage() {
+  return (
+    <Suspense
+      fallback={
+        <main className="section create-page">
+          <div className="container">
+            <div className="toast">Loading create page...</div>
+          </div>
+        </main>
+      }
+    >
+      <CreateAdClient />
+    </Suspense>
+  );
+}
