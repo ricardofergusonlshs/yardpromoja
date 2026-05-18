@@ -18,10 +18,11 @@ function CreateAdClient() {
   const [existingPosterUrl, setExistingPosterUrl] = useState("");
   const [existingSlug, setExistingSlug] = useState("");
   const [ownerId, setOwnerId] = useState("");
-  const [loadingEdit, setLoadingEdit] = useState(false);
+  const [isAdminUser, setIsAdminUser] = useState(false);
 
   const [message, setMessage] = useState("");
   const [saving, setSaving] = useState(false);
+  const [loadingEdit, setLoadingEdit] = useState(false);
   const [step, setStep] = useState(1);
   const [errors, setErrors] = useState({});
   const [submitState, setSubmitState] = useState("idle");
@@ -30,25 +31,29 @@ function CreateAdClient() {
   const [draftSavedAt, setDraftSavedAt] = useState(null);
 
   const autosaveRef = useRef(null);
+const [form, setForm] = useState({
+  title: "",
+  category: "Dancehall",
+  description: "",
+  event_date: "",
+  event_time: "",
+  venue: "",
+  location: "",
+  parish: "Kingston",
+  price: "",
+  phone: "",
+  whatsapp: "",
+  website_link: "",
+  ticket_link: "",
+  instagram_link: "",
+  call_to_action: "Learn More",
+  tags: "",
+  status: "pending_review",
+  is_featured: false,
+  is_premium: false,
+  is_weekend_pick: false,
+});
 
-  const [form, setForm] = useState({
-    title: "",
-    category: "Dancehall",
-    description: "",
-    event_date: "",
-    event_time: "",
-    venue: "",
-    location: "",
-    parish: "Kingston",
-    price: "",
-    phone: "",
-    whatsapp: "",
-    website_link: "",
-    ticket_link: "",
-    instagram_link: "",
-    call_to_action: "Learn More",
-    tags: "",
-  });
 
   const MAX_POSTER_SIZE = 5 * 1024 * 1024;
   const ALLOWED_POSTER_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"];
@@ -73,8 +78,12 @@ function CreateAdClient() {
       website_link: ad.website_link || "",
       ticket_link: ad.ticket_link || "",
       instagram_link: ad.instagram_link || "",
-      call_to_action: ad.call_to_action || "Learn More",
-      tags: Array.isArray(ad.tags) ? ad.tags.join(", ") : ad.tags || "",
+          call_to_action: ad.call_to_action || "Learn More",
+    tags: Array.isArray(ad.tags) ? ad.tags.join(", ") : ad.tags || "",
+    status: ad.status || "pending_review",
+    is_featured: Boolean(ad.is_featured),
+    is_premium: Boolean(ad.is_premium),
+    is_weekend_pick: Boolean(ad.is_weekend_pick),
     };
   }
 
@@ -161,7 +170,9 @@ function CreateAdClient() {
         }
 
         const isAdmin = ["admin", "super_admin"].includes(profileData?.role);
-        const ownsAd = ad.user_id === userData.user.id;
+setIsAdminUser(isAdmin);
+
+const ownsAd = ad.user_id === userData.user.id;
 
         if (!isAdmin && !ownsAd) {
           setMessage("You do not have permission to edit this promo.");
@@ -361,7 +372,10 @@ function CreateAdClient() {
             .split(",")
             .map((tag) => tag.trim())
             .filter(Boolean),
-          status: isAdmin ? existingAd.status || "approved" : "pending_review",
+          status: isAdmin ? form.status || "approved" : "pending_review",
+is_featured: isAdmin ? Boolean(form.is_featured) : false,
+is_premium: isAdmin ? Boolean(form.is_premium) : false,
+is_weekend_pick: isAdmin ? Boolean(form.is_weekend_pick) : false,
         };
 
         const { error } = await supabase
@@ -405,8 +419,11 @@ function CreateAdClient() {
           .split(",")
           .map((tag) => tag.trim())
           .filter(Boolean),
-        status: "pending_review",
-        plan_name: "Free Launch Ad",
+        status: isAdmin ? form.status || "approved" : "pending_review",
+is_featured: isAdmin ? Boolean(form.is_featured) : false,
+is_premium: isAdmin ? Boolean(form.is_premium) : false,
+is_weekend_pick: isAdmin ? Boolean(form.is_weekend_pick) : false,
+plan_name: "Free Launch Ad",
         payment_status: "free",
       };
 
@@ -851,57 +868,120 @@ function CreateAdClient() {
             )}
 
             {step === 5 && (
-              <>
-                <div className="panel">
-                  <h3>Preview</h3>
-                  <p className="muted">Review your promo details before submitting.</p>
+  <>
+    <div className="panel">
+      <h3>Preview</h3>
+      <p className="muted">Review your promo details before submitting.</p>
 
-                  <div style={{ display: "flex", gap: 12, alignItems: "flex-start", marginTop: 8, flexWrap: "wrap" }}>
-                    <div
-                      style={{
-                        width: 220,
-                        height: 360,
-                        background: "#f7f7f7",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      {previewUrl ? (
-                        <img src={previewUrl} alt="Poster preview" style={{ maxWidth: "100%", maxHeight: "100%" }} />
-                      ) : (
-                        <div className="poster-empty">No poster</div>
-                      )}
-                    </div>
+      <div style={{ display: "flex", gap: 12, alignItems: "flex-start", marginTop: 8, flexWrap: "wrap" }}>
+        <div
+          style={{
+            width: 220,
+            height: 360,
+            background: "#f7f7f7",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          {previewUrl ? (
+            <img
+              src={previewUrl}
+              alt="Poster preview"
+              style={{ maxWidth: "100%", maxHeight: "100%" }}
+            />
+          ) : (
+            <div className="poster-empty">No poster</div>
+          )}
+        </div>
 
-                    <div style={{ flex: 1 }}>
-                      <h3>{form.title || "Untitled promo"}</h3>
-                      <div className="muted">
-                        {form.parish} — {form.location || form.venue}
-                      </div>
-                      <p style={{ marginTop: 8 }}>{form.description}</p>
-                      <p className="muted">
-                        Category: {form.category} • Price: {form.price || "Free"}
-                      </p>
-                    </div>
-                  </div>
-                </div>
+        <div style={{ flex: 1 }}>
+          <h3>{form.title || "Untitled promo"}</h3>
+          <div className="muted">
+            {form.parish} — {form.location || form.venue}
+          </div>
+          <p style={{ marginTop: 8 }}>{form.description}</p>
+          <p className="muted">
+            Category: {form.category} • Price: {form.price || "Free"}
+          </p>
+        </div>
+      </div>
+    </div>
 
-                <div style={{ marginTop: 12 }}>
-                  <button className="btn btn-primary" type="submit" disabled={submitState === "submitting" || submitState === "success" || saving}>
-                    {submitState === "submitting"
-                      ? "Submitting..."
-                      : submitState === "success"
-                        ? "Saved"
-                        : submitState === "error"
-                          ? "Retry"
-                          : isEditMode
-                            ? "Save Changes"
-                            : "Create Free Ad"}
-                  </button>
-                </div>
-              </>
-            )}
+    {isAdminUser ? (
+      <div className="panel" style={{ marginTop: 12 }}>
+        <p className="kicker">Admin placement</p>
+        <h3>Homepage placement</h3>
+        <p className="muted">
+          Choose where this promo should appear on YardPromo.
+        </p>
+
+        <div className="form-grid" style={{ marginTop: 14 }}>
+          <label>
+            Public status
+            <select
+              value={form.status}
+              onChange={(e) => update("status", e.target.value)}
+            >
+              <option value="approved">Approved / Published</option>
+              <option value="pending_review">Pending review</option>
+              <option value="draft">Draft</option>
+              <option value="archived">Archived</option>
+            </select>
+          </label>
+
+          <label style={{ display: "flex", gap: 10, alignItems: "center" }}>
+            <input
+              type="checkbox"
+              checked={Boolean(form.is_featured)}
+              onChange={(e) => update("is_featured", e.target.checked)}
+              style={{ width: "auto" }}
+            />
+            Featured promo
+          </label>
+
+          <label style={{ display: "flex", gap: 10, alignItems: "center" }}>
+            <input
+              type="checkbox"
+              checked={Boolean(form.is_premium)}
+              onChange={(e) => update("is_premium", e.target.checked)}
+              style={{ width: "auto" }}
+            />
+            Show in Premium picks
+          </label>
+
+          <label style={{ display: "flex", gap: 10, alignItems: "center" }}>
+            <input
+              type="checkbox"
+              checked={Boolean(form.is_weekend_pick)}
+              onChange={(e) => update("is_weekend_pick", e.target.checked)}
+              style={{ width: "auto" }}
+            />
+            Show in What’s hot this weekend
+          </label>
+        </div>
+      </div>
+    ) : null}
+
+    <div style={{ marginTop: 12 }}>
+      <button
+        className="btn btn-primary"
+        type="submit"
+        disabled={submitState === "submitting" || submitState === "success" || saving}
+      >
+        {submitState === "submitting"
+          ? "Submitting..."
+          : submitState === "success"
+            ? "Saved"
+            : submitState === "error"
+              ? "Retry"
+              : isEditMode
+                ? "Save Changes"
+                : "Create Free Ad"}
+      </button>
+    </div>
+  </>
+)}
 
             <div style={{ display: "flex", gap: 8, marginTop: 18, flexWrap: "wrap" }}>
               {step > 1 && (

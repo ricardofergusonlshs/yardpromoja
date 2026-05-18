@@ -1,13 +1,14 @@
+import { getLiveAds } from "@/lib/liveAds";
 import Link from "next/link";
 import AdsGrid from "./AdsGrid";
 import HeroStack from "./components/HeroStack";
 import { activeAds, categories, isWeekend, sampleAds } from "@/lib/yardpromoData";
 
-export default function HomePage() {
+export default async function Home() {
   const ads = activeAds(sampleAds);
   const featured = ads.filter((ad) => ad.is_featured).slice(0, 3);
   const weekend = ads.filter(isWeekend).slice(0, 3);
-
+const liveAds = await getLiveAds({ limit: 12 });
   return (
     <>
       <section className="hero">
@@ -52,7 +53,7 @@ export default function HomePage() {
               View All
             </Link>
           </div>
-          <AdsGrid ads={featured} limit={3} />
+         <AdsGrid limit={3} section="premium" />
         </div>
       </section>
 
@@ -67,7 +68,7 @@ export default function HomePage() {
               See Weekend
             </Link>
           </div>
-          <AdsGrid ads={weekend} limit={3} />
+          <AdsGrid limit={3} section="weekend" />
         </div>
       </section>
 

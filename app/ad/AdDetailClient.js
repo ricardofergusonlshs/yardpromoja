@@ -1810,6 +1810,48 @@ return (
           </div>
         </div>
       )}
+           
+      <div className="yp-sticky-mobile-actions" aria-label="Mobile quick actions">
+        {currentAd?.whatsapp ? (
+          <a
+            className="btn btn-primary"
+            href={`https://wa.me/${String(currentAd.whatsapp).replace(
+              /\D/g,
+              ""
+            )}?text=${encodeURIComponent(
+              `Hi, I saw ${currentAd.title} on YardPromo Jamaica and would like more information.`
+            )}`}
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            WhatsApp
+          </a>
+        ) : (
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={openInquiryModal}
+          >
+            Inquiry
+          </button>
+        )}
+
+        <button
+          type="button"
+          className="btn btn-light"
+          onClick={handleOpenSharePack}
+        >
+          Share
+        </button>
+
+        <button
+          type="button"
+          className="btn btn-light"
+          onClick={handleSaveEvent}
+        >
+          Save
+        </button>
+      </div>
     </section>
-  );
+      );
 }

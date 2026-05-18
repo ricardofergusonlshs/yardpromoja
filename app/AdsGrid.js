@@ -103,11 +103,11 @@ function normalizeAd(ad, index) {
     rsvps: getRsvps(ad),
     heat: getHeat(ad),
     price: getPrice(ad),
-    is_featured: ad?.is_featured ?? ad?.featured ?? true,
+    is_featured: ad?.is_featured ?? ad?.featured ?? false,
   };
 }
 
-export default function AdsGrid({ limit = 6, ads: providedAds }) {
+export default function AdsGrid({ limit = 6, ads: providedAds, section = "" }) {
   const safeFallbackAds = Array.isArray(fallbackAds) ? fallbackAds : [];
 
   const [ads, setAds] = useState(() =>
@@ -130,12 +130,25 @@ export default function AdsGrid({ limit = 6, ads: providedAds }) {
       try {
         const supabase = createClient();
 
-        const { data, error } = await supabase
-          .from("ads")
-          .select("*")
-          .in("status", ["active", "approved"])
-          .order("is_featured", { ascending: false })
-          .limit(limit);
+        let query = supabase
+  .from("ads")
+  .select("*")
+  .order("created_at", { ascending: false })
+  .limit(limit);
+
+if (section === "premium") {
+  query = query.eq("is_premium", true);
+}
+
+if (section === "weekend") {
+  query = query.eq("is_weekend_pick", true);
+}
+
+if (section === "featured") {
+  query = query.eq("is_featured", true);
+}
+
+const { data, error } = await query;
 
         if (error || !data || data.length === 0) {
           if (mounted) {
