@@ -1,10 +1,68 @@
+import { createClient } from "@supabase/supabase-js";
 import AdDetailClient from "../AdDetailClient";
 import { getAdBySlug } from "@/lib/yardpromoData";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://yardpromoja.com";
 
+export const dynamic = "force-dynamic";
+export const dynamicParams = true;
+
 function normalizeSlug(slug) {
   return String(slug || "").trim();
+}
+
+function getSupabasePublicClient() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key =
+    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ||
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+  if (!url || !key) return null;
+
+  return createClient(url, key, {
+    auth: {
+      persistSession: false,
+      autoRefreshToken: false,
+    },
+  });
+}
+
+async function getLiveAdBySlug(slug) {
+  const supabase = getSupabasePublicClient();
+
+  if (!supabase || !slug) return null;
+
+  try {
+    const { data, error } = await supabase
+      .from("ads")
+      .select(
+        "title,slug,category,description,poster_image_url,event_date,event_time,venue,location,parish,price,phone,whatsapp,website_link,ticket_link,instagram_link,call_to_action,tags,status"
+      )
+      .eq("slug", slug)
+      .maybeSingle();
+
+    if (error || !data) return null;
+
+    return data;
+  } catch {
+    return null;
+  }
+}
+
+function getDemoAdBySlug(slug) {
+  const demoAd = getAdBySlug(slug);
+
+  if (!demoAd || demoAd.slug !== slug) return null;
+
+  return demoAd;
+}
+
+async function getAdForSlug(slug) {
+  const liveAd = await getLiveAdBySlug(slug);
+
+  if (liveAd) return liveAd;
+
+  return getDemoAdBySlug(slug);
 }
 
 function normalizeAd(ad, slug) {
@@ -36,10 +94,15 @@ function normalizeAd(ad, slug) {
 export async function generateMetadata({ params }) {
   const resolvedParams = await params;
   const slug = normalizeSlug(resolvedParams?.slug);
-  const ad = normalizeAd(getAdBySlug(slug), slug);
+  const ad = normalizeAd(await getAdForSlug(slug), slug);
 
-  const title = ad ? `${ad.title} | YardPromo Jamaica` : "Promo not found | YardPromo Jamaica";
-  const description = ad?.description || "View promotions on YardPromo Jamaica.";
+  const title = ad
+    ? `${ad.title} | YardPromo Jamaica`
+    : "Promo not found | YardPromo Jamaica";
+
+  const description =
+    ad?.description || "View promotions on YardPromo Jamaica.";
+
   const url = `${SITE_URL.replace(/\/$/, "")}/ad/${slug}`;
 
   return {
@@ -54,7 +117,16 @@ export async function generateMetadata({ params }) {
       url,
       siteName: "YardPromo Jamaica",
       type: "website",
-      images: ad?.poster_image_url ? [ad.poster_image_url] : [],
+      images: ad?.poster_image_url
+        ? [
+            {
+              url: ad.poster_image_url,
+              width: 1200,
+              height: 630,
+              alt: ad.title,
+            },
+          ]
+        : [],
     },
     twitter: {
       card: "summary_large_image",
@@ -68,7 +140,7 @@ export async function generateMetadata({ params }) {
 export default async function AdDetailPage({ params }) {
   const resolvedParams = await params;
   const slug = normalizeSlug(resolvedParams?.slug);
-  const ad = normalizeAd(getAdBySlug(slug), slug);
+  const ad = normalizeAd(await getAdForSlug(slug), slug);
 
   if (!ad) {
     return (
