@@ -5,13 +5,29 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabaseClient";
 
-function normalizePhone(value) {
-  return String(value || "").replace(/\s+/g, "").trim();
+function digitsOnly(value) {
+  return String(value || "").replace(/\D/g, "");
 }
 
-function isValidPhone(value) {
-  const phone = normalizePhone(value);
-  return /^\+[1-9]\d{9,14}$/.test(phone);
+function cleanCountryCode(value) {
+  const digits = digitsOnly(value);
+  return digits ? `+${digits}` : "+1";
+}
+
+function buildPhone(countryCode, localNumber) {
+  const code = cleanCountryCode(countryCode);
+  const digits = digitsOnly(localNumber);
+  return `${code}${digits}`;
+}
+
+function optionalPhone(countryCode, localNumber) {
+  const digits = digitsOnly(localNumber);
+  return digits ? buildPhone(countryCode, localNumber) : "";
+}
+
+function isValidPhone(countryCode, localNumber) {
+  const fullPhone = buildPhone(countryCode, localNumber);
+  return /^\+[1-9]\d{7,14}$/.test(fullPhone);
 }
 
 export default function LoginClient({ nextUrl = "/dashboard", requestedMode = "" }) {
@@ -28,7 +44,8 @@ export default function LoginClient({ nextUrl = "/dashboard", requestedMode = ""
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const [phone, setPhone] = useState("");
+  const [countryCode, setCountryCode] = useState("+1");
+const [localPhone, setLocalPhone] = useState("");
   const [otp, setOtp] = useState("");
   const [otpSent, setOtpSent] = useState(false);
 
@@ -51,7 +68,7 @@ export default function LoginClient({ nextUrl = "/dashboard", requestedMode = ""
         id: user.id,
         email: user.email || email.trim() || null,
         full_name: fullName.trim() || user.user_metadata?.full_name || null,
-        phone: normalizePhone(phone) || user.phone || null,
+        phone: optionalPhone(countryCode, localPhone) || user.phone || null,
         role: "user",
         ...extra,
       },
@@ -95,7 +112,7 @@ export default function LoginClient({ nextUrl = "/dashboard", requestedMode = ""
         options: {
           data: {
             full_name: fullName.trim(),
-            phone: normalizePhone(phone),
+            phone: optionalPhone(countryCode, localPhone),
           },
         },
       });
@@ -125,43 +142,49 @@ export default function LoginClient({ nextUrl = "/dashboard", requestedMode = ""
     }
   }
 
-  async function handleSendPhoneCode(event) {
-    event.preventDefault();
+ async function handleVerifyPhoneCode(event) {
+  event.preventDefault();
 
-    const cleanPhone = normalizePhone(phone);
+  const cleanPhone = buildPhone(countryCode, localPhone);
 
-    if (!isValidPhone(cleanPhone)) {
-      setMessage("Please enter your phone in international format, for example +18761234567.");
-      return;
-    }
-
-    setLoading(true);
-    setMessage("");
-
-    try {
-      const { error } = await supabase.auth.signInWithOtp({
-        phone: cleanPhone,
-        options: {
-          data: {
-            full_name: fullName.trim(),
-            phone: cleanPhone,
-          },
-        },
-      });
-
-      if (error) throw error;
-
-      setOtpSent(true);
-      setMessage("OTP sent. Check your phone for the verification code.");
-    } catch (error) {
-      setMessage(
-        error.message ||
-          "Phone confirmation is not enabled yet. Use email login for now, or configure SMS in Supabase Auth."
-      );
-    } finally {
-      setLoading(false);
-    }
+  if (!isValidPhone(countryCode, localPhone)) {
+    setMessage("Choose your country code and enter a valid WhatsApp number.");
+    return;
   }
+
+  if (!otp.trim()) {
+    setMessage("Please enter the OTP code.");
+    return;
+  }
+
+  setLoading(true);
+  setMessage("");
+
+  try {
+    const { data, error } = await supabase.auth.verifyOtp({
+      phone: cleanPhone,
+      token: otp.trim(),
+      type: "sms",
+    });
+
+    if (error) throw error;
+
+    if (data?.user?.id) {
+      await upsertProfile(data.user, {
+        phone: cleanPhone,
+        phone_verified: true,
+      });
+    }
+
+    setMessage("Phone verified. Redirecting...");
+    router.push(nextUrl);
+    router.refresh();
+  } catch (error) {
+    setMessage(error.message || "Invalid code. Please try again.");
+  } finally {
+    setLoading(false);
+  }
+}
 
   async function handleVerifyPhoneCode(event) {
     event.preventDefault();
@@ -299,24 +322,27 @@ export default function LoginClient({ nextUrl = "/dashboard", requestedMode = ""
                 />
               </label>
 
-              {isSignup ? (
-                <label>
-                  Phone optional
-                  <input
-                    value={phone}
-                    onChange={(event) => setPhone(event.target.value)}
-                    placeholder="+18761234567"
-                  />
-                </label>
-              ) : null}
+{isSignup ? (
+  <>
+    <label>
+      Country code optional
+      <input
+        value={countryCode}
+        onChange={(event) => setCountryCode(cleanCountryCode(event.target.value))}
+        placeholder="+1"
+      />
+    </label>
 
-              <button className="btn btn-primary" type="submit" disabled={loading}>
-                {loading ? "Please wait..." : isSignup ? "Create account" : "Log In"}
-              </button>
-            </form>
-          ) : (
-            <form
-              className="auth-form"
+    <label>
+      Phone / WhatsApp optional
+      <input
+        value={localPhone}
+        onChange={(event) => setLocalPhone(digitsOnly(event.target.value))}
+        placeholder="8761234567"
+      />
+    </label>
+  </>
+) : null}      className="auth-form"
               onSubmit={otpSent ? handleVerifyPhoneCode : handleSendPhoneCode}
             >
               {isSignup ? (
