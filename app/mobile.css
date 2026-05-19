@@ -1,0 +1,206 @@
+/* YardPromo Jamaica mobile polish.
+   Keeps desktop visual identity while preventing phone overflow. */
+
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+img,
+video,
+iframe {
+  max-width: 100%;
+}
+
+input,
+select,
+textarea,
+button {
+  max-width: 100%;
+}
+
+.table-wrap,
+.admin-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Keep brand/header feeling close to desktop */
+@media (max-width: 900px) {
+  .container {
+    width: min(100% - 24px, 1160px);
+  }
+
+  .nav {
+    min-height: auto;
+    padding: 14px 0;
+    gap: 12px;
+  }
+
+  .brand {
+    flex-shrink: 0;
+  }
+
+  .brand-wordmark-img {
+    max-width: 230px;
+    height: auto;
+  }
+
+  .nav-links {
+    gap: 8px;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    padding-bottom: 4px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .nav-links a,
+  .nav-links button,
+  .nav-link-button {
+    flex: 0 0 auto;
+    white-space: nowrap;
+    min-height: 40px;
+  }
+
+  .launch-banner-inner {
+    gap: 12px;
+  }
+
+  .detail-shell,
+  .create-grid,
+  .layout-2,
+  .profile-hero {
+    grid-template-columns: 1fr !important;
+  }
+
+  .filters,
+  .form-row {
+    grid-template-columns: 1fr !important;
+  }
+
+  .detail-image img {
+    object-fit: contain;
+    max-height: none;
+  }
+
+  .section-head {
+    align-items: flex-start;
+  }
+
+  .actions,
+  .action-row,
+  .hero-actions,
+  .claim-report-actions,
+  .auth-switch-row,
+  .share-pack-buttons,
+  .profile-links {
+    flex-wrap: wrap;
+  }
+}
+
+/* Phone size */
+@media (max-width: 640px) {
+  .container {
+    width: min(100% - 20px, 1160px);
+  }
+
+  .brand-icon-img,
+  .brand-mark {
+    width: 42px;
+    height: 42px;
+  }
+
+  .brand-wordmark-img {
+    max-width: 205px;
+  }
+
+  .brand small {
+    font-size: 11px;
+  }
+
+  .nav {
+    align-items: flex-start;
+  }
+
+  .nav-links {
+    width: 100%;
+  }
+
+  .nav-links a,
+  .nav-links button,
+  .nav-link-button {
+    font-size: 13px;
+    padding: 9px 11px;
+  }
+
+  h1,
+  .promo-title {
+    font-size: clamp(38px, 12vw, 52px);
+    line-height: 0.98;
+  }
+
+  h2 {
+    font-size: clamp(30px, 9vw, 42px);
+  }
+
+  .section {
+    padding: 36px 0;
+  }
+
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+    min-height: 46px;
+  }
+
+  .panel,
+  .form-card,
+  .auth-card,
+  .claim-card,
+  .report-card,
+  .detail-panel,
+  .create-main-card,
+  .create-sidebar {
+    padding: 20px;
+  }
+
+  .grid-3,
+  .grid-4 {
+    grid-template-columns: 1fr !important;
+  }
+
+  .grid-2 {
+    grid-template-columns: 1fr !important;
+  }
+
+  .primary-actions,
+  .more-grid,
+  .more-actions-grid,
+  .yp-share-actions,
+  .yp-action-grid,
+  .yp-boost-grid,
+  .yp-style-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .footer-inner {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-links {
+    gap: 10px 14px;
+  }
+
+  .toast,
+  .yp-toast {
+    left: 10px;
+    right: 10px;
+    bottom: 14px;
+    transform: none;
+    text-align: center;
+  }
+}
