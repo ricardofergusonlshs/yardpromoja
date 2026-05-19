@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabaseClient";
 
 function makeSlug(value) {
@@ -36,10 +36,8 @@ function matchesPromo(ad, promo) {
   );
 }
 
-export default function ReportPage() {
+export default function ReportClient({ promo = "" }) {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const promo = searchParams.get("promo") || "";
   const supabase = useMemo(() => createClient(), []);
 
   const [loading, setLoading] = useState(true);
