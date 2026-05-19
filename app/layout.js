@@ -1,4 +1,5 @@
 import "./globals.css";
+import "./mobile/mobile.css";
 import Link from "next/link";
 import AuthNav from "./components/AuthNav";
 

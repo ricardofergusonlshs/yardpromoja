@@ -171,13 +171,14 @@ export default function LoginClient({ nextUrl = "/dashboard", requestedMode = ""
       setOtpSent(true);
       setMessage("OTP sent. Check your phone for the verification code.");
     } catch (error) {
-      setMessage(
-        error.message ||
-          "Phone confirmation is not enabled yet. Use email login for now, or configure SMS in Supabase Auth."
-      );
-    } finally {
-      setLoading(false);
-    }
+  console.warn("Phone login unavailable:", error);
+
+  setMessage(
+    "Phone confirmation is not active yet. Please use email login. Your WhatsApp number can be added on claim/report forms."
+  );
+} finally {
+  setLoading(false);
+}
   }
 
   async function handleVerifyPhoneCode(event) {
@@ -454,9 +455,8 @@ export default function LoginClient({ nextUrl = "/dashboard", requestedMode = ""
           </div>
 
           <p className="muted small" style={{ marginTop: 16 }}>
-            Phone login requires SMS provider setup in Supabase Auth. If SMS is not enabled yet,
-            keep using email login and collect phone/WhatsApp on claim forms.
-          </p>
+  Phone confirmation is not active yet. Please use email login. Your WhatsApp number can be added on claim/report forms.
+</p>
         </div>
       </div>
     </main>

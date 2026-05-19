@@ -1,0 +1,246 @@
+/* YardPromo Jamaica mobile responsive overrides */
+
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+img,
+video,
+iframe {
+  max-width: 100%;
+}
+
+input,
+select,
+textarea,
+button {
+  max-width: 100%;
+}
+
+.table-wrap,
+.admin-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.actions,
+.action-row,
+.hero-actions,
+.claim-report-actions,
+.auth-switch-row,
+.share-pack-buttons,
+.profile-links,
+.trust-row,
+.social-proof {
+  flex-wrap: wrap;
+}
+
+@media (max-width: 900px) {
+  .nav {
+    min-height: auto;
+    padding: 14px 0;
+    align-items: flex-start;
+  }
+
+  .brand {
+    width: 100%;
+  }
+
+  .brand-wordmark-img {
+    max-width: min(230px, 68vw);
+    height: auto;
+  }
+
+  .nav-links {
+    width: 100%;
+    justify-content: flex-start;
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .nav-links a,
+  .nav-links button,
+  .nav-link-button {
+    flex: 0 0 auto;
+    min-height: 42px;
+    padding: 10px 12px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+
+  .launch-banner-inner,
+  .section-head,
+  .footer-inner {
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: start;
+    gap: 14px;
+  }
+
+  .hero-grid,
+  .detail-shell,
+  .layout-2,
+  .create-grid,
+  .filters,
+  .profile-hero {
+    grid-template-columns: 1fr !important;
+  }
+
+  .grid-2,
+  .grid-3,
+  .grid-4,
+  .form-row,
+  .primary-actions,
+  .more-grid,
+  .more-actions-grid,
+  .yp-share-actions,
+  .yp-action-grid,
+  .yp-boost-grid,
+  .yp-style-grid,
+  .yp-modal-grid,
+  .yp-modal-poster-inner {
+    grid-template-columns: 1fr !important;
+  }
+
+  .hero-grid {
+    min-height: auto;
+    padding: 44px 0;
+  }
+
+  .detail-image img {
+    width: 100%;
+    max-height: none;
+    object-fit: contain;
+  }
+
+  .event-row,
+  .rank-row,
+  .inquiry-row,
+  .claim-row,
+  .rsvp-row,
+  .interest-row {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+}
+
+@media (max-width: 640px) {
+  .container {
+    width: min(100% - 20px, 1160px);
+  }
+
+  .brand-icon-img,
+  .brand-mark {
+    width: 42px;
+    height: 42px;
+    border-radius: 14px;
+  }
+
+  .brand-wordmark-img {
+    max-width: min(210px, 70vw);
+  }
+
+  .brand small {
+    font-size: 11px;
+    line-height: 1.2;
+  }
+
+  .nav-links a,
+  .nav-links button,
+  .nav-link-button {
+    font-size: 13px;
+    min-height: 40px;
+    padding: 9px 11px;
+  }
+
+  .launch-banner-inner {
+    font-size: 14px;
+    line-height: 1.45;
+  }
+
+  .launch-banner-inner a,
+  .hero-actions .btn,
+  .action-row .btn,
+  .actions .btn,
+  .actions button,
+  .claim-report-actions .btn,
+  .auth-switch-row .btn,
+  .share-pack-buttons .btn {
+    width: 100%;
+  }
+
+  h1,
+  .promo-title,
+  .status-title h2 {
+    font-size: clamp(34px, 12vw, 48px);
+    line-height: 1;
+  }
+
+  h2,
+  .create-main-card h2 {
+    font-size: clamp(28px, 9vw, 38px);
+    line-height: 1.05;
+  }
+
+  .section {
+    padding: 32px 0;
+  }
+
+  input,
+  select,
+  textarea {
+    min-height: 46px;
+    font-size: 16px;
+  }
+
+  .detail-panel,
+  .create-main-card,
+  .create-sidebar,
+  .panel,
+  .form-card,
+  .auth-card,
+  .claim-card,
+  .report-card,
+  .card-body,
+  .campaign-body {
+    padding: 18px;
+    border-radius: 22px;
+  }
+
+  .engagement-strip {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .footer-links {
+    gap: 10px 14px;
+  }
+
+  .toast,
+  .yp-toast {
+    left: 10px;
+    right: 10px;
+    bottom: 14px;
+    transform: none;
+    text-align: center;
+    max-width: none;
+  }
+}
+
+@media (max-width: 420px) {
+  .container {
+    width: min(100% - 16px, 1160px);
+  }
+
+  .brand-wordmark-img {
+    max-width: 180px;
+  }
+
+  .engagement-strip {
+    grid-template-columns: 1fr;
+  }
+}

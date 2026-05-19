@@ -5,18 +5,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabaseClient";
 
-function makeSlug(value) {
-  return String(value || "")
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-}
-
-function getTitle(ad) {
-  return ad?.title || ad?.name || "Selected promo";
-}
-
 function digitsOnly(value) {
   return String(value || "").replace(/\D/g, "");
 }
@@ -32,231 +20,443 @@ function buildPhone(countryCode, localNumber) {
   return `${code}${digits}`;
 }
 
-function matchesPromo(ad, promo) {
-  const target = String(promo || "");
-  const targetSlug = makeSlug(target);
-
-  const id = String(ad?.id || "");
-  const slug = String(ad?.slug || "");
-  const titleSlug = makeSlug(getTitle(ad));
-
-  return (
-    target === id ||
-    target === slug ||
-    targetSlug === makeSlug(id) ||
-    targetSlug === makeSlug(slug) ||
-    targetSlug === titleSlug ||
-    targetSlug === `${titleSlug}-${id}` ||
-    targetSlug.startsWith(`${titleSlug}-`)
-  );
+function optionalPhone(countryCode, localNumber) {
+  const digits = digitsOnly(localNumber);
+  return digits ? buildPhone(countryCode, localNumber) : "";
 }
 
-export default function ReportClient({ promo = "" }) {
+function isValidPhone(countryCode, localNumber) {
+  const fullPhone = buildPhone(countryCode, localNumber);
+  return /^\+[1-9]\d{7,14}$/.test(fullPhone);
+}
+
+export default function LoginClient({ nextUrl = "/dashboard", requestedMode = "" }) {
   const router = useRouter();
   const supabase = useMemo(() => createClient(), []);
 
-  const [loading, setLoading] = useState(true);
-  const [promoTitle, setPromoTitle] = useState("Selected promo");
-  const [message, setMessage] = useState("");
+  const [mode, setMode] = useState(
+    requestedMode === "signup" ? "signup" : "login"
+  );
+
+  const [authMethod, setAuthMethod] = useState("email");
+
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
   const [countryCode, setCountryCode] = useState("+1");
   const [localPhone, setLocalPhone] = useState("");
+  const [otp, setOtp] = useState("");
+  const [otpSent, setOtpSent] = useState(false);
 
-  const [form, setForm] = useState({
-    reason: "Incorrect information",
-    details: "",
-    phone: "",
-    contactEmail: "",
-  });
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
+
+  const isSignup = mode === "signup";
 
   useEffect(() => {
-    let alive = true;
-
-    async function loadReportPage() {
-      setLoading(true);
-
-      const next = `/report?promo=${encodeURIComponent(promo)}`;
-      const { data: userData } = await supabase.auth.getUser();
-
-      if (!userData?.user) {
-        router.push(`/login?next=${encodeURIComponent(next)}`);
-        return;
-      }
-
-      try {
-        const { data } = await supabase
-          .from("ads")
-          .select("*")
-          .in("status", ["active", "approved"])
-          .order("created_at", { ascending: false });
-
-        const matched = (data || []).find((ad) => matchesPromo(ad, promo));
-
-        if (alive && matched) {
-          setPromoTitle(getTitle(matched));
-        }
-      } catch {
-        // Keep report form usable even if promo lookup fails.
-      } finally {
-        if (alive) setLoading(false);
-      }
+    if (requestedMode === "signup") {
+      setMode("signup");
     }
+  }, [requestedMode]);
 
-    loadReportPage();
+  async function upsertProfile(user, extra = {}) {
+    if (!user?.id) return;
 
-    return () => {
-      alive = false;
-    };
-  }, [promo, router, supabase]);
-
-  function updateField(event) {
-    const { name, value } = event.target;
-    setForm((current) => ({ ...current, [name]: value }));
-  }
-
-  function updateCountryCode(event) {
-    const nextCountryCode = cleanCountryCode(event.target.value);
-    setCountryCode(nextCountryCode);
-
-    setForm((current) => ({
-      ...current,
-      phone: localPhone ? buildPhone(nextCountryCode, localPhone) : "",
-    }));
-  }
-
-  function updateLocalPhone(event) {
-    const nextLocalPhone = digitsOnly(event.target.value);
-    setLocalPhone(nextLocalPhone);
-
-    setForm((current) => ({
-      ...current,
-      phone: nextLocalPhone ? buildPhone(countryCode, nextLocalPhone) : "",
-    }));
-  }
-
-  function submitReport(event) {
-    event.preventDefault();
-
-    const fullPhone = localPhone ? buildPhone(countryCode, localPhone) : "";
-
-    if (!form.reason || !form.details) {
-      setMessage("Please choose a reason and add details.");
-      return;
-    }
-
-    setForm((current) => ({
-      ...current,
-      phone: fullPhone,
-    }));
-
-    setMessage("Report received for review. Thank you for helping keep YardPromo safe.");
-
-    setForm({
-      reason: "Incorrect information",
-      details: "",
-      phone: "",
-      contactEmail: "",
-    });
-
-    setLocalPhone("");
-  }
-
-  if (loading) {
-    return (
-      <main className="section report-page">
-        <div className="container">
-          <div className="empty">
-            <h3>Loading report page...</h3>
-            <p className="muted">Checking your sign-in status.</p>
-          </div>
-        </div>
-      </main>
+    await supabase.from("profiles").upsert(
+      {
+        id: user.id,
+        email: user.email || email.trim() || null,
+        full_name: fullName.trim() || user.user_metadata?.full_name || null,
+        phone: optionalPhone(countryCode, localPhone) || user.phone || null,
+        role: "user",
+        ...extra,
+      },
+      { onConflict: "id" }
     );
   }
 
+  async function handleEmailLogin(event) {
+    event.preventDefault();
+
+    setLoading(true);
+    setMessage("");
+
+    try {
+      const { error } = await supabase.auth.signInWithPassword({
+        email: email.trim(),
+        password,
+      });
+
+      if (error) throw error;
+
+      router.push(nextUrl);
+      router.refresh();
+    } catch (error) {
+      setMessage(error.message || "Unable to log in.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function handleEmailSignup(event) {
+    event.preventDefault();
+
+    setLoading(true);
+    setMessage("");
+
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email: email.trim(),
+        password,
+        options: {
+          data: {
+            full_name: fullName.trim(),
+            phone: optionalPhone(countryCode, localPhone),
+          },
+        },
+      });
+
+      if (error) throw error;
+
+      if (data?.user?.id) {
+        await upsertProfile(data.user);
+      }
+
+      const { data: sessionData } = await supabase.auth.getSession();
+
+      if (sessionData?.session || data?.session) {
+        router.push(nextUrl);
+        router.refresh();
+        return;
+      }
+
+      setMessage(
+        "Account created. Please check your email to confirm your account, then log in to continue."
+      );
+      setMode("login");
+    } catch (error) {
+      setMessage(error.message || "Unable to create account.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function handleSendPhoneCode(event) {
+    event.preventDefault();
+
+    const cleanPhone = buildPhone(countryCode, localPhone);
+
+    if (!isValidPhone(countryCode, localPhone)) {
+      setMessage("Choose your country code and enter a valid WhatsApp number.");
+      return;
+    }
+
+    setLoading(true);
+    setMessage("");
+
+    try {
+      const { error } = await supabase.auth.signInWithOtp({
+        phone: cleanPhone,
+        options: {
+          data: {
+            full_name: fullName.trim(),
+            phone: cleanPhone,
+          },
+        },
+      });
+
+      if (error) throw error;
+
+      setOtpSent(true);
+      setMessage("OTP sent. Check your phone for the verification code.");
+    } catch (error) {
+      setMessage(
+        error.message ||
+          "Phone confirmation is not enabled yet. Use email login for now, or configure SMS in Supabase Auth."
+      );
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function handleVerifyPhoneCode(event) {
+    event.preventDefault();
+
+    const cleanPhone = buildPhone(countryCode, localPhone);
+
+    if (!isValidPhone(countryCode, localPhone)) {
+      setMessage("Choose your country code and enter a valid WhatsApp number.");
+      return;
+    }
+
+    if (!otp.trim()) {
+      setMessage("Please enter the OTP code.");
+      return;
+    }
+
+    setLoading(true);
+    setMessage("");
+
+    try {
+      const { data, error } = await supabase.auth.verifyOtp({
+        phone: cleanPhone,
+        token: otp.trim(),
+        type: "sms",
+      });
+
+      if (error) throw error;
+
+      if (data?.user?.id) {
+        await upsertProfile(data.user, {
+          phone: cleanPhone,
+          phone_verified: true,
+        });
+      }
+
+      setMessage("Phone verified. Redirecting...");
+      router.push(nextUrl);
+      router.refresh();
+    } catch (error) {
+      setMessage(error.message || "Invalid code. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  const isError =
+    message.toLowerCase().includes("unable") ||
+    message.toLowerCase().includes("invalid") ||
+    message.toLowerCase().includes("not enabled") ||
+    message.toLowerCase().includes("please enter") ||
+    message.toLowerCase().includes("choose your country code");
+
   return (
-    <main className="section report-page">
+    <main className="section">
       <div className="container">
-        <div className="report-card panel">
-          <p className="kicker">Report promo</p>
-          <h1>Log a complaint.</h1>
+        <div className="auth-card panel">
+          <p className="kicker">{isSignup ? "Create account" : "Login"}</p>
+
+          <h1>
+            {isSignup ? "Create your YardPromo account." : "Log in to YardPromo."}
+          </h1>
 
           <p className="muted">
-            Tell YardPromo what needs review for:
-            <strong> {promoTitle}</strong>
+            {nextUrl !== "/dashboard"
+              ? "After signing in, you’ll continue to the page you requested."
+              : "Access your dashboard, saved promos, claims, and reports."}
           </p>
 
-          {message ? <div className="interest-message">{message}</div> : null}
+          <div className="auth-switch-row" style={{ marginTop: 18 }}>
+            <button
+              type="button"
+              className={authMethod === "email" ? "btn btn-primary" : "btn btn-light"}
+              onClick={() => {
+                setAuthMethod("email");
+                setMessage("");
+              }}
+            >
+              Email
+            </button>
 
-          <form className="claim-report-form" onSubmit={submitReport}>
-            <label>
-              Reason
-              <select
-                name="reason"
-                value={form.reason}
-                onChange={updateField}
-                required
-              >
-                <option>Incorrect information</option>
-                <option>Scam or suspicious promo</option>
-                <option>Duplicate promo</option>
-                <option>Offensive content</option>
-                <option>Event cancelled</option>
-                <option>Other</option>
-              </select>
-            </label>
+            <button
+              type="button"
+              className={authMethod === "phone" ? "btn btn-primary" : "btn btn-light"}
+              onClick={() => {
+                setAuthMethod("phone");
+                setMessage("");
+              }}
+            >
+              Phone / WhatsApp
+            </button>
+          </div>
 
-            <label>
-              Country code optional
-              <input
-                value={countryCode}
-                onChange={updateCountryCode}
-                placeholder="+1"
-              />
-            </label>
+          {message ? (
+            <div className={isError ? "toast error" : "toast"} style={{ marginTop: 14 }}>
+              {message}
+            </div>
+          ) : null}
 
-            <label>
-              Phone / WhatsApp optional
-              <input
-                name="phone"
-                value={localPhone}
-                onChange={updateLocalPhone}
-                placeholder="8761234567"
-              />
-            </label>
+          {authMethod === "email" ? (
+            <form
+              className="auth-form"
+              onSubmit={isSignup ? handleEmailSignup : handleEmailLogin}
+            >
+              {isSignup ? (
+                <label>
+                  Name
+                  <input
+                    value={fullName}
+                    onChange={(event) => setFullName(event.target.value)}
+                    placeholder="Your name"
+                    required
+                  />
+                </label>
+              ) : null}
 
-            <label>
-              Contact email optional
-              <input
-                name="contactEmail"
-                type="email"
-                value={form.contactEmail}
-                onChange={updateField}
-                placeholder="you@example.com"
-              />
-            </label>
+              <label>
+                Email
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(event) => setEmail(event.target.value)}
+                  placeholder="you@example.com"
+                  required
+                />
+              </label>
 
-            <label className="full">
-              Details
-              <textarea
-                name="details"
-                value={form.details}
-                onChange={updateField}
-                placeholder="Explain what should be reviewed."
-                rows={6}
-                required
-              />
-            </label>
+              <label>
+                Password
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(event) => setPassword(event.target.value)}
+                  placeholder="Your password"
+                  required
+                  minLength={6}
+                />
+              </label>
 
-            <div className="claim-report-actions">
-              <button className="btn btn-primary" type="submit">
-                Submit report
+              {isSignup ? (
+                <>
+                  <label>
+                    Country code optional
+                    <input
+                      value={countryCode}
+                      onChange={(event) =>
+                        setCountryCode(cleanCountryCode(event.target.value))
+                      }
+                      placeholder="+1"
+                    />
+                  </label>
+
+                  <label>
+                    Phone / WhatsApp optional
+                    <input
+                      value={localPhone}
+                      onChange={(event) =>
+                        setLocalPhone(digitsOnly(event.target.value))
+                      }
+                      placeholder="8761234567"
+                    />
+                  </label>
+                </>
+              ) : null}
+
+              <button className="btn btn-primary" type="submit" disabled={loading}>
+                {loading ? "Please wait..." : isSignup ? "Create account" : "Log In"}
+              </button>
+            </form>
+          ) : (
+            <form
+              className="auth-form"
+              onSubmit={otpSent ? handleVerifyPhoneCode : handleSendPhoneCode}
+            >
+              {isSignup ? (
+                <label>
+                  Name optional
+                  <input
+                    value={fullName}
+                    onChange={(event) => setFullName(event.target.value)}
+                    placeholder="Your name"
+                  />
+                </label>
+              ) : null}
+
+              <label>
+                Country code
+                <input
+                  value={countryCode}
+                  onChange={(event) =>
+                    setCountryCode(cleanCountryCode(event.target.value))
+                  }
+                  placeholder="+1"
+                  required
+                />
+              </label>
+
+              <label>
+                Phone / WhatsApp number
+                <input
+                  value={localPhone}
+                  onChange={(event) =>
+                    setLocalPhone(digitsOnly(event.target.value))
+                  }
+                  placeholder="8761234567"
+                  required
+                />
+              </label>
+
+              <p className="muted small">
+                Choose your country code and enter your WhatsApp number.
+              </p>
+
+              {otpSent ? (
+                <label>
+                  OTP code
+                  <input
+                    value={otp}
+                    onChange={(event) => setOtp(event.target.value)}
+                    placeholder="Enter SMS code"
+                    required
+                  />
+                </label>
+              ) : null}
+
+              <button className="btn btn-primary" type="submit" disabled={loading}>
+                {loading ? "Please wait..." : otpSent ? "Verify code" : "Send code"}
               </button>
 
-              <Link className="btn btn-light" href="/browse">
-                Back to promos
-              </Link>
-            </div>
-          </form>
+              {otpSent ? (
+                <button
+                  type="button"
+                  className="btn btn-light"
+                  onClick={() => {
+                    setOtpSent(false);
+                    setOtp("");
+                    setMessage("");
+                  }}
+                >
+                  Change phone number
+                </button>
+              ) : null}
+            </form>
+          )}
+
+          <div className="auth-switch-row">
+            {isSignup ? (
+              <button
+                type="button"
+                className="btn btn-light"
+                onClick={() => {
+                  setMode("login");
+                  setMessage("");
+                }}
+              >
+                Already have an account? Log in
+              </button>
+            ) : (
+              <button
+                type="button"
+                className="btn btn-light"
+                onClick={() => {
+                  setMode("signup");
+                  setMessage("");
+                }}
+              >
+                Create a new account
+              </button>
+            )}
+
+            <Link className="btn btn-light" href="/">
+              Back home
+            </Link>
+          </div>
+
+          <p className="muted small" style={{ marginTop: 16 }}>
+            Phone login requires SMS provider setup in Supabase Auth. If SMS is not enabled yet,
+            keep using email login and collect phone/WhatsApp on claim forms.
+          </p>
         </div>
       </div>
     </main>
