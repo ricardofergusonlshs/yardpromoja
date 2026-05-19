@@ -45,7 +45,7 @@ export default function LoginClient({ nextUrl = "/dashboard", requestedMode = ""
   const [password, setPassword] = useState("");
 
   const [countryCode, setCountryCode] = useState("+1");
-const [localPhone, setLocalPhone] = useState("");
+  const [localPhone, setLocalPhone] = useState("");
   const [otp, setOtp] = useState("");
   const [otpSent, setOtpSent] = useState(false);
 
@@ -142,57 +142,51 @@ const [localPhone, setLocalPhone] = useState("");
     }
   }
 
- async function handleVerifyPhoneCode(event) {
-  event.preventDefault();
+  async function handleSendPhoneCode(event) {
+    event.preventDefault();
 
-  const cleanPhone = buildPhone(countryCode, localPhone);
+    const cleanPhone = buildPhone(countryCode, localPhone);
 
-  if (!isValidPhone(countryCode, localPhone)) {
-    setMessage("Choose your country code and enter a valid WhatsApp number.");
-    return;
-  }
-
-  if (!otp.trim()) {
-    setMessage("Please enter the OTP code.");
-    return;
-  }
-
-  setLoading(true);
-  setMessage("");
-
-  try {
-    const { data, error } = await supabase.auth.verifyOtp({
-      phone: cleanPhone,
-      token: otp.trim(),
-      type: "sms",
-    });
-
-    if (error) throw error;
-
-    if (data?.user?.id) {
-      await upsertProfile(data.user, {
-        phone: cleanPhone,
-        phone_verified: true,
-      });
+    if (!isValidPhone(countryCode, localPhone)) {
+      setMessage("Choose your country code and enter a valid WhatsApp number.");
+      return;
     }
 
-    setMessage("Phone verified. Redirecting...");
-    router.push(nextUrl);
-    router.refresh();
-  } catch (error) {
-    setMessage(error.message || "Invalid code. Please try again.");
-  } finally {
-    setLoading(false);
+    setLoading(true);
+    setMessage("");
+
+    try {
+      const { error } = await supabase.auth.signInWithOtp({
+        phone: cleanPhone,
+        options: {
+          data: {
+            full_name: fullName.trim(),
+            phone: cleanPhone,
+          },
+        },
+      });
+
+      if (error) throw error;
+
+      setOtpSent(true);
+      setMessage("OTP sent. Check your phone for the verification code.");
+    } catch (error) {
+      setMessage(
+        error.message ||
+          "Phone confirmation is not enabled yet. Use email login for now, or configure SMS in Supabase Auth."
+      );
+    } finally {
+      setLoading(false);
+    }
   }
-}
 
   async function handleVerifyPhoneCode(event) {
     event.preventDefault();
 
-    const cleanPhone = normalizePhone(phone);
+    const cleanPhone = buildPhone(countryCode, localPhone);
 
-    if (!isValidPhone(cleanPhone)) {
-      setMessage("Please enter your phone in international format, for example +18761234567.");
+    if (!isValidPhone(countryCode, localPhone)) {
+      setMessage("Choose your country code and enter a valid WhatsApp number.");
       return;
     }
 
@@ -234,7 +228,8 @@ const [localPhone, setLocalPhone] = useState("");
     message.toLowerCase().includes("unable") ||
     message.toLowerCase().includes("invalid") ||
     message.toLowerCase().includes("not enabled") ||
-    message.toLowerCase().includes("please enter");
+    message.toLowerCase().includes("please enter") ||
+    message.toLowerCase().includes("choose your country code");
 
   return (
     <main className="section">
@@ -272,7 +267,7 @@ const [localPhone, setLocalPhone] = useState("");
                 setMessage("");
               }}
             >
-              Phone
+              Phone / WhatsApp
             </button>
           </div>
 
@@ -322,27 +317,39 @@ const [localPhone, setLocalPhone] = useState("");
                 />
               </label>
 
-{isSignup ? (
-  <>
-    <label>
-      Country code optional
-      <input
-        value={countryCode}
-        onChange={(event) => setCountryCode(cleanCountryCode(event.target.value))}
-        placeholder="+1"
-      />
-    </label>
+              {isSignup ? (
+                <>
+                  <label>
+                    Country code optional
+                    <input
+                      value={countryCode}
+                      onChange={(event) =>
+                        setCountryCode(cleanCountryCode(event.target.value))
+                      }
+                      placeholder="+1"
+                    />
+                  </label>
 
-    <label>
-      Phone / WhatsApp optional
-      <input
-        value={localPhone}
-        onChange={(event) => setLocalPhone(digitsOnly(event.target.value))}
-        placeholder="8761234567"
-      />
-    </label>
-  </>
-) : null}      className="auth-form"
+                  <label>
+                    Phone / WhatsApp optional
+                    <input
+                      value={localPhone}
+                      onChange={(event) =>
+                        setLocalPhone(digitsOnly(event.target.value))
+                      }
+                      placeholder="8761234567"
+                    />
+                  </label>
+                </>
+              ) : null}
+
+              <button className="btn btn-primary" type="submit" disabled={loading}>
+                {loading ? "Please wait..." : isSignup ? "Create account" : "Log In"}
+              </button>
+            </form>
+          ) : (
+            <form
+              className="auth-form"
               onSubmit={otpSent ? handleVerifyPhoneCode : handleSendPhoneCode}
             >
               {isSignup ? (
@@ -357,14 +364,32 @@ const [localPhone, setLocalPhone] = useState("");
               ) : null}
 
               <label>
-                Phone number
+                Country code
                 <input
-                  value={phone}
-                  onChange={(event) => setPhone(event.target.value)}
-                  placeholder="+18761234567"
+                  value={countryCode}
+                  onChange={(event) =>
+                    setCountryCode(cleanCountryCode(event.target.value))
+                  }
+                  placeholder="+1"
                   required
                 />
               </label>
+
+              <label>
+                Phone / WhatsApp number
+                <input
+                  value={localPhone}
+                  onChange={(event) =>
+                    setLocalPhone(digitsOnly(event.target.value))
+                  }
+                  placeholder="8761234567"
+                  required
+                />
+              </label>
+
+              <p className="muted small">
+                Choose your country code and enter your WhatsApp number.
+              </p>
 
               {otpSent ? (
                 <label>
