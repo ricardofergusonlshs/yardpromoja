@@ -17,6 +17,21 @@ function getTitle(ad) {
   return ad?.title || ad?.name || "Selected promo";
 }
 
+function digitsOnly(value) {
+  return String(value || "").replace(/\D/g, "");
+}
+
+function cleanCountryCode(value) {
+  const digits = digitsOnly(value);
+  return digits ? `+${digits}` : "+1";
+}
+
+function buildPhone(countryCode, localNumber) {
+  const code = cleanCountryCode(countryCode);
+  const digits = digitsOnly(localNumber);
+  return `${code}${digits}`;
+}
+
 function matchesPromo(ad, promo) {
   const target = String(promo || "");
   const targetSlug = makeSlug(target);
@@ -43,12 +58,15 @@ export default function ReportClient({ promo = "" }) {
   const [loading, setLoading] = useState(true);
   const [promoTitle, setPromoTitle] = useState("Selected promo");
   const [message, setMessage] = useState("");
+  const [countryCode, setCountryCode] = useState("+1");
+  const [localPhone, setLocalPhone] = useState("");
+
   const [form, setForm] = useState({
-  reason: "Incorrect information",
-  details: "",
-  phone: "",
-  contactEmail: "",
-});
+    reason: "Incorrect information",
+    details: "",
+    phone: "",
+    contactEmail: "",
+  });
 
   useEffect(() => {
     let alive = true;
@@ -95,21 +113,51 @@ export default function ReportClient({ promo = "" }) {
     setForm((current) => ({ ...current, [name]: value }));
   }
 
+  function updateCountryCode(event) {
+    const nextCountryCode = cleanCountryCode(event.target.value);
+    setCountryCode(nextCountryCode);
+
+    setForm((current) => ({
+      ...current,
+      phone: localPhone ? buildPhone(nextCountryCode, localPhone) : "",
+    }));
+  }
+
+  function updateLocalPhone(event) {
+    const nextLocalPhone = digitsOnly(event.target.value);
+    setLocalPhone(nextLocalPhone);
+
+    setForm((current) => ({
+      ...current,
+      phone: nextLocalPhone ? buildPhone(countryCode, nextLocalPhone) : "",
+    }));
+  }
+
   function submitReport(event) {
     event.preventDefault();
+
+    const fullPhone = localPhone ? buildPhone(countryCode, localPhone) : "";
 
     if (!form.reason || !form.details) {
       setMessage("Please choose a reason and add details.");
       return;
     }
 
+    setForm((current) => ({
+      ...current,
+      phone: fullPhone,
+    }));
+
     setMessage("Report received for review. Thank you for helping keep YardPromo safe.");
-   setForm({
-  reason: "Incorrect information",
-  details: "",
-  phone: "",
-  contactEmail: "",
-});
+
+    setForm({
+      reason: "Incorrect information",
+      details: "",
+      phone: "",
+      contactEmail: "",
+    });
+
+    setLocalPhone("");
   }
 
   if (loading) {
@@ -131,6 +179,7 @@ export default function ReportClient({ promo = "" }) {
         <div className="report-card panel">
           <p className="kicker">Report promo</p>
           <h1>Log a complaint.</h1>
+
           <p className="muted">
             Tell YardPromo what needs review for:
             <strong> {promoTitle}</strong>
@@ -141,7 +190,12 @@ export default function ReportClient({ promo = "" }) {
           <form className="claim-report-form" onSubmit={submitReport}>
             <label>
               Reason
-              <select name="reason" value={form.reason} onChange={updateField} required>
+              <select
+                name="reason"
+                value={form.reason}
+                onChange={updateField}
+                required
+              >
                 <option>Incorrect information</option>
                 <option>Scam or suspicious promo</option>
                 <option>Duplicate promo</option>
@@ -152,14 +206,25 @@ export default function ReportClient({ promo = "" }) {
             </label>
 
             <label>
-  Phone / WhatsApp optional
-  <input
-    name="phone"
-    value={form.phone}
-    onChange={updateField}
-    placeholder="+18761234567"
-  />
-</label>
+              Country code optional
+              <input
+                value={countryCode}
+                onChange={updateCountryCode}
+                placeholder="+1"
+              />
+            </label>
+
+            <label>
+              Phone / WhatsApp optional
+              <input
+                name="phone"
+                value={localPhone}
+                onChange={updateLocalPhone}
+                placeholder="8761234567"
+              />
+            </label>
+
+            <label>
               Contact email optional
               <input
                 name="contactEmail"
