@@ -57,10 +57,10 @@ export default function ClaimClient({ promo = "" }) {
   function submitClaim(event) {
     event.preventDefault();
 
-    if (!form.promoterName || !form.email || !form.phone || !form.proof) {
-      setMessage("Please complete promoter name, email, phone/WhatsApp, and proof.");
-      return;
-    }
+   if (!form.promoterName || !form.phone || !form.proof) {
+  setMessage("Please complete promoter name, phone/WhatsApp, and proof.");
+  return;
+}
 
     setMessage("Claim request received for review.");
     setForm({
@@ -119,17 +119,16 @@ export default function ClaimClient({ promo = "" }) {
               />
             </label>
 
-            <label>
-              Email
-              <input
-                name="email"
-                type="email"
-                value={form.email}
-                onChange={updateField}
-                placeholder="you@example.com"
-                required
-              />
-            </label>
+           <label>
+  Email optional
+  <input
+    name="email"
+    type="email"
+    value={form.email}
+    onChange={updateField}
+    placeholder="you@example.com"
+  />
+</label>
 
             <label>
               Phone / WhatsApp

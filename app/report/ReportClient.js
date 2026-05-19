@@ -44,10 +44,11 @@ export default function ReportClient({ promo = "" }) {
   const [promoTitle, setPromoTitle] = useState("Selected promo");
   const [message, setMessage] = useState("");
   const [form, setForm] = useState({
-    reason: "Incorrect information",
-    details: "",
-    contactEmail: "",
-  });
+  reason: "Incorrect information",
+  details: "",
+  phone: "",
+  contactEmail: "",
+});
 
   useEffect(() => {
     let alive = true;
@@ -103,11 +104,12 @@ export default function ReportClient({ promo = "" }) {
     }
 
     setMessage("Report received for review. Thank you for helping keep YardPromo safe.");
-    setForm({
-      reason: "Incorrect information",
-      details: "",
-      contactEmail: "",
-    });
+   setForm({
+  reason: "Incorrect information",
+  details: "",
+  phone: "",
+  contactEmail: "",
+});
   }
 
   if (loading) {
@@ -150,6 +152,14 @@ export default function ReportClient({ promo = "" }) {
             </label>
 
             <label>
+  Phone / WhatsApp optional
+  <input
+    name="phone"
+    value={form.phone}
+    onChange={updateField}
+    placeholder="+18761234567"
+  />
+</label>
               Contact email optional
               <input
                 name="contactEmail"
