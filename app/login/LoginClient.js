@@ -1,44 +1,67 @@
 "use client";
 
-import { Suspense, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabaseClient";
 
-function safeNext(value) {
-  if (!value) return "/dashboard";
-
-  const next = String(value);
-
-  if (!next.startsWith("/")) return "/dashboard";
-  if (next.startsWith("//")) return "/dashboard";
-
-  return next;
+function normalizePhone(value) {
+  return String(value || "").replace(/\s+/g, "").trim();
 }
 
-function LoginPageInner() {
+function isValidPhone(value) {
+  const phone = normalizePhone(value);
+  return /^\+[1-9]\d{9,14}$/.test(phone);
+}
+
+export default function LoginClient({ nextUrl = "/dashboard", requestedMode = "" }) {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const supabase = useMemo(() => createClient(), []);
 
-  const nextParam = safeNext(searchParams.get("next"));
-  const modeParam = searchParams.get("mode");
+  const [mode, setMode] = useState(
+    requestedMode === "signup" ? "signup" : "login"
+  );
 
-  const [mode, setMode] = useState(modeParam === "signup" ? "signup" : "login");
+  const [authMethod, setAuthMethod] = useState("email");
+
+  const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [fullName, setFullName] = useState("");
+
+  const [phone, setPhone] = useState("");
+  const [otp, setOtp] = useState("");
+  const [otpSent, setOtpSent] = useState(false);
+
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
+  const isSignup = mode === "signup";
+
   useEffect(() => {
-    if (modeParam === "signup") {
+    if (requestedMode === "signup") {
       setMode("signup");
     }
-  }, [modeParam]);
+  }, [requestedMode]);
 
-  async function handleLogin(event) {
+  async function upsertProfile(user, extra = {}) {
+    if (!user?.id) return;
+
+    await supabase.from("profiles").upsert(
+      {
+        id: user.id,
+        email: user.email || email.trim() || null,
+        full_name: fullName.trim() || user.user_metadata?.full_name || null,
+        phone: normalizePhone(phone) || user.phone || null,
+        role: "user",
+        ...extra,
+      },
+      { onConflict: "id" }
+    );
+  }
+
+  async function handleEmailLogin(event) {
     event.preventDefault();
+
     setLoading(true);
     setMessage("");
 
@@ -50,7 +73,7 @@ function LoginPageInner() {
 
       if (error) throw error;
 
-      router.push(nextParam);
+      router.push(nextUrl);
       router.refresh();
     } catch (error) {
       setMessage(error.message || "Unable to log in.");
@@ -59,8 +82,9 @@ function LoginPageInner() {
     }
   }
 
-  async function handleSignup(event) {
+  async function handleEmailSignup(event) {
     event.preventDefault();
+
     setLoading(true);
     setMessage("");
 
@@ -71,6 +95,7 @@ function LoginPageInner() {
         options: {
           data: {
             full_name: fullName.trim(),
+            phone: normalizePhone(phone),
           },
         },
       });
@@ -78,21 +103,13 @@ function LoginPageInner() {
       if (error) throw error;
 
       if (data?.user?.id) {
-        await supabase.from("profiles").upsert(
-          {
-            id: data.user.id,
-            email: email.trim(),
-            full_name: fullName.trim(),
-            role: "user",
-          },
-          { onConflict: "id" }
-        );
+        await upsertProfile(data.user);
       }
 
       const { data: sessionData } = await supabase.auth.getSession();
 
-      if (sessionData?.session) {
-        router.push(nextParam);
+      if (sessionData?.session || data?.session) {
+        router.push(nextUrl);
         router.refresh();
         return;
       }
@@ -108,7 +125,93 @@ function LoginPageInner() {
     }
   }
 
-  const isSignup = mode === "signup";
+  async function handleSendPhoneCode(event) {
+    event.preventDefault();
+
+    const cleanPhone = normalizePhone(phone);
+
+    if (!isValidPhone(cleanPhone)) {
+      setMessage("Please enter your phone in international format, for example +18761234567.");
+      return;
+    }
+
+    setLoading(true);
+    setMessage("");
+
+    try {
+      const { error } = await supabase.auth.signInWithOtp({
+        phone: cleanPhone,
+        options: {
+          data: {
+            full_name: fullName.trim(),
+            phone: cleanPhone,
+          },
+        },
+      });
+
+      if (error) throw error;
+
+      setOtpSent(true);
+      setMessage("OTP sent. Check your phone for the verification code.");
+    } catch (error) {
+      setMessage(
+        error.message ||
+          "Phone confirmation is not enabled yet. Use email login for now, or configure SMS in Supabase Auth."
+      );
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function handleVerifyPhoneCode(event) {
+    event.preventDefault();
+
+    const cleanPhone = normalizePhone(phone);
+
+    if (!isValidPhone(cleanPhone)) {
+      setMessage("Please enter your phone in international format, for example +18761234567.");
+      return;
+    }
+
+    if (!otp.trim()) {
+      setMessage("Please enter the OTP code.");
+      return;
+    }
+
+    setLoading(true);
+    setMessage("");
+
+    try {
+      const { data, error } = await supabase.auth.verifyOtp({
+        phone: cleanPhone,
+        token: otp.trim(),
+        type: "sms",
+      });
+
+      if (error) throw error;
+
+      if (data?.user?.id) {
+        await upsertProfile(data.user, {
+          phone: cleanPhone,
+          phone_verified: true,
+        });
+      }
+
+      setMessage("Phone verified. Redirecting...");
+      router.push(nextUrl);
+      router.refresh();
+    } catch (error) {
+      setMessage(error.message || "Invalid code. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  const isError =
+    message.toLowerCase().includes("unable") ||
+    message.toLowerCase().includes("invalid") ||
+    message.toLowerCase().includes("not enabled") ||
+    message.toLowerCase().includes("please enter");
 
   return (
     <main className="section">
@@ -116,63 +219,158 @@ function LoginPageInner() {
         <div className="auth-card panel">
           <p className="kicker">{isSignup ? "Create account" : "Login"}</p>
 
-          <h1>{isSignup ? "Create your YardPromo account." : "Log in to YardPromo."}</h1>
+          <h1>
+            {isSignup ? "Create your YardPromo account." : "Log in to YardPromo."}
+          </h1>
 
           <p className="muted">
-            {nextParam !== "/dashboard"
+            {nextUrl !== "/dashboard"
               ? "After signing in, you’ll continue to the page you requested."
               : "Access your dashboard, saved promos, claims, and reports."}
           </p>
 
+          <div className="auth-switch-row" style={{ marginTop: 18 }}>
+            <button
+              type="button"
+              className={authMethod === "email" ? "btn btn-primary" : "btn btn-light"}
+              onClick={() => {
+                setAuthMethod("email");
+                setMessage("");
+              }}
+            >
+              Email
+            </button>
+
+            <button
+              type="button"
+              className={authMethod === "phone" ? "btn btn-primary" : "btn btn-light"}
+              onClick={() => {
+                setAuthMethod("phone");
+                setMessage("");
+              }}
+            >
+              Phone
+            </button>
+          </div>
+
           {message ? (
-            <div className={message.toLowerCase().includes("unable") ? "toast error" : "toast"}>
+            <div className={isError ? "toast error" : "toast"} style={{ marginTop: 14 }}>
               {message}
             </div>
           ) : null}
 
-          <form
-            className="auth-form"
-            onSubmit={isSignup ? handleSignup : handleLogin}
-          >
-            {isSignup ? (
+          {authMethod === "email" ? (
+            <form
+              className="auth-form"
+              onSubmit={isSignup ? handleEmailSignup : handleEmailLogin}
+            >
+              {isSignup ? (
+                <label>
+                  Name
+                  <input
+                    value={fullName}
+                    onChange={(event) => setFullName(event.target.value)}
+                    placeholder="Your name"
+                    required
+                  />
+                </label>
+              ) : null}
+
               <label>
-                Name
+                Email
                 <input
-                  value={fullName}
-                  onChange={(event) => setFullName(event.target.value)}
-                  placeholder="Your name"
+                  type="email"
+                  value={email}
+                  onChange={(event) => setEmail(event.target.value)}
+                  placeholder="you@example.com"
                   required
                 />
               </label>
-            ) : null}
 
-            <label>
-              Email
-              <input
-                type="email"
-                value={email}
-                onChange={(event) => setEmail(event.target.value)}
-                placeholder="you@example.com"
-                required
-              />
-            </label>
+              <label>
+                Password
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(event) => setPassword(event.target.value)}
+                  placeholder="Your password"
+                  required
+                  minLength={6}
+                />
+              </label>
 
-            <label>
-              Password
-              <input
-                type="password"
-                value={password}
-                onChange={(event) => setPassword(event.target.value)}
-                placeholder="Your password"
-                required
-                minLength={6}
-              />
-            </label>
+              {isSignup ? (
+                <label>
+                  Phone optional
+                  <input
+                    value={phone}
+                    onChange={(event) => setPhone(event.target.value)}
+                    placeholder="+18761234567"
+                  />
+                </label>
+              ) : null}
 
-            <button className="btn btn-primary" type="submit" disabled={loading}>
-              {loading ? "Please wait..." : isSignup ? "Create account" : "Log In"}
-            </button>
-          </form>
+              <button className="btn btn-primary" type="submit" disabled={loading}>
+                {loading ? "Please wait..." : isSignup ? "Create account" : "Log In"}
+              </button>
+            </form>
+          ) : (
+            <form
+              className="auth-form"
+              onSubmit={otpSent ? handleVerifyPhoneCode : handleSendPhoneCode}
+            >
+              {isSignup ? (
+                <label>
+                  Name optional
+                  <input
+                    value={fullName}
+                    onChange={(event) => setFullName(event.target.value)}
+                    placeholder="Your name"
+                  />
+                </label>
+              ) : null}
+
+              <label>
+                Phone number
+                <input
+                  value={phone}
+                  onChange={(event) => setPhone(event.target.value)}
+                  placeholder="+18761234567"
+                  required
+                />
+              </label>
+
+              {otpSent ? (
+                <label>
+                  OTP code
+                  <input
+                    value={otp}
+                    onChange={(event) => setOtp(event.target.value)}
+                    placeholder="Enter SMS code"
+                    required
+                  />
+                </label>
+              ) : null}
+
+              <button className="btn btn-primary" type="submit" disabled={loading}>
+                {loading ? "Please wait..." : otpSent ? "Verify code" : "Send code"}
+              </button>
+
+              {otpSent ? (
+                <button
+                  type="button"
+                  className="btn btn-light"
+                  onClick={() => {
+                    setOtpSent(false);
+                    setOtp("");
+                    setMessage("");
+                  }}
+                >
+                  Change phone number
+                </button>
+              ) : null}
+            </form>
+          )}
 
           <div className="auth-switch-row">
             {isSignup ? (
@@ -203,24 +401,13 @@ function LoginPageInner() {
               Back home
             </Link>
           </div>
+
+          <p className="muted small" style={{ marginTop: 16 }}>
+            Phone login requires SMS provider setup in Supabase Auth. If SMS is not enabled yet,
+            keep using email login and collect phone/WhatsApp on claim forms.
+          </p>
         </div>
       </div>
     </main>
-  );
-}
-
-export default function LoginPage() {
-  return (
-    <Suspense
-      fallback={
-        <main className="section">
-          <div className="container">
-            <div className="toast">Loading login...</div>
-          </div>
-        </main>
-      }
-    >
-      <LoginPageInner />
-    </Suspense>
   );
 }
