@@ -213,25 +213,46 @@ export default function DashboardPage() {
             <p className="kicker">Dashboard</p>
             <h2>{isMember ? "Member dashboard" : isAdvertiser ? "My YardPromo ads" : "Dashboard"}</h2>
           </div>
-          <div className="actions">
-            {isAdvertiser && <Link className="btn btn-primary" href="/create">+ Create Ad</Link>}
-            {isMember && (
-              <button className="btn btn-primary" type="button" onClick={handleUpgrade}>
-                Post a Promo
-              </button>
-            )}
-            <button className="btn btn-light" onClick={signOut}>Sign Out</button>
-          </div>
+         <div className="actions">
+  {isAdmin && (
+    <Link className="btn btn-primary" href="/admin">
+      Admin Dashboard
+    </Link>
+  )}
+
+  {isAdvertiser && (
+    <Link className="btn btn-primary" href="/create">
+      + Create Ad
+    </Link>
+  )}
+
+  {isMember && (
+    <button className="btn btn-primary" type="button" onClick={handleUpgrade}>
+      Post a Promo
+    </button>
+  )}
+
+  <button className="btn btn-light" onClick={signOut}>
+    Sign Out
+  </button>
+</div>
         </div>
 
         {loading && <div className="toast">Loading your dashboard...</div>}
         {!loading && message && <div className="toast">{message}</div>}
 
         {isAdmin && !loading && (
-          <div className="toast">
-            Admin accounts should use the <Link href="/admin">admin dashboard</Link>.
-          </div>
-        )}
+  <div className="panel" style={{ marginTop: 18 }}>
+    <p className="kicker">Admin access</p>
+    <h3>Admin dashboard available.</h3>
+    <p className="muted">
+      Use the admin dashboard to approve promos, manage listings, and review submissions.
+    </p>
+    <Link className="btn btn-primary" href="/admin">
+      Open Admin Dashboard
+    </Link>
+  </div>
+)}
 
         {isAdvertiser && !loading && (
           <>
