@@ -5,9 +5,19 @@ import AuthNav from "./components/AuthNav";
 
 export const metadata = {
   metadataBase: new URL("https://yardpromoja.com"),
+  applicationName: "YardPromo Jamaica",
+  manifest: "/manifest.webmanifest",
   title: "YardPromo Jamaica | Find What’s Happening",
   description:
     "Discover Jamaican events, promos, venues, campaigns, and local deals — or post your own promo link.",
+  appleWebApp: {
+    capable: true,
+    title: "YardPromo",
+    statusBarStyle: "default",
+  },
+  formatDetection: {
+    telephone: false,
+  },
   openGraph: {
     title: "YardPromo Jamaica",
     description: "Find what’s happening in Jamaica or post your own promo link.",
@@ -25,6 +35,12 @@ export const metadata = {
     icon: "/assets/yardpromo-app-icon.png",
     apple: "/assets/yardpromo-app-icon.png",
   },
+};
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#008a3d",
 };
 
 export default function RootLayout({ children }) {
