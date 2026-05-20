@@ -18,8 +18,8 @@ const customerLinks = [
   { href: "/weekend", label: "Weekend" },
   { href: "/calendar", label: "Calendar" },
   { href: "/dashboard", label: "Dashboard" },
-  
-    { href: "/account", label: "Account" },
+  { href: "/services", label: "Services" },
+  { href: "/account", label: "Account" },
 ];
 
 export default function AuthNav() {
@@ -91,15 +91,14 @@ export default function AuthNav() {
     router.refresh();
   }
 
- const isAdmin = role === "admin" || role === "super_admin";
+  const isAdmin = role === "admin" || role === "super_admin";
 
-const links = user
-  ? customerLinks.filter((link) => {
-      // Admin users should use the Admin Dashboard, not the regular Dashboard.
-      if (isAdmin && link.href === "/dashboard") return false;
-      return true;
-    })
-  : publicLinks;
+  const links = user
+    ? customerLinks.filter((link) => {
+        if (isAdmin && link.href === "/dashboard") return false;
+        return true;
+      })
+    : publicLinks;
 
   return (
     <>
