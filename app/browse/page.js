@@ -1,8 +1,8 @@
 "use client";
 
-import { Suspense, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabaseClient";
 import { categories } from "@/lib/yardpromoData";
 
@@ -26,6 +26,36 @@ const parishes = [
 const categoryOptions = categories?.length
   ? categories
   : ["Party", "Dancehall", "Reggae", "Concert", "Business", "Food"];
+
+const defaultFilters = {
+  category: "",
+  parish: "",
+  price: "",
+  sort: "",
+  q: "",
+};
+
+function readFiltersFromSearch(search = "") {
+  const params = new URLSearchParams(search);
+
+  return {
+    category: params.get("category") || "",
+    parish: params.get("parish") || "",
+    price: params.get("price") || "",
+    sort: params.get("sort") || "",
+    q: params.get("q") || "",
+  };
+}
+
+function readBrowserFilters() {
+  if (typeof window === "undefined") return defaultFilters;
+  return readFiltersFromSearch(window.location.search || "");
+}
+
+function readFiltersFromHref(href) {
+  const [, query = ""] = String(href || "").split("?");
+  return readFiltersFromSearch(query ? `?${query}` : "");
+}
 
 function getImage(ad) {
   return (
@@ -309,12 +339,15 @@ function BrowseCard({ ad }) {
   );
 }
 
-function QuickChip({ href, active, children }) {
+function QuickChip({ href, active, children, onNavigate }) {
   return (
     <Link
       className={`mood-pill ${active ? "is-active" : ""}`}
       href={href}
       scroll={false}
+      onClick={() => {
+        onNavigate?.(href);
+      }}
     >
       {children}
     </Link>
@@ -323,22 +356,32 @@ function QuickChip({ href, active, children }) {
 
 function BrowseContent() {
   const router = useRouter();
-  const searchParams = useSearchParams();
 
-  const category = searchParams.get("category") || "";
-  const parish = searchParams.get("parish") || "";
-  const price = searchParams.get("price") || "";
-  const sort = searchParams.get("sort") || "";
-  const q = searchParams.get("q") || "";
+  const [filters, setFilters] = useState(defaultFilters);
+  const { category, parish, price, sort, q } = filters;
 
   const [ads, setAds] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const [searchText, setSearchText] = useState(q);
-  const [categoryValue, setCategoryValue] = useState(category);
-  const [parishValue, setParishValue] = useState(parish);
-  const [sortValue, setSortValue] = useState(sort || "newest");
-  const [priceValue, setPriceValue] = useState(price);
+  const [searchText, setSearchText] = useState("");
+  const [categoryValue, setCategoryValue] = useState("");
+  const [parishValue, setParishValue] = useState("");
+  const [sortValue, setSortValue] = useState("newest");
+  const [priceValue, setPriceValue] = useState("");
+
+  useEffect(() => {
+    function syncFiltersFromBrowser() {
+      setFilters(readBrowserFilters());
+    }
+
+    syncFiltersFromBrowser();
+
+    window.addEventListener("popstate", syncFiltersFromBrowser);
+
+    return () => {
+      window.removeEventListener("popstate", syncFiltersFromBrowser);
+    };
+  }, []);
 
   useEffect(() => {
     setSearchText(q);
@@ -387,18 +430,23 @@ function BrowseContent() {
     };
   }, []);
 
+  function navigateWithFilters(nextFilters) {
+    const href = buildBrowseHref(nextFilters);
+
+    setFilters(nextFilters);
+    router.push(href, { scroll: false });
+  }
+
   function applyFilters(event) {
     event.preventDefault();
 
-    const href = buildBrowseHref({
+    navigateWithFilters({
       category: categoryValue,
       parish: parishValue,
       price: priceValue,
       sort: sortValue === "trending" ? "trending" : "",
       q: searchText.trim(),
     });
-
-    router.push(href, { scroll: false });
   }
 
   function clearFilters() {
@@ -408,7 +456,11 @@ function BrowseContent() {
     setSortValue("newest");
     setPriceValue("");
 
-    router.push("/browse", { scroll: false });
+    navigateWithFilters(defaultFilters);
+  }
+
+  function handleQuickNavigate(href) {
+    setFilters(readFiltersFromHref(href));
   }
 
   const filteredAds = useMemo(() => {
@@ -544,48 +596,94 @@ function BrowseContent() {
         </form>
 
         <div className="browse-quick-row">
-          <QuickChip href="/browse" active={!category && !parish && !price && !sort && !q}>
+          <QuickChip
+            href="/browse"
+            active={!category && !parish && !price && !sort && !q}
+            onNavigate={handleQuickNavigate}
+          >
             All
           </QuickChip>
 
           <QuickChip
-            href={buildBrowseHref({ category, parish, price, sort: "trending", q })}
+            href={buildBrowseHref({
+              category,
+              parish,
+              price,
+              sort: "trending",
+              q,
+            })}
             active={sort === "trending"}
+            onNavigate={handleQuickNavigate}
           >
             Trending
           </QuickChip>
 
           <QuickChip
-            href={buildBrowseHref({ category: "Food", parish, price, sort, q })}
+            href={buildBrowseHref({
+              category: "Food",
+              parish,
+              price,
+              sort,
+              q,
+            })}
             active={category === "Food"}
+            onNavigate={handleQuickNavigate}
           >
             Food
           </QuickChip>
 
           <QuickChip
-            href={buildBrowseHref({ category: "Dancehall", parish, price, sort, q })}
+            href={buildBrowseHref({
+              category: "Dancehall",
+              parish,
+              price,
+              sort,
+              q,
+            })}
             active={category === "Dancehall"}
+            onNavigate={handleQuickNavigate}
           >
             Dancehall
           </QuickChip>
 
           <QuickChip
-            href={buildBrowseHref({ category, parish: "Kingston", price, sort, q })}
+            href={buildBrowseHref({
+              category,
+              parish: "Kingston",
+              price,
+              sort,
+              q,
+            })}
             active={parish === "Kingston"}
+            onNavigate={handleQuickNavigate}
           >
             Kingston
           </QuickChip>
 
           <QuickChip
-            href={buildBrowseHref({ category, parish: "St. James", price, sort, q })}
+            href={buildBrowseHref({
+              category,
+              parish: "St. James",
+              price,
+              sort,
+              q,
+            })}
             active={parish === "St. James"}
+            onNavigate={handleQuickNavigate}
           >
             St. James
           </QuickChip>
 
           <QuickChip
-            href={buildBrowseHref({ category, parish, price: "free", sort, q })}
+            href={buildBrowseHref({
+              category,
+              parish,
+              price: "free",
+              sort,
+              q,
+            })}
             active={price === "free"}
+            onNavigate={handleQuickNavigate}
           >
             Free entry
           </QuickChip>
@@ -597,7 +695,12 @@ function BrowseContent() {
             <h2>{activeLabel}</h2>
           </div>
 
-          <Link className="btn btn-light" href="/browse" scroll={false}>
+          <Link
+            className="btn btn-light"
+            href="/browse"
+            scroll={false}
+            onClick={() => setFilters(defaultFilters)}
+          >
             Clear filters
           </Link>
         </div>
@@ -632,20 +735,5 @@ function BrowseContent() {
 }
 
 export default function BrowsePage() {
-  return (
-    <Suspense
-      fallback={
-        <section className="section">
-          <div className="container">
-            <div className="empty">
-              <h3>Loading browse...</h3>
-              <p className="muted">Preparing YardPromo listings.</p>
-            </div>
-          </div>
-        </section>
-      }
-    >
-      <BrowseContent />
-    </Suspense>
-  );
+  return <BrowseContent />;
 }

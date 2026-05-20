@@ -1,13 +1,12 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabaseClient";
 
 export default function RequireAuth({ children }) {
   const router = useRouter();
   const pathname = usePathname();
-  const searchParams = useSearchParams();
   const supabase = useMemo(() => createClient(), []);
 
   const [checking, setChecking] = useState(true);
@@ -15,6 +14,14 @@ export default function RequireAuth({ children }) {
 
   useEffect(() => {
     let alive = true;
+
+    function getCurrentPath() {
+      if (typeof window === "undefined") {
+        return pathname || "/";
+      }
+
+      return `${window.location.pathname}${window.location.search || ""}`;
+    }
 
     async function checkAuth() {
       try {
@@ -28,16 +35,12 @@ export default function RequireAuth({ children }) {
           return;
         }
 
-        const query = searchParams?.toString();
-        const currentPath = query ? `${pathname}?${query}` : pathname;
-
+        const currentPath = getCurrentPath();
         router.replace(`/login?next=${encodeURIComponent(currentPath)}`);
       } catch {
         if (!alive) return;
 
-        const query = searchParams?.toString();
-        const currentPath = query ? `${pathname}?${query}` : pathname;
-
+        const currentPath = getCurrentPath();
         router.replace(`/login?next=${encodeURIComponent(currentPath)}`);
       }
     }
@@ -54,7 +57,7 @@ export default function RequireAuth({ children }) {
       alive = false;
       subscription?.unsubscribe?.();
     };
-  }, [pathname, router, searchParams, supabase]);
+  }, [pathname, router, supabase]);
 
   if (checking) {
     return (
