@@ -1,0 +1,154 @@
+YardPromo Dashboard Metrics — Force Compact Fix
+
+Your screenshot still shows the old large cards, which means the dashboard JSX is still using the old .panel metric cards OR the new CSS is not targeting the current markup.
+
+Do both fixes below.
+
+============================================================
+1) Replace the metrics card JSX in app/dashboard/page.js
+============================================================
+
+Find the advertiser metrics section that looks similar to this:
+
+<div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fit,minmax(160px,1fr))', gap: 12, marginBottom: 18 }}>
+  <div className="panel">
+    <h4>Total promos</h4>
+    <div className="stats-large">{metrics.totalPromos ?? ads.length}</div>
+  </div>
+  ...
+</div>
+
+Replace that entire metrics grid with this:
+
+<div className="dashboard-metrics-strip">
+  <div className="dashboard-mini-stat">
+    <span>Total promos</span>
+    <strong>{metrics.totalPromos ?? ads.length}</strong>
+  </div>
+
+  <div className="dashboard-mini-stat">
+    <span>Active</span>
+    <strong>{metrics.activePromos ?? 0}</strong>
+  </div>
+
+  <div className="dashboard-mini-stat">
+    <span>Pending</span>
+    <strong>{metrics.pendingPromos ?? 0}</strong>
+  </div>
+
+  <div className="dashboard-mini-stat">
+    <span>Approved</span>
+    <strong>{metrics.approvedPromos ?? 0}</strong>
+  </div>
+
+  <div className="dashboard-mini-stat">
+    <span>Views</span>
+    <strong>{metrics.totalViews ?? 0}</strong>
+  </div>
+
+  <div className="dashboard-mini-stat">
+    <span>Support</span>
+    <strong>{metrics.supportCount ?? 0}</strong>
+  </div>
+
+  <div className="dashboard-mini-stat">
+    <span>RSVPs</span>
+    <strong>{metrics.rsvpCount ?? 0}</strong>
+  </div>
+
+  <div className="dashboard-mini-stat">
+    <span>Shares</span>
+    <strong>{metrics.shareCount ?? 0}</strong>
+  </div>
+
+  <div className="dashboard-mini-stat">
+    <span>Inquiries</span>
+    <strong>{metrics.inquiryCount ?? 0}</strong>
+  </div>
+
+  <div className="dashboard-mini-stat">
+    <span>Heat</span>
+    <strong>{metrics.heatScore ?? 0}</strong>
+  </div>
+</div>
+
+============================================================
+2) Paste this CSS at the very bottom of app/globals.css
+============================================================
+
+/* Force compact dashboard metric strip */
+.dashboard-metrics-strip {
+  width: 100%;
+  display: grid !important;
+  grid-template-columns: repeat(10, minmax(82px, 1fr)) !important;
+  gap: 8px !important;
+  margin: 10px 0 16px !important;
+}
+
+.dashboard-mini-stat {
+  min-height: 56px !important;
+  padding: 8px 10px !important;
+  border: 1px solid rgba(148, 163, 184, 0.26) !important;
+  border-radius: 14px !important;
+  background: rgba(255, 255, 255, 0.84) !important;
+  box-shadow: 0 5px 14px rgba(15, 23, 42, 0.045) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  gap: 5px !important;
+}
+
+.dashboard-mini-stat span {
+  display: block !important;
+  font-size: 0.68rem !important;
+  line-height: 1 !important;
+  font-weight: 900 !important;
+  color: #0f172a !important;
+  white-space: nowrap !important;
+}
+
+.dashboard-mini-stat strong {
+  display: block !important;
+  font-size: 1rem !important;
+  line-height: 1 !important;
+  font-weight: 950 !important;
+  color: #020617 !important;
+}
+
+@media (max-width: 1180px) {
+  .dashboard-metrics-strip {
+    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 720px) {
+  .dashboard-metrics-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .dashboard-mini-stat {
+    min-height: 52px !important;
+    padding: 8px 9px !important;
+  }
+}
+
+@media (max-width: 420px) {
+  .dashboard-metrics-strip {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+============================================================
+3) Restart
+============================================================
+
+Run:
+
+Ctrl + C
+Remove-Item -Recurse -Force .next
+npm run dev
+
+Then refresh /dashboard.
+
+Expected result:
+The metric cards should become small compact stat boxes, not large panels.

@@ -262,46 +262,73 @@ export default function DashboardPage() {
         {isAdvertiser && !loading && (
           <>
             <section className="section">
-              <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fit,minmax(160px,1fr))', gap: 12, marginBottom: 18 }}>
-                <div className="panel">
-                  <h4>Total promos</h4>
-                  <div className="stats-large">{metrics.totalPromos ?? ads.length}</div>
+              <div
+                className="dashboard-metrics-grid"
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(auto-fit, minmax(118px, 1fr))",
+                  gap: 10,
+                  marginBottom: 18,
+                }}
+              >
+                <div className="metric-card">
+                  <span className="metric-label">Total promos</span>
+                  <strong className="metric-value">{metrics.totalPromos ?? ads.length}</strong>
+                  <small className="metric-helper">All</small>
                 </div>
-                <div className="panel">
-                  <h4>Active</h4>
-                  <div className="stats-large">{metrics.activePromos ?? 0}</div>
+
+                <div className="metric-card">
+                  <span className="metric-label">Active</span>
+                  <strong className="metric-value">{metrics.activePromos ?? 0}</strong>
+                  <small className="metric-helper">Live</small>
                 </div>
-                <div className="panel">
-                  <h4>Pending</h4>
-                  <div className="stats-large">{metrics.pendingPromos ?? 0}</div>
+
+                <div className="metric-card">
+                  <span className="metric-label">Pending</span>
+                  <strong className="metric-value">{metrics.pendingPromos ?? 0}</strong>
+                  <small className="metric-helper">Review</small>
                 </div>
-                <div className="panel">
-                  <h4>Approved</h4>
-                  <div className="stats-large">{metrics.approvedPromos ?? 0}</div>
+
+                <div className="metric-card">
+                  <span className="metric-label">Approved</span>
+                  <strong className="metric-value">{metrics.approvedPromos ?? 0}</strong>
+                  <small className="metric-helper">Approved</small>
                 </div>
-                <div className="panel">
-                  <h4>Views</h4>
-                  <div className="stats-large">{metrics.totalViews ?? 0}</div>
+
+                <div className="metric-card">
+                  <span className="metric-label">Views</span>
+                  <strong className="metric-value">{metrics.totalViews ?? 0}</strong>
+                  <small className="metric-helper">Traffic</small>
                 </div>
-                <div className="panel">
-                  <h4>Support</h4>
-                  <div className="stats-large">{metrics.supportCount ?? 0}</div>
+
+                <div className="metric-card">
+                  <span className="metric-label">Support</span>
+                  <strong className="metric-value">{metrics.supportCount ?? 0}</strong>
+                  <small className="metric-helper">Interest</small>
                 </div>
-                <div className="panel">
-                  <h4>RSVPs</h4>
-                  <div className="stats-large">{metrics.rsvpCount ?? 0}</div>
+
+                <div className="metric-card">
+                  <span className="metric-label">RSVPs</span>
+                  <strong className="metric-value">{metrics.rsvpCount ?? 0}</strong>
+                  <small className="metric-helper">Going</small>
                 </div>
-                <div className="panel">
-                  <h4>Shares</h4>
-                  <div className="stats-large">{metrics.shareCount ?? 0}</div>
+
+                <div className="metric-card">
+                  <span className="metric-label">Shares</span>
+                  <strong className="metric-value">{metrics.shareCount ?? 0}</strong>
+                  <small className="metric-helper">Shared</small>
                 </div>
-                <div className="panel">
-                  <h4>Inquiries</h4>
-                  <div className="stats-large">{metrics.inquiryCount ?? 0}</div>
+
+                <div className="metric-card">
+                  <span className="metric-label">Inquiries</span>
+                  <strong className="metric-value">{metrics.inquiryCount ?? 0}</strong>
+                  <small className="metric-helper">Leads</small>
                 </div>
-                <div className="panel">
-                  <h4>Heat</h4>
-                  <div className="stats-large">{metrics.heatScore ?? 0}</div>
+
+                <div className="metric-card">
+                  <span className="metric-label">Heat</span>
+                  <strong className="metric-value">{metrics.heatScore ?? 0}</strong>
+                  <small className="metric-helper">Score</small>
                 </div>
               </div>
 

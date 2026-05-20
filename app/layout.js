@@ -12,7 +12,7 @@ export const metadata = {
     "Discover Jamaican events, promos, venues, campaigns, and local deals — or post your own promo link.",
   appleWebApp: {
     capable: true,
-    title: "YardPromo",
+    title: "YardPromoJa",
     statusBarStyle: "default",
   },
   formatDetection: {
@@ -21,7 +21,7 @@ export const metadata = {
   openGraph: {
     title: "YardPromo Jamaica",
     description: "Find what’s happening in Jamaica or post your own promo link.",
-    images: ["/assets/yardpromo-brand-presentation.png"],
+    images: ["/asset/yardpromo-logo-horizontal.png"],
     type: "website",
     url: "https://yardpromoja.com",
   },
@@ -32,8 +32,9 @@ export const metadata = {
     canonical: "https://yardpromoja.com",
   },
   icons: {
-    icon: "/assets/yardpromo-app-icon.png",
-    apple: "/assets/yardpromo-app-icon.png",
+    icon: "/assets/favicon.png",
+    shortcut: "/assets/favicon.png",
+    apple: "/assets/apple-touch-icon.png",
   },
 };
 
@@ -52,32 +53,28 @@ export default function RootLayout({ children }) {
             <Link
               href="/"
               className="brand brand-logo"
-              aria-label="YardPromo home"
+              aria-label="YardPromoJa home"
             >
               <img
                 className="brand-icon-img"
-                src="/assets/yardpromo-app-icon.png"
-                alt="YardPromo logo"
+                src="/assets/yardpromo-icon.png"
+                alt="YardPromoJa"
               />
 
               <span className="brand-copy">
                 <img
                   className="brand-wordmark-img"
-                  src="/assets/yardpromo-wordmark.png"
-                  alt="YardPromo"
+                  src="/assets/yardpromo-logo-horizontal.png"
+                  alt="YardPromoJa"
                 />
                 <small>Jamaican promotion platform</small>
               </span>
             </Link>
 
             <nav className="nav-links" aria-label="Primary navigation">
-              <Link href="/">Home</Link>
-              <Link href="/browse">Browse</Link>
-              <Link href="/weekend">Weekend</Link>
-              <Link href="/calendar">Calendar</Link>
-              <Link href="/create">Post Promo</Link>
-              <AuthNav />
-            </nav>
+  
+  <AuthNav />
+</nav>
           </div>
 
           <div className="launch-banner">
@@ -101,10 +98,12 @@ export default function RootLayout({ children }) {
           <div className="container footer-inner">
             <div>
               <div className="footer-logo-row">
-                <img src="/assets/yardpromo-app-icon.png" alt="YardPromo" />
-                <strong style={{ color: "#07111f" }}>
-                  YardPromo Jamaica
-                </strong>
+                <img
+                  className="brand-icon-img"
+                  src="/assets/yardpromo-icon.png"
+                  alt="YardPromoJa"
+                />
+                <strong style={{ color: "#07111f" }}>YardPromoJa</strong>
               </div>
 
               <p className="muted">
@@ -116,7 +115,7 @@ export default function RootLayout({ children }) {
               <Link href="/about">About</Link>
               <Link href="/contact">Contact</Link>
               <Link href="/advertise">Advertise</Link>
-              <Link href="/weekend">Weekly Roundup</Link>
+              <Link href="/campaigns">Campaigns & Giveaways</Link>
               <Link href="/browse">Parish Pulse</Link>
               <Link href="/weekend">Weekend Board</Link>
               <Link href="/browse">Rankings</Link>

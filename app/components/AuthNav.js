@@ -1,16 +1,35 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabaseClient";
+
+const publicLinks = [
+  { href: "/", label: "Home" },
+  { href: "/browse", label: "Browse" },
+  { href: "/weekend", label: "Weekend" },
+  { href: "/calendar", label: "Calendar" },
+];
+
+const customerLinks = [
+  { href: "/", label: "Home" },
+  { href: "/browse", label: "Browse" },
+  { href: "/weekend", label: "Weekend" },
+  { href: "/calendar", label: "Calendar" },
+  { href: "/dashboard", label: "Dashboard" },
+  
+    { href: "/account", label: "Account" },
+];
 
 export default function AuthNav() {
   const router = useRouter();
-  const supabase = createClient();
+  const pathname = usePathname();
+  const supabase = useMemo(() => createClient(), []);
 
   const [user, setUser] = useState(null);
   const [role, setRole] = useState(null);
+  const [authChecked, setAuthChecked] = useState(false);
 
   useEffect(() => {
     let alive = true;
@@ -18,13 +37,14 @@ export default function AuthNav() {
     async function loadUser() {
       try {
         const { data: sessionData } = await supabase.auth.getSession();
-        const currentUser = sessionData?.session?.user;
+        const currentUser = sessionData?.session?.user || null;
 
         if (!alive) return;
 
         if (!currentUser) {
           setUser(null);
           setRole(null);
+          setAuthChecked(true);
           return;
         }
 
@@ -39,17 +59,27 @@ export default function AuthNav() {
         if (!alive) return;
 
         setRole(profile?.role || null);
+        setAuthChecked(true);
       } catch {
         if (!alive) return;
+
         setUser(null);
         setRole(null);
+        setAuthChecked(true);
       }
     }
 
     loadUser();
 
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange(() => {
+      loadUser();
+    });
+
     return () => {
       alive = false;
+      subscription?.unsubscribe?.();
     };
   }, [supabase]);
 
@@ -58,17 +88,35 @@ export default function AuthNav() {
     setUser(null);
     setRole(null);
     router.push("/");
+    router.refresh();
   }
+
+ const isAdmin = role === "admin" || role === "super_admin";
+
+const links = user
+  ? customerLinks.filter((link) => {
+      // Admin users should use the Admin Dashboard, not the regular Dashboard.
+      if (isAdmin && link.href === "/dashboard") return false;
+      return true;
+    })
+  : publicLinks;
 
   return (
     <>
-      {user ? <Link href="/dashboard">Dashboard</Link> : null}
+      {links.map((link) => (
+        <Link
+          key={link.href}
+          href={link.href}
+          aria-current={pathname === link.href ? "page" : undefined}
+          className={pathname === link.href ? "active" : undefined}
+        >
+          {link.label}
+        </Link>
+      ))}
 
-      {role === "admin" || role === "super_admin" ? (
-        <Link href="/admin">Admin</Link>
-      ) : null}
+      {user && isAdmin ? <Link href="/admin">Admin</Link> : null}
 
-      {user ? (
+      {authChecked && user ? (
         <button
           type="button"
           className="btn btn-light"
@@ -77,9 +125,9 @@ export default function AuthNav() {
         >
           Logout
         </button>
-      ) : (
-        <Link href="/login">Login</Link>
-      )}
+      ) : null}
+
+      {authChecked && !user ? <Link href="/login">Login</Link> : null}
     </>
   );
 }

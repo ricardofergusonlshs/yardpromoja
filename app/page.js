@@ -57,7 +57,7 @@ export default function Home() {
               <span>
                 <strong>YardPromo Jamaica</strong>
                 <br />
-                <small>Discover • Promote • Connect</small>
+                <small>Broadcast • Promote • Connect</small>
               </span>
             </div>
 
@@ -101,64 +101,76 @@ export default function Home() {
           <AdsGrid limit={3} section="premium" />
         </div>
       </section>
-
       <section className="section">
-        <div className="container">
-          <div className="section-head">
-            <div>
-              <p className="kicker">Weekend</p>
-              <h2>What’s hot this weekend.</h2>
-            </div>
+  <div className="container">
+    <div className="section-head">
+      <div>
+        <p className="kicker">Weekend</p>
+        <h2>What’s hot this weekend.</h2>
+      </div>
 
-            <Link className="btn btn-light" href="/weekend">
-              See Weekend
-            </Link>
-          </div>
+      <Link className="btn btn-light" href="/weekend">
+        See Weekend
+      </Link>
+    </div>
 
-          <AdsGrid limit={3} section="weekend" />
-        </div>
-      </section>
+    <AdsGrid limit={3} section="weekend" />
+  </div>
+</section>
 
-      <section className="section">
-        <div className="container smart-grid">
-          <div className="smart-card dark">
-            <p className="kicker" style={{ color: "#f7c600" }}>
-              For You
-            </p>
+<section className="section">
+  <div className="container smart-grid">
+    <div className="smart-card dark">
+      <p className="kicker" style={{ color: "#f7c600" }}>
+        Campaigns & Sale Offers
+      </p>
 
-            <h2>Your smart discovery feed.</h2>
+      <h2>Promote your sale, deal, or campaign.</h2>
 
-            <p className="muted">
-              Find promos based on parish, category, popularity, RSVPs, and
-              what’s moving this weekend.
-            </p>
+      <p className="muted">
+        Built for restaurants, shops, promoters, venues, services, launches,
+        discounts, food specials, and limited-time offers.
+      </p>
 
-            <div className="action-row">
-              <Link className="btn btn-gold" href="/for-you">
-                Open For You
-              </Link>
+      <div className="action-row">
+        <Link className="btn btn-gold" href="/create?type=offer">
+          Post a Sale Offer
+        </Link>
 
-              <Link className="btn btn-light" href="/for-you">
-                Tune Your Feed
-              </Link>
-            </div>
-          </div>
+        <Link className="btn btn-light" href="/campaigns">
+          View Offers
+        </Link>
+      </div>
+    </div>
 
-          <div className="smart-card">
-            <p className="kicker">Mood</p>
+    <div className="smart-card">
+      <p className="kicker">What can you promote?</p>
 
-            <h2>What are you looking for?</h2>
+      <h2>Sales, deals, launches, and specials.</h2>
 
-            <div className="mood-grid">
-              {moodLinks.map((mood) => (
-                <Link className="mood-pill" href={mood.href} key={mood.label}>
-                  {mood.label}
-                </Link>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
+      <div className="mood-grid">
+        {[
+          "Sale",
+          "Deal",
+          "Discount",
+          "Food Special",
+          "Product Offer",
+          "Service Offer",
+          "Business Promotion",
+          "Event Campaign",
+        ].map((item) => (
+          <Link
+            className="mood-pill"
+            href={`/browse?category=${encodeURIComponent(item)}`}
+            key={item}
+          >
+            {item}
+          </Link>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
 
       <section className="section">
         <div className="container">
