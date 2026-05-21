@@ -1,0 +1,193 @@
+.wrap {
+  width: min(980px, 100%);
+  margin-top: clamp(22px, 3.1vw, 36px);
+}
+
+.searchBar {
+  display: grid;
+  grid-template-columns: minmax(300px, 1fr) minmax(165px, 220px) minmax(165px, 220px) 64px;
+  align-items: center;
+  min-height: 76px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.13), rgba(255, 255, 255, 0.045)),
+    rgba(5, 8, 7, 0.72);
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.36),
+    inset 0 1px 0 rgba(255, 255, 255, 0.13);
+  backdrop-filter: blur(18px);
+}
+
+.mainField,
+.selectField {
+  display: grid;
+  min-width: 0;
+  min-height: 76px;
+  align-items: center;
+  color: #ffffff;
+}
+
+.mainField {
+  grid-template-columns: 34px minmax(0, 1fr);
+  gap: 12px;
+  padding: 0 26px;
+}
+
+.selectField {
+  grid-template-columns: 27px minmax(0, 1fr);
+  gap: 10px;
+  padding: 0 24px;
+  border-left: 1px solid rgba(255, 255, 255, 0.13);
+}
+
+.bigIcon,
+.icon {
+  display: grid;
+  place-items: center;
+  color: #ffffff;
+  line-height: 1;
+}
+
+.bigIcon {
+  font-size: 30px;
+  transform: translateY(-1px);
+}
+
+.icon {
+  font-size: 18px;
+  opacity: 0.88;
+}
+
+.mainField input,
+.selectField select {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  color: #ffffff;
+  background: transparent;
+  font: inherit;
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.mainField input::placeholder {
+  color: rgba(255, 255, 255, 0.76);
+}
+
+.selectField select {
+  cursor: pointer;
+  appearance: none;
+  padding-right: 20px;
+  background-image:
+    linear-gradient(45deg, transparent 50%, rgba(255, 255, 255, 0.92) 50%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.92) 50%, transparent 50%);
+  background-position:
+    calc(100% - 10px) 52%,
+    calc(100% - 5px) 52%;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+}
+
+.selectField option {
+  color: #07110b;
+  background: #ffffff;
+}
+
+.submit {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  margin-right: 10px;
+  border: 0;
+  border-radius: 999px;
+  color: #07110b;
+  background:
+    radial-gradient(circle at 33% 25%, rgba(255, 255, 255, 0.42), transparent 31%),
+    linear-gradient(135deg, #ffe66d, #ffd400 54%, #ffb900);
+  font-size: 22px;
+  cursor: pointer;
+  box-shadow:
+    0 20px 42px rgba(255, 212, 0, 0.29),
+    inset 0 1px 0 rgba(255, 255, 255, 0.42);
+  transition: transform 170ms ease, filter 170ms ease, box-shadow 170ms ease;
+}
+
+.submit:hover {
+  transform: translateY(-1px) scale(1.04);
+  filter: saturate(1.08);
+  box-shadow:
+    0 24px 50px rgba(255, 212, 0, 0.36),
+    inset 0 1px 0 rgba(255, 255, 255, 0.46);
+}
+
+.popular {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-top: 16px;
+  color: rgba(255, 255, 255, 0.76);
+  font-size: 14px;
+  font-weight: 850;
+}
+
+.popular button {
+  min-height: 36px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  padding: 8px 17px;
+  color: #ffffff;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.085), rgba(255, 255, 255, 0.025)),
+    rgba(0, 0, 0, 0.22);
+  font-size: 13px;
+  font-weight: 900;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  transition: transform 170ms ease, border-color 170ms ease, color 170ms ease, background 170ms ease;
+}
+
+.popular button:hover {
+  transform: translateY(-1px);
+  color: #07110b;
+  border-color: #ffd400;
+  background: #ffd400;
+}
+
+@media (max-width: 980px) {
+  .searchBar {
+    grid-template-columns: 1fr;
+    overflow: visible;
+    border-radius: 28px;
+    padding: 10px;
+  }
+
+  .mainField,
+  .selectField {
+    min-height: 58px;
+    border-left: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.10);
+    padding: 0 14px;
+  }
+
+  .mainField {
+    border-top: 0;
+  }
+
+  .submit {
+    width: 100%;
+    height: 52px;
+    margin: 8px 0 0;
+    border-radius: 18px;
+  }
+}
+
+@media (max-width: 540px) {
+  .popular {
+    display: none;
+  }
+}

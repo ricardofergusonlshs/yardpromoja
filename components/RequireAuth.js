@@ -1,13 +1,21 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabaseClient";
 
+function getCurrentPath(pathname) {
+  if (typeof window === "undefined") return pathname || "/";
+
+  const path = window.location.pathname || pathname || "/";
+  const search = window.location.search || "";
+
+  return `${path}${search}`;
+}
+
 export default function RequireAuth({ children }) {
-  const router = useRouter();
   const pathname = usePathname();
-  const supabase = useMemo(() => createClient(), []);
+  const router = useRouter();
 
   const [checking, setChecking] = useState(true);
   const [allowed, setAllowed] = useState(false);
@@ -15,49 +23,35 @@ export default function RequireAuth({ children }) {
   useEffect(() => {
     let alive = true;
 
-    function getCurrentPath() {
-      if (typeof window === "undefined") {
-        return pathname || "/";
-      }
-
-      return `${window.location.pathname}${window.location.search || ""}`;
-    }
-
     async function checkAuth() {
       try {
-        const { data } = await supabase.auth.getUser();
+        const supabase = createClient();
+        const { data, error } = await supabase.auth.getUser();
 
         if (!alive) return;
 
-        if (data?.user) {
+        if (!error && data?.user) {
           setAllowed(true);
           setChecking(false);
           return;
         }
 
-        const currentPath = getCurrentPath();
-        router.replace(`/login?next=${encodeURIComponent(currentPath)}`);
+        const next = getCurrentPath(pathname);
+        router.replace(`/login?next=${encodeURIComponent(next)}`);
       } catch {
         if (!alive) return;
 
-        const currentPath = getCurrentPath();
-        router.replace(`/login?next=${encodeURIComponent(currentPath)}`);
+        const next = getCurrentPath(pathname);
+        router.replace(`/login?next=${encodeURIComponent(next)}`);
       }
     }
 
     checkAuth();
 
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange(() => {
-      checkAuth();
-    });
-
     return () => {
       alive = false;
-      subscription?.unsubscribe?.();
     };
-  }, [pathname, router, supabase]);
+  }, [pathname, router]);
 
   if (checking) {
     return (

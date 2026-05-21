@@ -1,0 +1,18 @@
+OPTIONAL PHASE 3 AD DETAIL INTEGRATION
+
+Use this only after confirming /, /browse, and /link-up all work.
+This adds a small button to the ad detail page without changing the current share pack, RSVP, claim, report, or thumbnail metadata setup.
+
+1) In app/ad/[slug]/AdDetailClient.js, add this import near the top:
+
+import PlanAroundPromoButton from "@/app/components/PlanAroundPromoButton";
+
+2) In the visible action area, place this button near RSVP / Interested / More Actions:
+
+<PlanAroundPromoButton ad={ad} />
+
+3) If your detail file uses a different variable name than ad, pass the slug instead:
+
+<PlanAroundPromoButton slug={getDetailSlug(ad)} />
+
+Do not add this to app/ad/[slug]/page.js. That file must stay a server component for Open Graph thumbnails.

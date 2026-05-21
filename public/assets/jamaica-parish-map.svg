@@ -1,0 +1,179 @@
+<svg width="1200" height="620" viewBox="0 0 1200 620" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Jamaica parish map</title>
+  <desc id="desc">A stylized but more geographically accurate map of Jamaica with parish labels and marker points.</desc>
+
+  <defs>
+    <radialGradient id="islandGlow" cx="50%" cy="50%" r="60%">
+      <stop offset="0%" stop-color="#45C533" stop-opacity="0.24"/>
+      <stop offset="55%" stop-color="#1E7E36" stop-opacity="0.11"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+    </radialGradient>
+
+    <linearGradient id="islandFill" x1="171" y1="241" x2="1055" y2="363" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#314B3A"/>
+      <stop offset="0.42" stop-color="#20392D"/>
+      <stop offset="1" stop-color="#17281F"/>
+    </linearGradient>
+
+    <linearGradient id="coastLine" x1="155" y1="239" x2="1064" y2="362" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#C2E2C5"/>
+      <stop offset="0.5" stop-color="#E7FFE8"/>
+      <stop offset="1" stop-color="#B3D9B7"/>
+    </linearGradient>
+
+    <filter id="softShadow" x="84" y="138" width="1032" height="367" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="20" stdDeviation="24" flood-color="#000000" flood-opacity="0.42"/>
+    </filter>
+
+    <filter id="pinGlow" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <style>
+      .label {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 22px;
+        font-weight: 900;
+        fill: #FFFFFF;
+        paint-order: stroke;
+        stroke: rgba(0,0,0,0.82);
+        stroke-width: 6px;
+        stroke-linejoin: round;
+      }
+
+      .smallLabel {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 18px;
+        font-weight: 900;
+        fill: #FFFFFF;
+        paint-order: stroke;
+        stroke: rgba(0,0,0,0.82);
+        stroke-width: 5px;
+        stroke-linejoin: round;
+      }
+
+      .parishLine {
+        stroke: rgba(227,255,229,0.28);
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .roadLine {
+        stroke: rgba(255,255,255,0.10);
+        stroke-width: 1.4;
+        stroke-linecap: round;
+        stroke-dasharray: 8 10;
+      }
+
+      .pin {
+        fill: #FFD400;
+        stroke: #06110A;
+        stroke-width: 4;
+        filter: url(#pinGlow);
+      }
+
+      .pinMini {
+        fill: #FFD400;
+        stroke: #06110A;
+        stroke-width: 3;
+      }
+    </style>
+  </defs>
+
+  <rect width="1200" height="620" rx="48" fill="#06110A"/>
+  <rect x="1.5" y="1.5" width="1197" height="617" rx="46.5" stroke="white" stroke-opacity="0.08" stroke-width="3"/>
+  <ellipse cx="610" cy="326" rx="530" ry="180" fill="url(#islandGlow)"/>
+
+  <!--
+    More accurate Jamaica silhouette:
+    The outline is hand-drawn from the island's real east-west long shape:
+    western Hanover/Westmoreland bulge, south coast sweep, Kingston harbour,
+    Portland/St. Thomas eastern point, and the north coast arc.
+  -->
+  <g filter="url(#softShadow)">
+    <path id="jamaicaShape" d="
+      M 145 356
+      C 172 316, 213 284, 268 259
+      C 324 233, 390 229, 454 238
+      C 514 247, 561 226, 619 204
+      C 681 181, 747 181, 805 202
+      C 858 221, 904 235, 956 240
+      C 1013 246, 1055 276, 1087 320
+      C 1050 353, 1005 367, 949 368
+      C 901 370, 852 386, 798 397
+      C 742 409, 682 412, 619 409
+      C 563 407, 512 411, 455 413
+      C 397 415, 338 408, 283 395
+      C 224 381, 179 374, 145 356
+      Z"
+      fill="url(#islandFill)"
+      stroke="url(#coastLine)"
+      stroke-width="5"
+      stroke-linejoin="round"
+    />
+
+    <!-- South coast / mountain contour accent -->
+    <path d="M174 351 C236 349 279 360 333 373 C403 390 468 391 534 386 C616 381 672 395 746 392 C819 389 879 359 958 354 C1007 351 1040 344 1074 319"
+      stroke="rgba(255,255,255,0.16)" stroke-width="2.2" stroke-linecap="round"/>
+
+    <!-- North coast accent -->
+    <path d="M204 304 C267 258 341 241 429 250 C509 259 568 217 654 201 C735 187 789 205 848 229 C906 252 985 249 1046 292"
+      stroke="rgba(255,255,255,0.15)" stroke-width="2.2" stroke-linecap="round"/>
+
+    <!-- Parish boundary guide lines, closer to actual parish separation than earlier placeholder -->
+    <path class="parishLine" d="M239 286 C257 319 254 350 229 379"/>
+    <path class="parishLine" d="M303 259 C314 304 304 350 284 395"/>
+    <path class="parishLine" d="M371 242 C382 292 379 348 353 407"/>
+    <path class="parishLine" d="M451 239 C464 292 459 355 430 413"/>
+    <path class="parishLine" d="M528 229 C542 284 540 348 512 411"/>
+    <path class="parishLine" d="M612 206 C629 270 627 343 598 409"/>
+    <path class="parishLine" d="M696 188 C708 256 701 337 669 411"/>
+    <path class="parishLine" d="M782 196 C786 260 779 332 754 398"/>
+    <path class="parishLine" d="M862 225 C863 279 852 338 828 390"/>
+    <path class="parishLine" d="M938 240 C936 285 924 334 901 376"/>
+    <path class="parishLine" d="M1005 257 C996 305 982 342 960 368"/>
+
+    <!-- Central spine / route-like accent -->
+    <path class="roadLine" d="M210 338 C302 315 389 306 474 311 C573 317 647 283 728 284 C831 285 929 309 1028 323"/>
+
+    <!-- Parish marker pins -->
+    <circle class="pin" cx="218" cy="344" r="11"/>
+    <circle class="pin" cx="270" cy="329" r="11"/>
+    <circle class="pin" cx="330" cy="321" r="11"/>
+    <circle class="pin" cx="405" cy="337" r="11"/>
+    <circle class="pin" cx="490" cy="323" r="11"/>
+    <circle class="pin" cx="585" cy="303" r="11"/>
+    <circle class="pin" cx="660" cy="295" r="11"/>
+    <circle class="pin" cx="726" cy="270" r="11"/>
+    <circle class="pin" cx="783" cy="286" r="11"/>
+    <circle class="pin" cx="850" cy="284" r="11"/>
+    <circle class="pin" cx="918" cy="305" r="11"/>
+    <circle class="pin" cx="985" cy="319" r="11"/>
+    <circle class="pin" cx="1040" cy="301" r="11"/>
+    <circle class="pinMini" cx="760" cy="252" r="8"/>
+  </g>
+
+  <!-- Labels, positioned to match Jamaica's parish geography -->
+  <text class="smallLabel" x="172" y="381">Westmoreland</text>
+  <text class="smallLabel" x="228" y="320">Hanover</text>
+  <text class="smallLabel" x="308" y="309">St. James</text>
+  <text class="smallLabel" x="386" y="386">St. Elizabeth</text>
+  <text class="smallLabel" x="460" y="353">Manchester</text>
+  <text class="smallLabel" x="548" y="340">Clarendon</text>
+  <text class="smallLabel" x="633" y="303">Trelawny</text>
+  <text class="label" x="705" y="253">St. Ann</text>
+  <text class="smallLabel" x="785" y="272">St. Mary</text>
+  <text class="smallLabel" x="852" y="274">St. Thomas</text>
+  <text class="smallLabel" x="942" y="300">Portland</text>
+  <text class="smallLabel" x="880" y="356">Kingston &amp; St. Andrew</text>
+
+  <!-- Tiny decorative coastline dots -->
+  <circle cx="132" cy="357" r="3" fill="#FFD400" opacity="0.55"/>
+  <circle cx="1098" cy="320" r="3" fill="#FFD400" opacity="0.55"/>
+  <circle cx="617" cy="422" r="3" fill="#FFD400" opacity="0.32"/>
+</svg>

@@ -1,0 +1,489 @@
+
+/* =========================================================
+   YardPromoJa dark discovery homepage upgrade
+   Add this block at the bottom of app/globals.css.
+   ========================================================= */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.yp-discovery-home {
+  margin-top: -1px;
+  background:
+    radial-gradient(circle at 8% 4%, rgba(0, 138, 61, 0.24), transparent 30%),
+    radial-gradient(circle at 88% 18%, rgba(247, 198, 0, 0.16), transparent 34%),
+    linear-gradient(180deg, #03070d 0%, #06110f 46%, #07111f 100%);
+  color: #ffffff;
+}
+
+.yp-hero-premium {
+  position: relative;
+  overflow: hidden;
+  min-height: 680px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.yp-hero-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(3, 7, 13, 0.98) 0%, rgba(3, 7, 13, 0.78) 42%, rgba(3, 7, 13, 0.4) 100%),
+    radial-gradient(circle at 72% 28%, rgba(247, 198, 0, 0.16), transparent 28%),
+    linear-gradient(135deg, #04150f, #07111f 54%, #012c1f);
+}
+
+.yp-hero-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.08;
+  background-image:
+    linear-gradient(45deg, transparent 48%, rgba(255,255,255,.35) 50%, transparent 52%),
+    linear-gradient(-45deg, transparent 48%, rgba(255,255,255,.25) 50%, transparent 52%);
+  background-size: 42px 42px;
+}
+
+.yp-hero-content {
+  position: relative;
+  z-index: 1;
+  min-height: 680px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
+  align-items: center;
+  gap: 46px;
+  padding: 74px 0 60px;
+}
+
+.yp-location-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #f7c600;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  font-size: 13px;
+  font-weight: 1000;
+  margin-bottom: 18px;
+}
+
+.yp-hero-copy h1 {
+  margin: 0;
+  max-width: 760px;
+  font-size: clamp(54px, 7.6vw, 104px);
+  line-height: .9;
+  letter-spacing: -.082em;
+  color: #ffffff;
+}
+
+.yp-hero-copy h1 span {
+  display: inline-block;
+  color: #f7c600;
+  font-style: italic;
+  letter-spacing: -.055em;
+}
+
+.yp-hero-copy p {
+  max-width: 680px;
+  color: rgba(255, 255, 255, .82);
+  font-size: 18px;
+  margin: 22px 0 0;
+}
+
+.yp-search-bar {
+  margin-top: 26px;
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) 190px 180px 98px;
+  gap: 0;
+  padding: 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, .16);
+  background: rgba(255, 255, 255, .08);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, .28);
+  backdrop-filter: blur(18px);
+  overflow: hidden;
+}
+
+.yp-search-bar input,
+.yp-search-bar select {
+  min-height: 52px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: #ffffff;
+  box-shadow: none;
+}
+
+.yp-search-bar input::placeholder {
+  color: rgba(255, 255, 255, .72);
+}
+
+.yp-search-bar select {
+  border-left: 1px solid rgba(255, 255, 255, .14);
+  color: #ffffff;
+}
+
+.yp-search-bar select option {
+  color: #07111f;
+}
+
+.yp-search-bar button {
+  border: 0;
+  border-radius: 999px;
+  background: #f7c600;
+  color: #07111f;
+  font-weight: 1000;
+  padding: 0 18px;
+}
+
+.yp-popular-searches {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-top: 16px;
+  color: rgba(255, 255, 255, .72);
+  font-size: 13px;
+}
+
+.yp-popular-searches a {
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 999px;
+  padding: 7px 10px;
+  color: #ffffff;
+  background: rgba(255,255,255,.07);
+  font-weight: 850;
+}
+
+.yp-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.yp-hero-showcase {
+  position: relative;
+  min-height: 460px;
+  display: grid;
+  place-items: center;
+}
+
+.yp-showcase-card {
+  border-radius: 34px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.18);
+  background: rgba(255,255,255,.08);
+  box-shadow: 0 34px 90px rgba(0,0,0,.42);
+}
+
+.yp-showcase-card img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.yp-showcase-main {
+  width: min(520px, 100%);
+  transform: rotate(-1.5deg);
+}
+
+.yp-floating-proof {
+  position: absolute;
+  left: 0;
+  bottom: 24px;
+  width: min(360px, 78%);
+  border-radius: 24px;
+  padding: 18px;
+  border: 1px solid rgba(255,255,255,.18);
+  background: rgba(3, 7, 13, .74);
+  box-shadow: 0 22px 55px rgba(0,0,0,.34);
+  backdrop-filter: blur(18px);
+}
+
+.yp-floating-proof strong,
+.yp-floating-proof span {
+  display: block;
+}
+
+.yp-floating-proof strong {
+  color: #f7c600;
+  font-size: 16px;
+}
+
+.yp-floating-proof span {
+  color: rgba(255,255,255,.78);
+  margin-top: 6px;
+  font-size: 13px;
+}
+
+.yp-category-dock {
+  margin-top: -52px;
+  position: relative;
+  z-index: 3;
+}
+
+.yp-category-scroll {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(136px, 1fr);
+  overflow-x: auto;
+  gap: 0;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(11, 18, 32, .86);
+  border-radius: 24px;
+  box-shadow: 0 24px 70px rgba(0,0,0,.32);
+  backdrop-filter: blur(18px);
+}
+
+.yp-category-tile {
+  min-height: 88px;
+  display: grid;
+  place-items: center;
+  gap: 8px;
+  padding: 14px;
+  color: #ffffff;
+  border-right: 1px solid rgba(255,255,255,.1);
+  text-align: center;
+}
+
+.yp-category-tile:hover {
+  background: rgba(247, 198, 0, .12);
+}
+
+.yp-category-tile span {
+  font-size: 24px;
+}
+
+.yp-category-tile strong {
+  font-size: 13px;
+}
+
+.yp-dark-section {
+  background: transparent;
+  color: #ffffff;
+}
+
+.yp-section-head-light h2 {
+  color: #ffffff;
+}
+
+.yp-section-head-light .muted,
+.yp-dark-section .muted {
+  color: rgba(255,255,255,.7);
+}
+
+.yp-discovery-home .promo-card.card {
+  border-color: rgba(255,255,255,.12);
+  background: rgba(255,255,255,.07);
+  color: #ffffff;
+  box-shadow: 0 24px 70px rgba(0,0,0,.24);
+  backdrop-filter: blur(14px);
+}
+
+.yp-discovery-home .promo-body.card-body {
+  background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+}
+
+.yp-discovery-home .promo-card h3,
+.yp-discovery-home .promo-date,
+.yp-discovery-home .promo-price {
+  color: #ffffff;
+}
+
+.yp-discovery-home .location-chip {
+  background: rgba(0, 138, 61, .18);
+  color: #bbf7d0;
+}
+
+.yp-discovery-home .promo-mini-stats span {
+  background: rgba(255,255,255,.09);
+  border-color: rgba(255,255,255,.12);
+  color: rgba(255,255,255,.86);
+}
+
+.yp-parish-panel,
+.yp-business-cta,
+.yp-campaign-card,
+.yp-offer-card {
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 30px;
+  background: rgba(255,255,255,.06);
+  box-shadow: 0 24px 70px rgba(0,0,0,.25);
+  backdrop-filter: blur(18px);
+}
+
+.yp-parish-panel {
+  padding: 26px;
+}
+
+.yp-parish-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.yp-parish-card {
+  min-height: 130px;
+  border-radius: 22px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  border: 1px solid rgba(255,255,255,.12);
+  background:
+    linear-gradient(180deg, rgba(0,0,0,.08), rgba(0,0,0,.48)),
+    radial-gradient(circle at 20% 5%, rgba(247,198,0,.18), transparent 34%),
+    linear-gradient(135deg, rgba(0,138,61,.38), rgba(7,17,31,.86));
+  color: #ffffff;
+}
+
+.yp-parish-card span {
+  font-size: 24px;
+  margin-bottom: auto;
+}
+
+.yp-parish-card strong {
+  font-size: 18px;
+}
+
+.yp-parish-card small {
+  color: rgba(255,255,255,.72);
+  margin-top: 4px;
+}
+
+.yp-campaign-offer-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(320px, .9fr);
+  gap: 24px;
+}
+
+.yp-campaign-card,
+.yp-offer-card {
+  padding: 30px;
+}
+
+.yp-campaign-card {
+  background:
+    radial-gradient(circle at 90% 20%, rgba(247,198,0,.2), transparent 34%),
+    linear-gradient(135deg, rgba(0, 70, 43, .98), rgba(7, 17, 31, .92));
+}
+
+.yp-campaign-card h2,
+.yp-offer-card h2,
+.yp-business-cta h2 {
+  color: #ffffff;
+}
+
+.yp-campaign-card p,
+.yp-offer-card p,
+.yp-business-cta p {
+  color: rgba(255,255,255,.78);
+}
+
+.yp-offer-card .mood-pill {
+  border-color: rgba(255,255,255,.12);
+  background: rgba(255,255,255,.08);
+  color: #ffffff;
+}
+
+.yp-business-cta {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 22px;
+  align-items: center;
+  padding: 32px;
+  background:
+    radial-gradient(circle at 100% 0%, rgba(247,198,0,.18), transparent 35%),
+    linear-gradient(135deg, rgba(0, 70, 43, .92), rgba(7, 17, 31, .94));
+}
+
+.yp-cta-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 980px) {
+  .yp-hero-content,
+  .yp-campaign-offer-grid,
+  .yp-business-cta {
+    grid-template-columns: 1fr;
+  }
+
+  .yp-hero-showcase {
+    min-height: auto;
+  }
+
+  .yp-search-bar {
+    grid-template-columns: 1fr;
+    border-radius: 28px;
+  }
+
+  .yp-search-bar input,
+  .yp-search-bar select {
+    border-left: 0;
+    border-top: 1px solid rgba(255,255,255,.12);
+  }
+
+  .yp-search-bar input:first-child {
+    border-top: 0;
+  }
+
+  .yp-search-bar button {
+    min-height: 52px;
+    margin-top: 8px;
+  }
+
+  .yp-parish-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .yp-hero-premium,
+  .yp-hero-content {
+    min-height: auto;
+  }
+
+  .yp-hero-content {
+    padding: 48px 0 74px;
+  }
+
+  .yp-hero-copy h1 {
+    font-size: clamp(44px, 13vw, 62px);
+  }
+
+  .yp-category-dock {
+    margin-top: -34px;
+  }
+
+  .yp-category-scroll {
+    grid-auto-columns: 145px;
+  }
+
+  .yp-parish-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .yp-business-cta,
+  .yp-campaign-card,
+  .yp-offer-card,
+  .yp-parish-panel {
+    padding: 22px;
+  }
+
+  .yp-floating-proof {
+    position: static;
+    width: 100%;
+    margin-top: 16px;
+  }
+}

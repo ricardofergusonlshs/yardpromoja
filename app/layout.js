@@ -1,5 +1,6 @@
 import "./globals.css";
 import "./mobile/mobile.css";
+import "./yp-dark.css";
 import Link from "next/link";
 import AuthNav from "./components/AuthNav";
 
@@ -21,7 +22,7 @@ export const metadata = {
   openGraph: {
     title: "YardPromo Jamaica",
     description: "Find what’s happening in Jamaica or post your own promo link.",
-    images: ["/asset/yardpromo-logo-horizontal.png"],
+    images: ["/assets/yardpromo-logo-horizontal.png"],
     type: "website",
     url: "https://yardpromoja.com",
   },
@@ -46,10 +47,10 @@ export const viewport = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" data-scroll-behavior="smooth">
       <body>
-        <header className="header">
-          <div className="container nav">
+        <header className="header yp-site-header">
+          <div className="yp-container nav">
             <Link
               href="/"
               className="brand brand-logo"
@@ -67,23 +68,22 @@ export default function RootLayout({ children }) {
                   src="/assets/yardpromo-logo-horizontal.png"
                   alt="YardPromoJa"
                 />
-                <small>Jamaican promotion platform</small>
+                <small>Jamaica’s link-up planner</small>
               </span>
             </Link>
 
             <nav className="nav-links" aria-label="Primary navigation">
-  
-  <AuthNav />
-</nav>
+              <AuthNav />
+            </nav>
           </div>
 
-          <div className="launch-banner">
+          <div className="launch-banner yp-launch-banner">
             <div className="launch-banner-inner">
               <div>
-                <strong>Free launch posting:</strong>{" "}
+                <strong>Social media gets attention.</strong>{" "}
                 <span>
-                  Upload your flyer, get a professional promo page, and share it
-                  everywhere.
+                  YardPromoJa turns your flyer into a link-up page with actions,
+                  shares, directions, campaigns, and offers.
                 </span>
               </div>
 
@@ -94,8 +94,8 @@ export default function RootLayout({ children }) {
 
         <main>{children}</main>
 
-        <footer className="footer">
-          <div className="container footer-inner">
+        <footer className="footer yp-site-footer">
+          <div className="yp-container footer-inner">
             <div>
               <div className="footer-logo-row">
                 <img
@@ -103,11 +103,12 @@ export default function RootLayout({ children }) {
                   src="/assets/yardpromo-icon.png"
                   alt="YardPromoJa"
                 />
-                <strong style={{ color: "#07111f" }}>YardPromoJa</strong>
+                <strong>YardPromoJa</strong>
               </div>
 
               <p className="muted">
-                Built for promoters, venues, businesses, and event organizers.
+                Jamaica’s link-up planner for events, businesses, campaigns,
+                food, offers, and local promotion.
               </p>
             </div>
 
@@ -116,6 +117,7 @@ export default function RootLayout({ children }) {
               <Link href="/contact">Contact</Link>
               <Link href="/advertise">Advertise</Link>
               <Link href="/campaigns">Campaigns & Giveaways</Link>
+              <Link href="/link-up">Plan the Link-Up</Link>
               <Link href="/browse">Parish Pulse</Link>
               <Link href="/weekend">Weekend Board</Link>
               <Link href="/browse">Rankings</Link>

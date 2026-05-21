@@ -1,0 +1,451 @@
+.page {
+  min-height: 100vh;
+  padding: clamp(28px, 5vw, 72px) max(18px, calc((100vw - 1440px) / 2));
+  color: #ffffff;
+  background:
+    radial-gradient(circle at 16% 0%, rgba(66, 198, 47, 0.15), transparent 26%),
+    radial-gradient(circle at 88% 8%, rgba(255, 212, 0, 0.10), transparent 24%),
+    linear-gradient(180deg, #030604 0%, #07100c 48%, #020403 100%);
+}
+
+.kicker {
+  margin: 0 0 10px;
+  color: #ffd400;
+  font-size: 12px;
+  font-weight: 1000;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.hero,
+.detailHero {
+  display: grid;
+  gap: clamp(22px, 4vw, 42px);
+  align-items: center;
+  margin-bottom: clamp(22px, 4vw, 42px);
+}
+
+.hero {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.detailHero {
+  grid-template-columns: minmax(0, 1fr) minmax(360px, 0.82fr);
+}
+
+.hero h1,
+.detailHero h1 {
+  max-width: 920px;
+  margin: 0;
+  color: #ffffff;
+  font-size: clamp(44px, 7vw, 92px);
+  line-height: 0.9;
+  letter-spacing: -0.08em;
+  text-transform: uppercase;
+}
+
+.hero p,
+.detailHero p {
+  max-width: 760px;
+  margin: 14px 0 0;
+  color: rgba(255, 255, 255, 0.74);
+  font-size: clamp(16px, 1.45vw, 20px);
+  line-height: 1.55;
+}
+
+.goldButton,
+.greenButton {
+  display: inline-flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  border-radius: 14px;
+  padding: 12px 18px;
+  color: #07110b;
+  font-weight: 1000;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.goldButton {
+  background: #ffd400;
+}
+
+.greenButton {
+  color: #ffffff;
+  background: linear-gradient(135deg, #44c32f, #1f7e18);
+}
+
+.heroActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.parishGrid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.parishCard {
+  position: relative;
+  min-height: 220px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 18px;
+  color: #ffffff;
+  background: #07110b;
+  text-decoration: none;
+  box-shadow: 0 20px 58px rgba(0, 0, 0, 0.28);
+  transition: transform 180ms ease, border-color 180ms ease;
+}
+
+.parishCard:hover {
+  transform: translateY(-3px);
+  border-color: rgba(255, 212, 0, 0.48);
+}
+
+.parishCard img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.parishCard span {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, transparent 18%, rgba(0, 0, 0, 0.88)),
+    radial-gradient(circle at 90% 10%, rgba(255, 212, 0, 0.16), transparent 28%);
+}
+
+.parishCard strong,
+.parishCard small,
+.parishCard em {
+  position: relative;
+  z-index: 1;
+}
+
+.parishCard strong {
+  color: #ffffff;
+  font-size: clamp(18px, 1.5vw, 24px);
+  line-height: 0.96;
+  letter-spacing: -0.05em;
+}
+
+.parishCard small {
+  margin-top: 5px;
+  color: rgba(255, 255, 255, 0.84);
+  font-weight: 850;
+}
+
+.parishCard em {
+  margin-top: 5px;
+  color: #ffd400;
+  font-style: normal;
+  font-weight: 1000;
+}
+
+.heroImageCard {
+  position: relative;
+  overflow: hidden;
+  min-height: 390px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at 80% 0%, rgba(255, 212, 0, 0.12), transparent 30%),
+    rgba(255, 255, 255, 0.055);
+  box-shadow: 0 28px 88px rgba(0, 0, 0, 0.32);
+}
+
+.heroImageCard img {
+  position: absolute;
+  inset: 18px;
+  width: calc(100% - 36px);
+  height: calc(100% - 36px);
+  object-fit: cover;
+  border-radius: 22px;
+}
+
+.heroImageCard::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 42%, rgba(0, 0, 0, 0.82));
+}
+
+.heroImageCard div {
+  position: absolute;
+  left: 28px;
+  right: 28px;
+  bottom: 26px;
+  z-index: 1;
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.heroImageCard strong {
+  color: #ffffff;
+  font-size: clamp(28px, 3vw, 44px);
+  line-height: 0.94;
+  letter-spacing: -0.06em;
+}
+
+.heroImageCard span {
+  color: #ffd400;
+  font-weight: 1000;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  overflow: hidden;
+  margin-bottom: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.055);
+}
+
+.statsGrid div {
+  padding: 20px;
+  border-right: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.statsGrid div:last-child {
+  border-right: 0;
+}
+
+.statsGrid strong {
+  display: block;
+  color: #ffd400;
+  font-size: clamp(28px, 4vw, 44px);
+  line-height: 1;
+}
+
+.statsGrid span {
+  color: rgba(255, 255, 255, 0.76);
+  font-weight: 850;
+}
+
+.quickLinks {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: clamp(24px, 4vw, 42px);
+}
+
+.quickLinks a {
+  display: flex;
+  min-height: 74px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 16px;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.055);
+  font-weight: 950;
+  text-align: center;
+  text-decoration: none;
+}
+
+.quickLinks a:hover {
+  border-color: rgba(255, 212, 0, 0.45);
+  color: #ffd400;
+}
+
+.contentGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 0.33fr);
+  gap: 22px;
+  align-items: start;
+}
+
+.mainColumn,
+.sidePanel,
+.emptyState {
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.045);
+  box-shadow: 0 22px 74px rgba(0, 0, 0, 0.25);
+}
+
+.mainColumn {
+  padding: clamp(16px, 2vw, 24px);
+}
+
+.sectionHead {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+
+.sectionHead h2 {
+  margin: 0;
+  color: #ffffff;
+  font-size: clamp(30px, 4vw, 52px);
+  line-height: 0.95;
+  letter-spacing: -0.07em;
+}
+
+.sectionHead a {
+  color: #35d044;
+  font-weight: 950;
+  text-decoration: none;
+}
+
+.emptyState {
+  display: grid;
+  place-items: center;
+  min-height: 260px;
+  padding: 28px;
+  text-align: center;
+}
+
+.emptyState h3 {
+  margin: 0;
+  color: #ffffff;
+  font-size: 30px;
+  letter-spacing: -0.05em;
+}
+
+.emptyState p {
+  max-width: 560px;
+  margin: 10px auto 0;
+  color: rgba(255, 255, 255, 0.72);
+  line-height: 1.5;
+}
+
+.emptyState a {
+  margin-top: 18px;
+}
+
+.sidePanel {
+  position: sticky;
+  top: 86px;
+  padding: 18px;
+}
+
+.sidePanel h3 {
+  margin: 0 0 14px;
+  color: #ffffff;
+  font-size: 26px;
+  letter-spacing: -0.05em;
+}
+
+.nearbyList {
+  display: grid;
+  gap: 10px;
+}
+
+.nearbyList a {
+  display: grid;
+  grid-template-columns: 74px minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
+  padding: 9px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: 16px;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.045);
+  text-decoration: none;
+}
+
+.nearbyList a:hover {
+  border-color: rgba(255, 212, 0, 0.42);
+}
+
+.nearbyList img {
+  width: 74px;
+  height: 58px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.nearbyList strong,
+.nearbyList small {
+  display: block;
+}
+
+.nearbyList small {
+  margin-top: 3px;
+  color: rgba(255, 255, 255, 0.64);
+  font-weight: 750;
+}
+
+@media (max-width: 1180px) {
+  .parishGrid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .detailHero,
+  .contentGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .sidePanel {
+    position: static;
+  }
+}
+
+@media (max-width: 760px) {
+  .page {
+    padding-inline: 16px;
+  }
+
+  .hero,
+  .detailHero {
+    grid-template-columns: 1fr;
+  }
+
+  .parishGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .statsGrid,
+  .quickLinks {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .statsGrid div:nth-child(2n) {
+    border-right: 0;
+  }
+
+  .heroImageCard {
+    min-height: 300px;
+  }
+}
+
+@media (max-width: 460px) {
+  .parishGrid,
+  .statsGrid,
+  .quickLinks {
+    grid-template-columns: 1fr;
+  }
+
+  .parishCard {
+    min-height: 190px;
+  }
+
+  .statsGrid div {
+    border-right: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .statsGrid div:last-child {
+    border-bottom: 0;
+  }
+}

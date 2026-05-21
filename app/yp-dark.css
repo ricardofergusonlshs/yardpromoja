@@ -1,0 +1,7245 @@
+/* =========================================================
+   YardPromoJa dark premium homepage + Link-Up Planner theme
+   Safe additive CSS: this file is imported after globals.css.
+   ========================================================= */
+
+:root {
+  --yp-black: #030604;
+  --yp-black-2: #07100c;
+  --yp-panel: rgba(15, 20, 17, 0.9);
+  --yp-panel-2: rgba(255, 255, 255, 0.055);
+  --yp-line: rgba(255, 255, 255, 0.13);
+  --yp-text: #f8fafc;
+  --yp-muted: #b8c2bb;
+  --yp-gold: #ffd000;
+  --yp-green: #42c62f;
+  --yp-green-dark: #0a4c24;
+  --yp-blue: #2277ff;
+  --yp-pink: #ef2d91;
+  --yp-purple: #8a35e8;
+  --yp-orange: #ff6b00;
+  --yp-radius: 24px;
+  --yp-shadow: 0 28px 70px rgba(0, 0, 0, 0.36);
+}
+
+.yp-site-header {
+  background: rgba(3, 6, 4, 0.94);
+  border-bottom-color: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(18px);
+}
+
+.yp-site-header .brand strong,
+.yp-site-header .brand-copy small,
+.yp-site-header .nav-links a,
+.yp-site-header .nav-links button {
+  color: #fff;
+}
+
+.yp-site-header .brand-copy small {
+  color: #cbd5d1;
+}
+
+.yp-site-header .nav-links a,
+.yp-site-header .nav-links button {
+  display: inline-flex;
+  align-items: center;
+  min-height: 42px;
+  padding: 9px 12px;
+  border-radius: 14px;
+  font-weight: 900;
+  font-size: 14px;
+}
+
+.yp-site-header .nav-links a:hover,
+.yp-site-header .nav-links a.active,
+.yp-site-header .nav-links button:hover,
+.yp-site-header .nav-links button.active {
+  background: rgba(255, 208, 0, 0.14);
+  color: var(--yp-gold);
+}
+
+.yp-nav-post {
+  background: var(--yp-gold) !important;
+  color: #111827 !important;
+  padding-inline: 18px !important;
+}
+
+.yp-nav-login {
+  border: 1px solid rgba(255, 255, 255, 0.22);
+}
+
+.yp-launch-banner {
+  background: linear-gradient(90deg, #ffd000, #ffdf53);
+  color: #07111f;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.yp-launch-banner a {
+  background: #07111f;
+  color: #fff;
+  border-radius: 999px;
+  padding: 10px 18px;
+  font-weight: 950;
+}
+
+.yp-site-footer {
+  background: #050806;
+  color: #dbe4df;
+  border-top-color: rgba(255, 255, 255, 0.12);
+}
+
+.yp-site-footer .footer-logo-row strong,
+.yp-site-footer .footer-links a {
+  color: #fff !important;
+}
+
+.yp-site-footer .muted {
+  color: #a7b5ad;
+}
+
+.yp-dark-home,
+.yp-linkup-page {
+  min-height: 100vh;
+  color: var(--yp-text);
+  background:
+    radial-gradient(circle at 18% 4%, rgba(66, 198, 47, 0.16), transparent 30%),
+    radial-gradient(circle at 86% 14%, rgba(255, 208, 0, 0.1), transparent 26%),
+    linear-gradient(180deg, #030604 0%, #07100c 45%, #020403 100%);
+}
+
+.yp-mini-kicker,
+.yp-kicker {
+  margin: 0 0 10px;
+  color: var(--yp-gold);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 1000;
+  font-size: 12px;
+}
+
+.yp-dark-card {
+  background:
+    linear-gradient(145deg, rgba(255,255,255,.08), rgba(255,255,255,.035)),
+    rgba(10, 14, 12, 0.88);
+  border: 1px solid var(--yp-line);
+  border-radius: var(--yp-radius);
+  box-shadow: 0 18px 55px rgba(0, 0, 0, 0.28);
+}
+
+.yp-dark-card h2,
+.yp-dark-card h3,
+.yp-dark-home h2,
+.yp-linkup-page h2 {
+  color: #fff;
+}
+
+.yp-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-height: 48px;
+  padding: 12px 18px;
+  border-radius: 14px;
+  border: 0;
+  font-weight: 1000;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+}
+
+.yp-btn:hover {
+  transform: translateY(-1px);
+}
+
+.yp-btn-gold { background: var(--yp-gold); color: #07111f; }
+.yp-btn-green { background: linear-gradient(135deg, #44c32f, #1f7e18); color: #fff; }
+.yp-btn-blue { background: linear-gradient(135deg, #2d7cff, #164aa3); color: #fff; }
+.yp-btn-outline { background: rgba(255,255,255,.035); border: 1px solid rgba(66,198,47,.52); color: #fff; }
+.yp-full-btn { width: 100%; }
+
+.yp-dark-hero {
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(90deg, rgba(0,0,0,.86), rgba(0,0,0,.48)),
+    radial-gradient(circle at 70% 20%, rgba(255,208,0,.16), transparent 26%),
+    linear-gradient(135deg, #020403, #0b1b12 58%, #040604);
+}
+
+.yp-dark-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.38;
+  background:
+    radial-gradient(circle at 20% 60%, rgba(66,198,47,.16), transparent 26%),
+    linear-gradient(transparent, rgba(0,0,0,.8));
+}
+
+.yp-home-hero-grid {
+  position: relative;
+  z-index: 1;
+  min-height: 560px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(360px, .95fr);
+  gap: 44px;
+  align-items: center;
+  padding: 46px 0;
+}
+
+.yp-hero-copy h1,
+.yp-linkup-hero h1 {
+  margin: 0;
+  font-size: clamp(48px, 6.8vw, 86px);
+  line-height: .92;
+  letter-spacing: -0.075em;
+  text-transform: uppercase;
+}
+
+.yp-hero-copy h1 span,
+.yp-linkup-hero h1 span { color: var(--yp-green); }
+
+.yp-hero-text,
+.yp-linkup-hero p {
+  max-width: 650px;
+  margin: 18px 0 0;
+  color: #e5ece8;
+  font-size: 18px;
+  line-height: 1.55;
+}
+
+.yp-search-panel {
+  display: grid;
+  grid-template-columns: minmax(240px, 1fr) 170px 170px 58px;
+  gap: 0;
+  align-items: end;
+  max-width: 820px;
+  margin-top: 24px;
+  padding: 10px;
+  border: 1px solid var(--yp-line);
+  border-radius: 22px;
+  background: rgba(255,255,255,.08);
+  box-shadow: var(--yp-shadow);
+  backdrop-filter: blur(16px);
+}
+
+.yp-search-panel label {
+  display: grid;
+  gap: 6px;
+  padding: 0 12px;
+  border-right: 1px solid rgba(255,255,255,.12);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.yp-search-panel label:last-of-type { border-right: 0; }
+
+.yp-search-panel input,
+.yp-search-panel select,
+.yp-linkup-filters input,
+.yp-linkup-filters select {
+  background: rgba(0,0,0,.34);
+  border: 1px solid rgba(255,255,255,.14);
+  color: #fff;
+  border-radius: 14px;
+}
+
+.yp-search-panel input::placeholder { color: #aab4ae; }
+.yp-search-panel select option,
+.yp-linkup-filters select option { color: #07111f; }
+
+.yp-search-button {
+  min-height: 50px;
+  border-radius: 16px;
+  border: 0;
+  color: #fff;
+  background: linear-gradient(135deg, var(--yp-green), #1e7b15);
+  font-size: 20px;
+}
+
+.yp-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 16px;
+}
+
+.yp-hero-showcase {
+  position: relative;
+  padding: 10px;
+  border-radius: 28px;
+  background: rgba(255,255,255,.06);
+  border: 1px solid var(--yp-line);
+  box-shadow: var(--yp-shadow);
+}
+
+.yp-feature-ribbon {
+  position: absolute;
+  z-index: 3;
+  top: 22px;
+  left: 22px;
+  border-radius: 999px;
+  padding: 9px 13px;
+  background: rgba(0,0,0,.72);
+  color: #fff;
+  border: 1px solid rgba(255,208,0,.5);
+  font-weight: 950;
+}
+
+.yp-category-strip-wrap {
+  background: #090d0b;
+  border-top: 1px solid var(--yp-line);
+  border-bottom: 1px solid var(--yp-line);
+  padding: 14px 0;
+}
+
+.yp-category-strip {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(128px, 1fr);
+  overflow-x: auto;
+  gap: 10px;
+  padding-bottom: 3px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.yp-category-pill {
+  display: grid;
+  place-items: center;
+  gap: 8px;
+  min-height: 88px;
+  padding: 12px;
+  color: #fff;
+  border-radius: 18px;
+  border: 1px solid var(--yp-line);
+  background: rgba(255,255,255,.055);
+  text-align: center;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.yp-category-icon {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,208,0,.32), rgba(66,198,47,.16));
+  color: var(--yp-gold);
+}
+
+.yp-dark-section { padding: 34px 0; }
+
+.yp-home-content-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(320px, .95fr);
+  gap: 22px;
+  align-items: start;
+}
+
+.yp-trending-panel { padding: 22px; }
+
+.yp-section-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: start;
+  margin-bottom: 18px;
+}
+
+.yp-section-head.compact { margin-bottom: 10px; }
+.yp-section-head a { color: var(--yp-green); font-weight: 950; }
+.yp-section-head h2 { margin: 0; font-size: clamp(24px, 3vw, 34px); }
+
+.yp-home-sidebar { display: grid; gap: 18px; }
+.yp-linkup-preview, .yp-campaigns-preview { padding: 20px; }
+
+.yp-linkup-list { display: grid; gap: 9px; margin: 16px 0; }
+
+.yp-linkup-list a {
+  display: grid;
+  grid-template-columns: 34px 1fr auto;
+  gap: 10px;
+  align-items: center;
+  min-height: 48px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  color: #fff;
+  background: rgba(255,255,255,.055);
+  border: 1px solid rgba(255,255,255,.1);
+}
+
+.yp-linkup-list em { color: var(--yp-green); font-style: normal; font-size: 24px; }
+.yp-campaign-mini-list { display: grid; gap: 10px; }
+
+.yp-campaign-mini {
+  display: grid;
+  gap: 4px;
+  min-height: 84px;
+  padding: 14px;
+  border-radius: 16px;
+  color: #fff;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.14);
+}
+
+.yp-campaign-mini strong { color: var(--yp-gold); font-size: 18px; text-transform: uppercase; }
+.yp-campaign-mini span { color: #edf2ef; font-size: 13px; }
+.yp-campaign-mini.gold { background: linear-gradient(135deg, rgba(255,208,0,.18), rgba(0,0,0,.3)); }
+.yp-campaign-mini.blue { background: linear-gradient(135deg, rgba(34,119,255,.23), rgba(0,0,0,.3)); }
+.yp-campaign-mini.pink { background: linear-gradient(135deg, rgba(239,45,145,.24), rgba(0,0,0,.3)); }
+
+.yp-stats-strip {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border: 1px solid var(--yp-line);
+  border-radius: 24px;
+  background: rgba(255,255,255,.05);
+  overflow: hidden;
+}
+
+.yp-stats-strip div { padding: 22px; border-right: 1px solid var(--yp-line); }
+.yp-stats-strip div:last-child { border-right: 0; }
+.yp-stats-strip strong { display: block; color: var(--yp-gold); font-size: 20px; }
+.yp-stats-strip span { color: var(--yp-muted); }
+
+.yp-dark-cta {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 22px;
+  align-items: center;
+  padding: 26px;
+  border: 1px solid rgba(66,198,47,.42);
+  border-radius: 26px;
+  background:
+    radial-gradient(circle at 8% 50%, rgba(66,198,47,.22), transparent 22%),
+    linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+}
+
+.yp-dark-cta p { color: var(--yp-muted); }
+.yp-cta-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+
+.yp-dark-home .promo-card {
+  background: #0a0f0c;
+  border-color: rgba(255,255,255,.12);
+  color: #fff;
+}
+
+.yp-dark-home .promo-card h3,
+.yp-dark-home .promo-price,
+.yp-dark-home .promo-date { color: #fff; }
+
+.yp-dark-home .promo-location {
+  color: #0d6b37;
+  background: rgba(66,198,47,.14);
+  width: fit-content;
+  padding: 7px 10px;
+  border-radius: 999px;
+}
+
+.yp-dark-home .promo-stats span {
+  background: rgba(255,255,255,.08);
+  color: #e7eee9;
+  border-color: rgba(255,255,255,.1);
+}
+
+.yp-dark-home .details-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #41c62e, #187a12);
+  color: #fff;
+}
+
+.yp-dark-home .ads-grid.grid-3 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+/* Link-Up page */
+.yp-linkup-hero {
+  padding: 52px 0 22px;
+  background:
+    linear-gradient(90deg, rgba(0,0,0,.86), rgba(0,0,0,.3)),
+    radial-gradient(circle at 80% 16%, rgba(255,208,0,.15), transparent 24%),
+    linear-gradient(135deg, #030604, #0d1e13);
+}
+
+.yp-linkup-hero h1 span { color: var(--yp-gold); }
+
+.yp-linkup-filters {
+  display: grid;
+  grid-template-columns: 1.05fr 1fr .8fr .85fr auto;
+  gap: 12px;
+  align-items: end;
+  margin-top: 26px;
+  padding: 16px;
+  border-radius: 22px;
+  background: rgba(255,255,255,.06);
+  border: 1px solid var(--yp-line);
+}
+
+.yp-linkup-filters label {
+  display: grid;
+  gap: 7px;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.yp-linkup-section { padding: 16px 0; }
+
+.yp-linkup-featured-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.8fr) minmax(300px, .8fr);
+  gap: 18px;
+  align-items: stretch;
+}
+
+.yp-linkup-featured,
+.yp-about-event { padding: 22px; }
+
+.yp-featured-event {
+  display: grid;
+  grid-template-columns: minmax(260px, .82fr) 1fr;
+  gap: 24px;
+  align-items: center;
+}
+
+.yp-featured-event img {
+  width: 100%;
+  height: 260px;
+  object-fit: cover;
+  border-radius: 18px;
+  border: 1px solid var(--yp-line);
+}
+
+.yp-featured-event h2 { margin: 0 0 12px; font-size: clamp(30px, 4vw, 48px); line-height: 1; }
+.yp-feature-meta { margin: 8px 0; color: #e9f0ec; font-weight: 800; }
+.yp-feature-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+.yp-about-event p, .yp-about-event li { color: #e2e8f0; }
+.yp-about-event ul { margin: 16px 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+
+.yp-social-mini { display: flex; gap: 8px; flex-wrap: wrap; }
+.yp-social-mini button {
+  border: 1px solid var(--yp-line);
+  background: rgba(255,255,255,.08);
+  color: #fff;
+  border-radius: 999px;
+  min-height: 38px;
+  padding: 8px 12px;
+  font-weight: 900;
+}
+
+.yp-linkup-main-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(320px, .75fr);
+  gap: 18px;
+  align-items: start;
+}
+
+.yp-linkup-plan,
+.yp-linkup-sidebar .yp-dark-card { padding: 20px; }
+.yp-linkup-sidebar { display: grid; gap: 16px; }
+.yp-linkup-plan-rows { display: grid; gap: 12px; }
+
+.yp-linkup-plan-row {
+  display: grid;
+  grid-template-columns: 42px 68px minmax(160px, .9fr) minmax(220px, 1.2fr) 78px;
+  gap: 12px;
+  align-items: center;
+  min-height: 112px;
+  padding: 12px;
+  border-radius: 18px;
+  background: rgba(255,255,255,.055);
+  border: 1px solid rgba(255,255,255,.12);
+}
+
+.yp-row-number {
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  background: var(--yp-green);
+  font-weight: 1000;
+}
+
+.yp-row-icon {
+  width: 60px;
+  height: 60px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid currentColor;
+  font-size: 26px;
+  color: var(--yp-green);
+  background: rgba(0,0,0,.2);
+}
+
+.yp-linkup-plan-row.gold .yp-row-number,
+.yp-linkup-plan-row.gold .yp-row-view { background: var(--yp-gold); color:#07111f; }
+.yp-linkup-plan-row.gold .yp-row-icon, .yp-linkup-plan-row.gold .yp-row-copy strong { color: var(--yp-gold); }
+.yp-linkup-plan-row.purple .yp-row-number,
+.yp-linkup-plan-row.purple .yp-row-view { background: var(--yp-purple); }
+.yp-linkup-plan-row.purple .yp-row-icon, .yp-linkup-plan-row.purple .yp-row-copy strong { color: #ad66ff; }
+.yp-linkup-plan-row.pink .yp-row-number,
+.yp-linkup-plan-row.pink .yp-row-view { background: var(--yp-pink); }
+.yp-linkup-plan-row.pink .yp-row-icon, .yp-linkup-plan-row.pink .yp-row-copy strong { color: #ff5faf; }
+.yp-linkup-plan-row.blue .yp-row-number,
+.yp-linkup-plan-row.blue .yp-row-view { background: var(--yp-blue); }
+.yp-linkup-plan-row.blue .yp-row-icon, .yp-linkup-plan-row.blue .yp-row-copy strong { color: #5da0ff; }
+.yp-linkup-plan-row.teal .yp-row-number,
+.yp-linkup-plan-row.teal .yp-row-view { background: #12bfa4; }
+.yp-linkup-plan-row.teal .yp-row-icon, .yp-linkup-plan-row.teal .yp-row-copy strong { color: #2dd4bf; }
+.yp-linkup-plan-row.orange .yp-row-number,
+.yp-linkup-plan-row.orange .yp-row-view { background: var(--yp-orange); }
+.yp-linkup-plan-row.orange .yp-row-icon, .yp-linkup-plan-row.orange .yp-row-copy strong { color: #ff8a33; }
+
+.yp-row-copy { display: grid; gap: 5px; }
+.yp-row-copy strong { color: var(--yp-green); text-transform: uppercase; font-weight: 1000; }
+.yp-row-copy span, .yp-row-empty { color: var(--yp-muted); font-size: 13px; }
+.yp-row-items { display: flex; gap: 8px; align-items: center; min-width: 0; }
+
+.yp-mini-ad { width: 84px; display: grid; gap: 5px; color: #fff; }
+.yp-mini-ad img { width: 84px; height: 58px; border-radius: 10px; object-fit: cover; }
+.yp-mini-ad span {
+  font-size: 11px;
+  line-height: 1.15;
+  color: #e5ece8;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.yp-row-view {
+  min-height: 44px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  background: var(--yp-green);
+  color: #fff;
+  font-weight: 1000;
+}
+
+.yp-side-list { display: grid; gap: 10px; margin: 14px 0; }
+.yp-side-list a {
+  display: grid;
+  grid-template-columns: 72px 1fr;
+  gap: 10px;
+  align-items: center;
+  padding: 8px;
+  border-radius: 14px;
+  background: rgba(255,255,255,.055);
+  border: 1px solid rgba(255,255,255,.1);
+  color: #fff;
+}
+.yp-side-list.compact a { grid-template-columns: 54px 1fr; }
+.yp-side-list img { width: 72px; height: 56px; border-radius: 10px; object-fit: cover; }
+.yp-side-list.compact img { width: 54px; height: 46px; }
+.yp-side-list strong, .yp-side-list em { display: block; }
+.yp-side-list em { color: var(--yp-muted); font-style: normal; font-size: 12px; }
+
+.yp-plan-summary { display: grid; gap: 12px; }
+.yp-plan-summary div { display: inline-flex; align-items: baseline; gap: 8px; }
+.yp-plan-summary strong { color: #fff; font-size: 26px; }
+.yp-plan-summary span { color: var(--yp-muted); }
+
+.yp-linkup-share {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 18px;
+  align-items: center;
+  padding: 22px;
+}
+.yp-share-buttons { display: flex; flex-wrap: wrap; gap: 10px; }
+
+.yp-linkup-bottom-cta {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  padding-bottom: 34px;
+}
+
+.yp-linkup-bottom-cta a {
+  display: grid;
+  gap: 5px;
+  min-height: 110px;
+  padding: 22px;
+  border-radius: 22px;
+  color: #fff;
+  background: rgba(255,255,255,.055);
+  border: 1px solid rgba(66,198,47,.42);
+}
+
+.yp-linkup-bottom-cta strong { color: var(--yp-green); font-size: 20px; text-transform: uppercase; }
+.yp-linkup-bottom-cta span { color: var(--yp-muted); }
+
+.yp-empty-dark {
+  padding: 22px;
+  border-radius: 16px;
+  border: 1px dashed rgba(255,255,255,.2);
+  color: var(--yp-muted);
+  background: rgba(0,0,0,.2);
+  text-align: center;
+}
+.yp-empty-dark.small { padding: 14px; font-size: 13px; }
+
+@media (max-width: 1180px) {
+  .yp-dark-home .ads-grid.grid-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .yp-home-content-grid, .yp-linkup-main-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 980px) {
+  .yp-home-hero-grid,
+  .yp-linkup-featured-grid,
+  .yp-featured-event,
+  .yp-dark-cta,
+  .yp-linkup-share { grid-template-columns: 1fr; }
+
+  .yp-search-panel,
+  .yp-linkup-filters { grid-template-columns: 1fr; }
+
+  .yp-search-panel label { border-right: 0; padding: 0; }
+  .yp-stats-strip, .yp-linkup-bottom-cta { grid-template-columns: 1fr 1fr; }
+
+  .yp-linkup-plan-row { grid-template-columns: 40px 56px 1fr; }
+  .yp-row-items, .yp-row-view { grid-column: 1 / -1; }
+  .yp-row-view { min-height: 48px; }
+
+  .yp-site-header .nav { align-items: stretch; }
+  .yp-site-header .nav-links {
+    width: 100%;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .yp-site-header .nav-links a,
+  .yp-site-header .nav-links button { flex: 0 0 auto; }
+}
+
+@media (max-width: 640px) {
+  .yp-home-hero-grid { min-height: auto; padding: 34px 0; }
+  .yp-hero-copy h1, .yp-linkup-hero h1 { font-size: clamp(40px, 13vw, 58px); }
+  .yp-hero-text, .yp-linkup-hero p { font-size: 16px; }
+
+  .yp-hero-actions,
+  .yp-cta-actions,
+  .yp-feature-actions,
+  .yp-share-buttons { display: grid; grid-template-columns: 1fr; }
+
+  .yp-btn { width: 100%; }
+  .yp-dark-home .ads-grid.grid-3, .yp-stats-strip, .yp-linkup-bottom-cta { grid-template-columns: 1fr; }
+  .yp-category-strip { grid-auto-columns: 132px; }
+  .yp-featured-event img { height: auto; max-height: 380px; }
+  .yp-row-items { overflow-x: auto; padding-bottom: 4px; }
+  .yp-mini-ad { flex: 0 0 84px; }
+  .yp-linkup-plan-row { align-items: start; }
+}
+
+
+/* =========================================================
+   Phase 1.1 scale/layout correction
+   This prevents older .container rules or browser-style preview quirks
+   from making the new dark interface look tiny/narrow on desktop.
+   ========================================================= */
+.yp-container {
+  width: min(1500px, calc(100% - 72px));
+  max-width: 1500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.yp-site-header .yp-container,
+.yp-site-footer .yp-container {
+  width: min(1500px, calc(100% - 72px));
+  max-width: 1500px;
+}
+
+.yp-launch-banner .launch-banner-inner {
+  width: min(1500px, calc(100% - 72px));
+  max-width: 1500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.yp-home-hero-grid {
+  grid-template-columns: minmax(0, 1.08fr) minmax(520px, 0.92fr);
+  gap: 64px;
+  min-height: 610px;
+}
+
+.yp-hero-copy h1 {
+  max-width: 780px;
+}
+
+.yp-hero-showcase {
+  min-height: 365px;
+  display: grid;
+  align-items: center;
+}
+
+.yp-hero-showcase .hero-stack,
+.yp-hero-showcase > *:not(.yp-feature-ribbon) {
+  width: 100%;
+}
+
+.yp-category-strip {
+  grid-auto-columns: minmax(148px, 1fr);
+}
+
+.yp-home-content-grid {
+  grid-template-columns: minmax(0, 1.45fr) minmax(360px, 0.72fr);
+  gap: 28px;
+}
+
+.yp-trending-panel {
+  min-width: 0;
+}
+
+.yp-dark-home .ads-grid.grid,
+.yp-dark-home .ads-grid.grid-3 {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.yp-dark-home .promo-card .card-img,
+.yp-dark-home .promo-media {
+  min-height: 230px;
+}
+
+.yp-linkup-featured-grid,
+.yp-linkup-main-grid {
+  width: min(1500px, calc(100% - 72px));
+  max-width: 1500px;
+}
+
+.yp-linkup-filters {
+  max-width: 1500px;
+}
+
+@media (max-width: 1280px) {
+  .yp-home-hero-grid {
+    grid-template-columns: 1fr;
+    gap: 34px;
+  }
+
+  .yp-hero-showcase {
+    max-width: 760px;
+  }
+
+  .yp-home-content-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 980px) {
+  .yp-container,
+  .yp-site-header .yp-container,
+  .yp-site-footer .yp-container,
+  .yp-launch-banner .launch-banner-inner,
+  .yp-linkup-featured-grid,
+  .yp-linkup-main-grid {
+    width: min(100% - 28px, 1500px);
+  }
+
+  .yp-dark-home .ads-grid.grid,
+  .yp-dark-home .ads-grid.grid-3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .yp-container,
+  .yp-site-header .yp-container,
+  .yp-site-footer .yp-container,
+  .yp-launch-banner .launch-banner-inner,
+  .yp-linkup-featured-grid,
+  .yp-linkup-main-grid {
+    width: min(100% - 20px, 1500px);
+  }
+
+  .yp-home-hero-grid {
+    min-height: auto;
+    gap: 22px;
+  }
+
+  .yp-dark-home .ads-grid.grid,
+  .yp-dark-home .ads-grid.grid-3 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =========================================================
+   Phase 2 polish: safer browse route, tighter homepage fold,
+   and stronger Link-Up Planner presentation.
+   ========================================================= */
+.yp-dark-hero {
+  min-height: auto;
+}
+
+.yp-home-hero-grid {
+  min-height: min(720px, calc(100vh - 118px));
+  padding-top: 42px;
+  padding-bottom: 34px;
+}
+
+.yp-hero-actions {
+  margin-bottom: 4px;
+}
+
+.yp-search-panel {
+  margin-top: 22px;
+}
+
+.yp-category-strip {
+  scrollbar-width: thin;
+}
+
+.yp-category-strip::-webkit-scrollbar,
+.yp-row-items::-webkit-scrollbar {
+  height: 8px;
+}
+
+.yp-category-strip::-webkit-scrollbar-thumb,
+.yp-row-items::-webkit-scrollbar-thumb {
+  background: rgba(255, 208, 0, 0.45);
+  border-radius: 999px;
+}
+
+.yp-browse-page {
+  min-height: 70vh;
+  color: var(--yp-text);
+  background:
+    radial-gradient(circle at 18% 0%, rgba(66,198,47,.15), transparent 28%),
+    radial-gradient(circle at 86% 12%, rgba(255,208,0,.12), transparent 24%),
+    linear-gradient(180deg, #030604, #07100c 50%, #020403);
+}
+
+.yp-browse-hero {
+  margin-bottom: 22px;
+  padding: 34px;
+  border-radius: 30px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,.035));
+  box-shadow: var(--yp-shadow);
+}
+
+.yp-browse-hero h1 {
+  color: #fff;
+  max-width: 880px;
+}
+
+.yp-browse-hero p {
+  color: var(--yp-muted);
+  max-width: 760px;
+}
+
+.yp-browse-search-panel {
+  display: grid;
+  grid-template-columns: minmax(240px, 1.2fr) repeat(4, minmax(145px, .7fr)) auto;
+  gap: 12px;
+  padding: 16px;
+  margin-bottom: 18px;
+  border-radius: 26px;
+  border: 1px solid rgba(255,255,255,.13);
+  background: rgba(255,255,255,.07);
+  box-shadow: 0 18px 48px rgba(0,0,0,.25);
+}
+
+.yp-browse-search-panel label {
+  color: #fff;
+}
+
+.yp-browse-search-panel input,
+.yp-browse-search-panel select {
+  background: rgba(0,0,0,.35);
+  border-color: rgba(255,255,255,.15);
+  color: #fff;
+}
+
+.yp-browse-search-panel input::placeholder {
+  color: #aab4ae;
+}
+
+.yp-browse-search-panel select option {
+  color: #07111f;
+}
+
+.yp-browse-quick-row {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 6px 0 18px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.yp-browse-quick-row .mood-pill {
+  flex: 0 0 auto;
+  background: rgba(255,255,255,.07);
+  border-color: rgba(255,255,255,.14);
+  color: #fff;
+}
+
+.yp-browse-quick-row .mood-pill.is-active {
+  background: var(--yp-gold);
+  color: #07111f;
+}
+
+.yp-browse-page .section-head h2,
+.yp-browse-page .browse-results-head h2 {
+  color: #fff;
+}
+
+.yp-browse-page .promo-card {
+  background: #0a0f0c;
+  color: #fff;
+  border-color: rgba(255,255,255,.12);
+}
+
+.yp-browse-page .promo-card h3,
+.yp-browse-page .promo-date,
+.yp-browse-page .promo-price {
+  color: #fff;
+}
+
+.yp-browse-page .promo-location {
+  background: rgba(66,198,47,.14);
+  color: #b8ffad;
+  width: fit-content;
+  padding: 7px 10px;
+  border-radius: 999px;
+}
+
+.yp-browse-page .promo-stats span {
+  background: rgba(255,255,255,.08);
+  color: #e7eee9;
+  border-color: rgba(255,255,255,.1);
+}
+
+.yp-linkup-hero {
+  padding-top: 64px;
+  padding-bottom: 28px;
+}
+
+.yp-linkup-hero h1 {
+  max-width: 980px;
+}
+
+.yp-linkup-hero h1 span {
+  color: var(--yp-green);
+}
+
+.yp-linkup-filters {
+  position: relative;
+  box-shadow: 0 26px 65px rgba(0,0,0,.35);
+}
+
+.yp-linkup-featured,
+.yp-about-event,
+.yp-linkup-plan,
+.yp-linkup-sidebar .yp-dark-card,
+.yp-linkup-share {
+  border-color: rgba(255,255,255,.14);
+}
+
+.yp-featured-event img {
+  min-height: 300px;
+}
+
+.yp-linkup-plan-row {
+  position: relative;
+  overflow: hidden;
+}
+
+.yp-linkup-plan-row::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(90deg, rgba(255,255,255,.035), transparent 45%);
+}
+
+.yp-linkup-plan-row > * {
+  position: relative;
+  z-index: 1;
+}
+
+.yp-row-items {
+  justify-content: flex-start;
+}
+
+.yp-mini-ad {
+  width: 98px;
+}
+
+.yp-mini-ad img {
+  width: 98px;
+  height: 66px;
+}
+
+.yp-row-view {
+  text-transform: uppercase;
+  letter-spacing: .02em;
+}
+
+.yp-linkup-share {
+  border-color: rgba(66,198,47,.42);
+}
+
+@media (max-width: 1180px) {
+  .yp-browse-search-panel {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .yp-browse-search-panel .browse-filter-actions {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 760px) {
+  .yp-browse-hero {
+    padding: 22px;
+  }
+
+  .yp-browse-search-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .yp-browse-search-panel .browse-filter-actions {
+    grid-column: auto;
+  }
+
+  .yp-home-hero-grid {
+    min-height: auto;
+  }
+}
+
+/* Phase 3: Link-Up integration and promo card actions */
+.promo-card-actions {
+  display: grid;
+  grid-template-columns: 1.2fr 0.95fr;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.promo-card-actions .btn {
+  width: 100%;
+  min-height: 44px;
+  border-radius: 15px;
+}
+
+.yp-plan-card-btn,
+.yp-plan-promo-btn {
+  border-color: rgba(41, 214, 60, 0.45) !important;
+  color: #07111f;
+  background: linear-gradient(135deg, #ffffff, #f1fff0) !important;
+}
+
+.yp-dark-home .yp-plan-card-btn,
+.yp-browse-page .yp-plan-card-btn {
+  color: #baff9a !important;
+  background: rgba(41, 214, 60, 0.1) !important;
+  border-color: rgba(41, 214, 60, 0.45) !important;
+}
+
+.yp-plan-promo-btn {
+  margin-top: 10px;
+}
+
+.yp-linkup-page .yp-mini-ad {
+  transition: transform 160ms ease, border-color 160ms ease;
+}
+
+.yp-linkup-page .yp-mini-ad:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 211, 0, 0.42);
+}
+
+.yp-linkup-page .yp-feature-actions .yp-btn,
+.yp-linkup-page .yp-share-actions .yp-btn {
+  min-height: 44px;
+}
+
+.yp-browse-page .promo-card.card,
+.yp-dark-home .promo-card.card {
+  overflow: hidden;
+}
+
+.yp-browse-page .promo-body.card-body,
+.yp-dark-home .promo-body.card-body {
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 640px) {
+  .promo-card-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .promo-card-actions .btn {
+    min-height: 46px;
+  }
+}
+
+/* =========================================================
+   Phase 4: visual polish after Link-Up integration
+   Keeps functions/routes unchanged. Fixes clipped card buttons,
+   hides the heavy horizontal scrollbar, and tightens the dark layout.
+   ========================================================= */
+
+.yp-dark-home {
+  overflow-x: hidden;
+}
+
+.yp-category-strip-wrap {
+  overflow: hidden;
+}
+
+.yp-category-strip {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding-bottom: 0 !important;
+  margin-bottom: 0;
+}
+
+.yp-category-strip::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+.yp-category-pill {
+  min-width: 142px;
+}
+
+.yp-dark-home .promo-card.card,
+.yp-browse-page .promo-card.card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.yp-dark-home .promo-body.card-body,
+.yp-browse-page .promo-body.card-body {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.yp-dark-home .promo-price,
+.yp-browse-page .promo-price {
+  margin-bottom: 0;
+}
+
+.promo-card-actions {
+  grid-template-columns: 1fr !important;
+  margin-top: auto !important;
+  padding-top: 16px;
+}
+
+.promo-card-actions .btn,
+.yp-dark-home .promo-card-actions .btn,
+.yp-browse-page .promo-card-actions .btn {
+  width: 100%;
+  min-width: 0;
+  white-space: normal;
+  text-align: center;
+  line-height: 1.1;
+  font-size: 14px;
+}
+
+.yp-dark-home .yp-plan-card-btn,
+.yp-browse-page .yp-plan-card-btn {
+  color: #d9ffd1 !important;
+  border-color: rgba(66, 198, 47, 0.58) !important;
+  background: rgba(66, 198, 47, 0.12) !important;
+}
+
+.yp-dark-home .yp-plan-card-btn:hover,
+.yp-browse-page .yp-plan-card-btn:hover {
+  background: rgba(66, 198, 47, 0.2) !important;
+}
+
+.yp-dark-home .ads-grid.grid,
+.yp-dark-home .ads-grid.grid-3 {
+  align-items: stretch;
+}
+
+.yp-dark-home .promo-card .card-img,
+.yp-dark-home .promo-media {
+  min-height: 220px;
+}
+
+.yp-home-sidebar {
+  position: sticky;
+  top: 116px;
+}
+
+.yp-dark-cta {
+  margin-bottom: 28px;
+}
+
+@media (max-width: 1180px) {
+  .yp-home-sidebar {
+    position: static;
+  }
+
+  .yp-home-content-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .yp-dark-home .ads-grid.grid,
+  .yp-dark-home .ads-grid.grid-3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .yp-dark-home .ads-grid.grid,
+  .yp-dark-home .ads-grid.grid-3 {
+    grid-template-columns: 1fr;
+  }
+
+  .yp-category-pill {
+    min-width: 128px;
+  }
+
+  .yp-dark-cta {
+    grid-template-columns: 1fr;
+  }
+
+  .yp-cta-actions .yp-btn,
+  .yp-cta-actions .btn {
+    width: 100%;
+  }
+}
+
+/* =========================================================
+   Phase 5: homepage reference alignment
+   Goal reminder: closer to the uploaded dark premium homepage mockup.
+   Logic/routes/auth/Supabase untouched.
+   ========================================================= */
+
+.yp-home-reference-phase .yp-dark-hero {
+  background:
+    linear-gradient(90deg, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.78) 40%, rgba(0, 0, 0, 0.45) 100%),
+    radial-gradient(circle at 24% 38%, rgba(255, 208, 0, 0.12), transparent 24%),
+    radial-gradient(circle at 68% 44%, rgba(66, 198, 47, 0.17), transparent 30%),
+    linear-gradient(135deg, #020403, #10130e 48%, #050806);
+}
+
+.yp-home-reference-phase .yp-home-hero-grid {
+  grid-template-columns: minmax(0, 0.92fr) minmax(500px, 1.08fr);
+  min-height: clamp(600px, 58vw, 760px);
+  gap: 58px;
+  padding-top: 44px;
+  padding-bottom: 44px;
+}
+
+.yp-home-reference-phase .yp-hero-copy h1 {
+  max-width: 760px;
+  font-size: clamp(48px, 5.8vw, 86px);
+  line-height: 0.92;
+  letter-spacing: -0.07em;
+}
+
+.yp-wordmark-line {
+  display: block;
+}
+
+.yp-title-gold {
+  color: var(--yp-gold) !important;
+}
+
+.yp-title-green {
+  color: var(--yp-green) !important;
+}
+
+.yp-home-reference-phase .yp-hero-text {
+  max-width: 600px;
+  margin-top: 18px;
+  font-size: 17px;
+}
+
+.yp-home-reference-phase .yp-search-panel {
+  max-width: 650px;
+  grid-template-columns: minmax(220px, 1fr) 160px 160px 58px;
+  margin-top: 22px;
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.17);
+}
+
+.yp-home-reference-phase .yp-hero-actions {
+  gap: 16px;
+  margin-top: 18px;
+}
+
+.yp-home-reference-phase .yp-hero-actions .yp-btn {
+  min-width: 205px;
+}
+
+.yp-home-reference-phase .yp-hero-showcase {
+  min-height: 390px;
+  padding: 12px;
+  border-radius: 24px;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.11), rgba(255, 255, 255, 0.035)),
+    rgba(8, 12, 10, 0.78);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.yp-home-reference-phase .yp-feature-ribbon {
+  background: linear-gradient(135deg, rgba(255, 208, 0, 0.95), rgba(220, 160, 0, 0.88));
+  color: #07111f;
+  border: 0;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.28);
+}
+
+.yp-home-reference-phase .yp-category-strip-wrap {
+  padding: 12px 0;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.035)),
+    #090b0a;
+}
+
+.yp-home-reference-phase .yp-category-strip {
+  grid-auto-columns: minmax(126px, 1fr);
+  gap: 0;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.035);
+  overflow: hidden;
+}
+
+.yp-home-reference-phase .yp-category-pill {
+  min-width: 126px;
+  min-height: 82px;
+  border-radius: 0;
+  border-top: 0;
+  border-bottom: 0;
+  border-left: 0;
+  border-right: 1px solid rgba(255, 255, 255, 0.16);
+  background: transparent;
+}
+
+.yp-home-reference-phase .yp-category-pill:last-child {
+  border-right: 0;
+}
+
+.yp-home-reference-phase .yp-category-icon {
+  width: 42px;
+  height: 42px;
+  background: radial-gradient(circle, rgba(255, 208, 0, 0.34), rgba(66, 198, 47, 0.12));
+}
+
+.yp-home-feature-section {
+  padding-top: 12px;
+}
+
+.yp-home-feature-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.58fr) minmax(260px, 0.56fr) minmax(320px, 0.82fr);
+  gap: 14px;
+  align-items: stretch;
+}
+
+.yp-home-feature-grid > .yp-dark-card,
+.yp-feature-col-campaigns > .yp-dark-card {
+  border-radius: 18px;
+}
+
+.yp-feature-col-campaigns {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 12px;
+  min-width: 0;
+}
+
+.yp-home-reference-phase .yp-trending-panel,
+.yp-home-reference-phase .yp-linkup-preview,
+.yp-home-reference-phase .yp-campaigns-preview,
+.yp-business-mini-cta {
+  padding: 18px;
+}
+
+.yp-home-reference-phase .yp-section-head h2,
+.yp-home-reference-phase .yp-linkup-preview h2,
+.yp-home-reference-phase .yp-campaigns-preview h2,
+.yp-business-mini-cta h2 {
+  font-size: clamp(22px, 2.25vw, 31px);
+  line-height: 0.98;
+}
+
+.yp-home-reference-phase .yp-dark-home .ads-grid.grid,
+.yp-home-reference-phase .yp-dark-home .ads-grid.grid-3,
+.yp-home-reference-phase .ads-grid.grid,
+.yp-home-reference-phase .ads-grid.grid-3 {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.yp-home-reference-phase .promo-card.card {
+  border-radius: 14px;
+}
+
+.yp-home-reference-phase .promo-media,
+.yp-home-reference-phase .promo-card .card-img {
+  min-height: 225px;
+  border-radius: 14px 14px 0 0;
+}
+
+.yp-home-reference-phase .promo-body.card-body {
+  padding: 14px;
+}
+
+.yp-home-reference-phase .promo-card h3 {
+  font-size: 18px;
+  line-height: 1.05;
+}
+
+.yp-home-reference-phase .yp-linkup-list {
+  gap: 8px;
+  margin: 14px 0;
+}
+
+.yp-home-reference-phase .yp-linkup-list a {
+  min-height: 43px;
+  border-radius: 11px;
+}
+
+.yp-home-reference-phase .yp-campaign-mini-list {
+  gap: 9px;
+}
+
+.yp-home-reference-phase .yp-campaign-mini {
+  min-height: 88px;
+  border-radius: 12px;
+  background-size: cover;
+}
+
+.yp-business-mini-cta {
+  display: grid;
+  align-content: center;
+  gap: 10px;
+  background:
+    radial-gradient(circle at 88% 50%, rgba(255, 208, 0, 0.16), transparent 28%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(66, 198, 47, 0.08)),
+    rgba(10, 14, 12, 0.9);
+}
+
+.yp-business-mini-cta p:not(.yp-kicker) {
+  margin: 0;
+  color: var(--yp-muted);
+}
+
+.yp-home-reference-phase .yp-stats-section {
+  padding-top: 0;
+  padding-bottom: 28px;
+}
+
+.yp-home-reference-phase .yp-stats-strip {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-radius: 16px;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.035)),
+    rgba(8, 12, 10, 0.9);
+}
+
+.yp-home-reference-phase .yp-stats-strip div {
+  display: grid;
+  gap: 2px;
+  padding: 22px 24px;
+}
+
+.yp-home-reference-phase .yp-stats-strip strong {
+  font-size: clamp(28px, 2.5vw, 40px);
+  line-height: 1;
+}
+
+.yp-home-reference-phase .yp-stats-strip b {
+  color: #fff;
+  font-size: 14px;
+}
+
+.yp-home-reference-phase .yp-stats-strip span {
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+@media (max-width: 1320px) {
+  .yp-home-reference-phase .yp-home-hero-grid {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .yp-home-reference-phase .yp-hero-showcase {
+    max-width: 900px;
+  }
+
+  .yp-home-feature-grid {
+    grid-template-columns: minmax(0, 1.4fr) minmax(300px, 0.8fr);
+  }
+
+  .yp-feature-col-campaigns {
+    grid-column: 1 / -1;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+  }
+}
+
+@media (max-width: 980px) {
+  .yp-home-reference-phase .yp-search-panel {
+    grid-template-columns: 1fr;
+    max-width: none;
+  }
+
+  .yp-home-reference-phase .yp-hero-actions .yp-btn {
+    min-width: 0;
+  }
+
+  .yp-home-feature-grid,
+  .yp-feature-col-campaigns {
+    grid-template-columns: 1fr;
+  }
+
+  .yp-home-reference-phase .ads-grid.grid,
+  .yp-home-reference-phase .ads-grid.grid-3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .yp-home-reference-phase .yp-stats-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .yp-home-reference-phase .yp-hero-copy h1 {
+    font-size: clamp(40px, 13vw, 60px);
+  }
+
+  .yp-home-reference-phase .yp-hero-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .yp-home-reference-phase .yp-category-strip {
+    grid-auto-columns: 132px;
+    overflow-x: auto;
+  }
+
+  .yp-home-reference-phase .yp-category-pill {
+    min-width: 132px;
+  }
+
+  .yp-home-reference-phase .ads-grid.grid,
+  .yp-home-reference-phase .ads-grid.grid-3,
+  .yp-home-reference-phase .yp-stats-strip {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =========================================================
+   Phase 6 — Link-Up page polish toward the reference mockup
+   Scope: /link-up visual layout only. No Supabase/auth/ad-detail logic changed.
+   ========================================================= */
+.yp-linkup-page {
+  --yp-plan-line: rgba(255,255,255,.13);
+  --yp-plan-panel: rgba(10, 12, 10, .84);
+  --yp-plan-panel-strong: rgba(15, 18, 15, .95);
+  background:
+    radial-gradient(circle at 12% 5%, rgba(255, 208, 0, .11), transparent 24%),
+    radial-gradient(circle at 78% 10%, rgba(66, 198, 47, .12), transparent 22%),
+    linear-gradient(180deg, #020302 0%, #050907 38%, #030504 100%);
+  color: #fff;
+}
+
+.yp-linkup-page .yp-container {
+  width: min(1480px, calc(100% - 72px));
+  max-width: 1480px;
+}
+
+.yp-linkup-hero {
+  position: relative;
+  overflow: hidden;
+  min-height: 420px;
+  padding: 54px 0 18px;
+  border-bottom: 1px solid rgba(255,255,255,.12);
+  background:
+    linear-gradient(90deg, rgba(0,0,0,.96) 0%, rgba(0,0,0,.8) 38%, rgba(0,0,0,.38) 100%),
+    radial-gradient(circle at 75% 20%, rgba(255, 208, 0, .18), transparent 26%),
+    radial-gradient(circle at 55% 18%, rgba(66, 198, 47, .18), transparent 26%),
+    linear-gradient(135deg, #020403, #07170e 58%, #150c04);
+}
+
+.yp-linkup-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: .35;
+  background:
+    radial-gradient(circle at 65% 25%, rgba(255, 208, 0, .22), transparent 13%),
+    radial-gradient(circle at 72% 38%, rgba(255, 255, 255, .12), transparent 10%),
+    linear-gradient(115deg, transparent 0 42%, rgba(255,255,255,.04) 42% 43%, transparent 44%);
+}
+
+.yp-linkup-hero .yp-container {
+  position: relative;
+  z-index: 1;
+}
+
+.yp-linkup-hero .yp-mini-kicker {
+  margin: 0 0 10px;
+  color: var(--yp-gold);
+  font-size: 13px;
+  font-weight: 1000;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+}
+
+.yp-linkup-hero h1 {
+  max-width: 980px;
+  margin: 0;
+  font-size: clamp(64px, 7.5vw, 116px);
+  line-height: .87;
+  letter-spacing: -.075em;
+  text-transform: uppercase;
+  text-shadow: 0 18px 52px rgba(0,0,0,.52);
+}
+
+.yp-linkup-hero h1 span {
+  background: linear-gradient(90deg, var(--yp-gold), var(--yp-green));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent !important;
+}
+
+.yp-linkup-hero > .yp-container > p:not(.yp-mini-kicker) {
+  max-width: 560px;
+  margin: 18px 0 0;
+  color: #fff;
+  font-size: clamp(17px, 1.55vw, 23px);
+  line-height: 1.35;
+}
+
+.yp-linkup-filters {
+  margin-top: 26px;
+  display: grid;
+  grid-template-columns: 1.15fr 1fr .82fr .9fr auto;
+  gap: 0;
+  overflow: hidden;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,.14);
+  background: linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+  box-shadow: 0 18px 60px rgba(0,0,0,.35);
+}
+
+.yp-linkup-filters label {
+  display: grid;
+  gap: 8px;
+  padding: 16px 18px;
+  border-right: 1px solid rgba(255,255,255,.12);
+  color: rgba(255,255,255,.78);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.yp-linkup-filters input,
+.yp-linkup-filters select {
+  min-height: 44px;
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: 10px;
+  background: rgba(0,0,0,.3);
+  color: #fff;
+  padding: 0 13px;
+  font-weight: 900;
+}
+
+.yp-linkup-filters .yp-btn {
+  align-self: stretch;
+  min-height: 76px;
+  border-radius: 14px;
+  margin: 12px;
+  padding: 0 32px;
+  white-space: nowrap;
+  box-shadow: 0 14px 35px rgba(255, 208, 0, .16);
+}
+
+.yp-linkup-section {
+  padding: 14px 0;
+}
+
+.yp-linkup-featured-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(320px, .78fr);
+  gap: 16px;
+  align-items: stretch;
+}
+
+.yp-linkup-featured,
+.yp-about-event,
+.yp-linkup-plan,
+.yp-linkup-side-card,
+.yp-plan-summary,
+.yp-linkup-share {
+  background:
+    linear-gradient(145deg, rgba(255,255,255,.07), rgba(255,255,255,.025)),
+    var(--yp-plan-panel);
+  border: 1px solid var(--yp-plan-line);
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.28);
+}
+
+.yp-linkup-featured {
+  padding: 24px;
+}
+
+.yp-linkup-featured .yp-kicker,
+.yp-linkup-plan .yp-kicker,
+.yp-linkup-sidebar .yp-kicker,
+.yp-linkup-share .yp-kicker {
+  color: var(--yp-gold);
+  font-size: 18px;
+  letter-spacing: .02em;
+}
+
+.yp-featured-event {
+  display: grid;
+  grid-template-columns: minmax(320px, .9fr) minmax(0, 1fr);
+  gap: 28px;
+  align-items: center;
+}
+
+.yp-featured-poster-wrap {
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #050806;
+  border: 1px solid rgba(255,255,255,.18);
+}
+
+.yp-featured-poster-wrap::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 40%;
+  background: linear-gradient(180deg, transparent, rgba(0,0,0,.52));
+  pointer-events: none;
+}
+
+.yp-featured-event img {
+  width: 100%;
+  height: 310px;
+  display: block;
+  object-fit: cover;
+  border-radius: 0;
+  border: 0;
+}
+
+.yp-featured-event h2 {
+  margin: 0 0 14px;
+  max-width: 620px;
+  font-size: clamp(32px, 3.8vw, 54px);
+  line-height: .95;
+  letter-spacing: -.05em;
+}
+
+.yp-feature-meta {
+  margin: 10px 0;
+  color: #f4f8f5;
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.yp-feature-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.yp-feature-actions .yp-btn {
+  min-height: 48px;
+  padding: 0 18px;
+}
+
+.yp-about-event {
+  padding: 24px;
+}
+
+.yp-about-event p,
+.yp-about-event li {
+  color: rgba(255,255,255,.87);
+  line-height: 1.5;
+}
+
+.yp-about-event ul {
+  margin: 18px 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 10px;
+}
+
+.yp-social-mini {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.yp-social-mini::before {
+  content: "Share this event";
+  color: rgba(255,255,255,.7);
+  font-size: 12px;
+  font-weight: 800;
+  margin-right: 3px;
+}
+
+.yp-social-mini button {
+  min-height: 38px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.07);
+  color: #fff;
+  padding: 0 13px;
+  font-weight: 900;
+}
+
+.yp-social-mini button:first-of-type {
+  background: var(--yp-green);
+  border-color: rgba(66,198,47,.85);
+}
+
+.yp-linkup-main-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(320px, .78fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.yp-linkup-plan {
+  padding: 24px;
+}
+
+.yp-linkup-plan .yp-section-head h2 {
+  margin: 0 0 12px;
+  color: var(--yp-gold);
+  font-size: clamp(24px, 2.2vw, 36px);
+  text-transform: uppercase;
+}
+
+.yp-linkup-plan-rows {
+  position: relative;
+  display: grid;
+  gap: 10px;
+}
+
+.yp-linkup-plan-rows::before {
+  content: "";
+  position: absolute;
+  top: 22px;
+  bottom: 22px;
+  left: 22px;
+  width: 2px;
+  background: linear-gradient(180deg, var(--yp-green), var(--yp-gold), var(--yp-purple), var(--yp-pink), var(--yp-blue), #12bfa4, var(--yp-orange));
+  opacity: .5;
+}
+
+.yp-linkup-plan-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: 44px 82px minmax(170px, .8fr) minmax(260px, 1.1fr) 42px 86px;
+  gap: 14px;
+  align-items: center;
+  min-height: 104px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.1);
+  background:
+    linear-gradient(145deg, rgba(255,255,255,.065), rgba(255,255,255,.025)),
+    rgba(0,0,0,.24);
+}
+
+.yp-row-number {
+  position: relative;
+  z-index: 2;
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--yp-green);
+  color: #fff;
+  font-weight: 1000;
+  box-shadow: 0 0 0 7px rgba(0,0,0,.38);
+}
+
+.yp-row-icon {
+  width: 68px;
+  height: 68px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  border: 2px solid currentColor;
+  color: var(--yp-green);
+  background: rgba(0,0,0,.33);
+  font-size: 30px;
+}
+
+.yp-row-copy {
+  display: grid;
+  gap: 6px;
+}
+
+.yp-row-copy strong {
+  color: var(--yp-green);
+  font-size: 15px;
+  font-weight: 1000;
+  line-height: 1.05;
+  text-transform: uppercase;
+}
+
+.yp-row-copy span,
+.yp-row-empty {
+  color: rgba(255,255,255,.72);
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.yp-row-items {
+  display: flex;
+  gap: 7px;
+  align-items: center;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.yp-mini-ad {
+  flex: 0 0 82px;
+  width: 82px;
+  display: grid;
+  gap: 5px;
+  color: #fff;
+}
+
+.yp-mini-ad img {
+  width: 82px;
+  height: 58px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,.12);
+}
+
+.yp-mini-ad span {
+  display: -webkit-box;
+  overflow: hidden;
+  color: rgba(255,255,255,.82);
+  font-size: 10px;
+  line-height: 1.1;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.yp-row-count {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  color: #fff;
+  background: rgba(255,255,255,.11);
+  font-size: 13px;
+  font-weight: 1000;
+}
+
+.yp-row-view {
+  min-height: 48px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  color: #fff;
+  background: var(--yp-green);
+  font-size: 14px;
+  font-weight: 1000;
+  text-transform: uppercase;
+}
+
+.yp-linkup-plan-row.gold .yp-row-number,
+.yp-linkup-plan-row.gold .yp-row-view { background: var(--yp-gold); color: #07111f; }
+.yp-linkup-plan-row.gold .yp-row-icon,
+.yp-linkup-plan-row.gold .yp-row-copy strong { color: var(--yp-gold); }
+.yp-linkup-plan-row.purple .yp-row-number,
+.yp-linkup-plan-row.purple .yp-row-view { background: var(--yp-purple); }
+.yp-linkup-plan-row.purple .yp-row-icon,
+.yp-linkup-plan-row.purple .yp-row-copy strong { color: #a855f7; }
+.yp-linkup-plan-row.pink .yp-row-number,
+.yp-linkup-plan-row.pink .yp-row-view { background: var(--yp-pink); }
+.yp-linkup-plan-row.pink .yp-row-icon,
+.yp-linkup-plan-row.pink .yp-row-copy strong { color: #ec4899; }
+.yp-linkup-plan-row.blue .yp-row-number,
+.yp-linkup-plan-row.blue .yp-row-view { background: var(--yp-blue); }
+.yp-linkup-plan-row.blue .yp-row-icon,
+.yp-linkup-plan-row.blue .yp-row-copy strong { color: #3b82f6; }
+.yp-linkup-plan-row.teal .yp-row-number,
+.yp-linkup-plan-row.teal .yp-row-view { background: #14b8a6; }
+.yp-linkup-plan-row.teal .yp-row-icon,
+.yp-linkup-plan-row.teal .yp-row-copy strong { color: #14b8a6; }
+.yp-linkup-plan-row.orange .yp-row-number,
+.yp-linkup-plan-row.orange .yp-row-view { background: #f97316; }
+.yp-linkup-plan-row.orange .yp-row-icon,
+.yp-linkup-plan-row.orange .yp-row-copy strong { color: #f97316; }
+
+.yp-linkup-sidebar {
+  display: grid;
+  gap: 14px;
+}
+
+.yp-linkup-side-card,
+.yp-deals-card,
+.yp-plan-summary {
+  padding: 20px;
+}
+
+.yp-linkup-side-card .yp-kicker,
+.yp-deals-card .yp-kicker {
+  color: var(--yp-green);
+}
+
+.yp-side-list {
+  display: grid;
+  gap: 9px;
+  margin: 14px 0;
+}
+
+.yp-side-list a {
+  display: grid;
+  grid-template-columns: 82px 1fr;
+  gap: 10px;
+  align-items: center;
+  padding: 8px;
+  border-radius: 12px;
+  color: #fff;
+  background: rgba(255,255,255,.055);
+  border: 1px solid rgba(255,255,255,.1);
+}
+
+.yp-side-list img {
+  width: 82px;
+  height: 62px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.yp-side-list.compact a {
+  grid-template-columns: 60px 1fr;
+}
+
+.yp-side-list.compact img {
+  width: 60px;
+  height: 50px;
+}
+
+.yp-side-list strong {
+  display: block;
+  color: #fff;
+  font-size: 14px;
+  line-height: 1.15;
+}
+
+.yp-side-list em {
+  display: block;
+  margin-top: 3px;
+  color: var(--yp-gold);
+  font-size: 12px;
+  font-style: normal;
+}
+
+.yp-plan-summary {
+  display: grid;
+  gap: 14px;
+}
+
+.yp-plan-summary .yp-kicker {
+  color: var(--yp-gold);
+}
+
+.yp-plan-summary div {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  color: rgba(255,255,255,.78);
+}
+
+.yp-plan-summary strong {
+  color: #fff;
+  font-size: 26px;
+}
+
+.yp-linkup-share {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 18px;
+  align-items: center;
+  padding: 22px;
+}
+
+.yp-linkup-share h2 {
+  margin: 0;
+  font-size: clamp(22px, 2.4vw, 34px);
+}
+
+.yp-share-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.yp-linkup-final-section {
+  padding-bottom: 38px;
+}
+
+.yp-linkup-bottom-cta {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0;
+  overflow: hidden;
+  border-radius: 16px;
+  border: 1px solid rgba(66,198,47,.62);
+  background: rgba(3, 6, 4, .86);
+}
+
+.yp-linkup-bottom-cta a {
+  display: grid;
+  grid-template-columns: 72px 1fr auto;
+  gap: 14px;
+  align-items: center;
+  min-height: 122px;
+  padding: 24px 28px;
+  color: #fff;
+  border-right: 1px solid rgba(255,255,255,.12);
+}
+
+.yp-linkup-bottom-cta a:last-child {
+  border-right: 0;
+}
+
+.yp-linkup-bottom-cta em {
+  width: 62px;
+  height: 62px;
+  display: grid;
+  place-items: center;
+  border-radius: 18px;
+  background: rgba(66,198,47,.14);
+  color: var(--yp-green);
+  font-style: normal;
+  font-size: 32px;
+}
+
+.yp-linkup-bottom-cta strong,
+.yp-linkup-bottom-cta span,
+.yp-linkup-bottom-cta b {
+  display: block;
+}
+
+.yp-linkup-bottom-cta strong {
+  color: var(--yp-green);
+  font-size: 18px;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.yp-linkup-bottom-cta span {
+  margin-top: 4px;
+  color: rgba(255,255,255,.78);
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.yp-linkup-bottom-cta b {
+  justify-self: end;
+  padding: 11px 16px;
+  border-radius: 8px;
+  background: var(--yp-gold);
+  color: #07111f;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+@media (max-width: 1180px) {
+  .yp-linkup-featured-grid,
+  .yp-linkup-main-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .yp-linkup-sidebar {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: start;
+  }
+}
+
+@media (max-width: 980px) {
+  .yp-linkup-page .yp-container {
+    width: min(100% - 28px, 1480px);
+  }
+
+  .yp-linkup-hero {
+    min-height: auto;
+    padding-top: 38px;
+  }
+
+  .yp-linkup-filters,
+  .yp-featured-event,
+  .yp-linkup-share,
+  .yp-linkup-bottom-cta {
+    grid-template-columns: 1fr;
+  }
+
+  .yp-linkup-filters label {
+    border-right: 0;
+    border-bottom: 1px solid rgba(255,255,255,.1);
+  }
+
+  .yp-linkup-filters .yp-btn {
+    min-height: 56px;
+  }
+
+  .yp-linkup-plan-row {
+    grid-template-columns: 44px 70px 1fr;
+  }
+
+  .yp-row-items,
+  .yp-row-count,
+  .yp-row-view {
+    grid-column: 1 / -1;
+  }
+
+  .yp-row-items {
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+
+  .yp-row-count {
+    justify-self: start;
+  }
+
+  .yp-linkup-sidebar {
+    grid-template-columns: 1fr;
+  }
+
+  .yp-linkup-bottom-cta a {
+    grid-template-columns: 64px 1fr;
+    border-right: 0;
+    border-bottom: 1px solid rgba(255,255,255,.1);
+  }
+
+  .yp-linkup-bottom-cta a:last-child {
+    border-bottom: 0;
+  }
+
+  .yp-linkup-bottom-cta b {
+    grid-column: 2;
+    justify-self: start;
+  }
+}
+
+@media (max-width: 640px) {
+  .yp-linkup-hero h1 {
+    font-size: clamp(46px, 15vw, 70px);
+    letter-spacing: -.06em;
+  }
+
+  .yp-featured-event img {
+    height: 250px;
+  }
+
+  .yp-linkup-plan-row {
+    grid-template-columns: 40px 58px 1fr;
+    gap: 10px;
+    padding: 11px;
+  }
+
+  .yp-row-icon {
+    width: 54px;
+    height: 54px;
+    font-size: 24px;
+  }
+
+  .yp-row-copy strong {
+    font-size: 14px;
+  }
+
+  .yp-share-buttons,
+  .yp-feature-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .yp-share-buttons .yp-btn,
+  .yp-feature-actions .yp-btn {
+    width: 100%;
+  }
+}
+
+/* =========================================================
+   Phase 8 — Ad detail dark premium visual polish
+   CSS-only phase. Protects /app/ad/[slug]/page.js metadata and
+   keeps AdDetailClient share/actions logic untouched.
+   ========================================================= */
+
+.promo-detail-shell {
+  position: relative;
+  isolation: isolate;
+  min-height: 100vh;
+  padding-top: clamp(26px, 4vw, 54px) !important;
+  color: #f8fafc;
+  background:
+    radial-gradient(circle at 7% 7%, rgba(0, 138, 61, 0.22), transparent 28%),
+    radial-gradient(circle at 94% 18%, rgba(255, 208, 0, 0.16), transparent 26%),
+    linear-gradient(180deg, #020806 0%, #06130d 48%, #020806 100%);
+}
+
+.promo-detail-shell::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  opacity: 0.42;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.035) 25%, transparent 25%) 0 0 / 34px 34px,
+    linear-gradient(225deg, rgba(255, 255, 255, 0.025) 25%, transparent 25%) 0 0 / 34px 34px;
+  pointer-events: none;
+}
+
+.promo-detail-shell > .container {
+  width: min(100% - 48px, 1280px);
+}
+
+.promo-detail-hero {
+  display: grid;
+  grid-template-columns: minmax(320px, 0.98fr) minmax(360px, 0.78fr);
+  gap: clamp(18px, 3vw, 34px);
+  align-items: stretch;
+  margin-bottom: clamp(26px, 4vw, 46px);
+  padding: clamp(18px, 3vw, 30px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: clamp(28px, 4vw, 42px);
+  background:
+    radial-gradient(circle at 16% 8%, rgba(0, 138, 61, 0.25), transparent 34%),
+    radial-gradient(circle at 92% 18%, rgba(255, 208, 0, 0.16), transparent 30%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.028));
+  box-shadow: 0 34px 100px rgba(0, 0, 0, 0.38);
+}
+
+.promo-detail-poster.card {
+  display: grid;
+  place-items: center;
+  min-height: 520px;
+  overflow: hidden;
+  padding: clamp(12px, 2vw, 20px);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: clamp(20px, 3vw, 30px);
+  background:
+    linear-gradient(180deg, rgba(2, 8, 6, 0.86), rgba(2, 8, 6, 0.96)),
+    radial-gradient(circle at 50% 10%, rgba(255, 208, 0, 0.16), transparent 34%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.09);
+}
+
+.promo-detail-poster.card img {
+  width: 100%;
+  max-height: min(720px, 78vh);
+  object-fit: contain;
+  border-radius: 18px;
+  box-shadow: 0 18px 70px rgba(0, 0, 0, 0.36);
+}
+
+.promo-detail-panel.panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: #07111f;
+  border: 0;
+  border-radius: clamp(22px, 3vw, 34px);
+  background:
+    radial-gradient(circle at top right, rgba(255, 208, 0, 0.13), transparent 32%),
+    #ffffff;
+  box-shadow: 0 28px 88px rgba(0, 0, 0, 0.24);
+}
+
+.promo-detail-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-bottom: 18px;
+}
+
+.promo-detail-badges span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 8px 12px;
+  border: 1px solid #dbe6f0;
+  border-radius: 999px;
+  color: #0b1f18;
+  background: #f4f8fb;
+  font-size: 12px;
+  font-weight: 950;
+}
+
+.promo-detail-badges span:first-child {
+  color: #006f32;
+  border-color: rgba(0, 138, 61, 0.22);
+  background: #eafff0;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.promo-detail-badges .is-featured {
+  color: #07110b;
+  border-color: rgba(255, 208, 0, 0.9);
+  background: #ffd400;
+}
+
+.promo-detail-panel.panel h1 {
+  margin: 0;
+  color: #07111f;
+  font-size: clamp(42px, 5vw, 78px);
+  line-height: 0.92;
+  letter-spacing: -0.075em;
+}
+
+.promo-detail-summary {
+  margin-top: 18px;
+  color: #63718a !important;
+  font-size: clamp(16px, 1.35vw, 19px);
+  line-height: 1.6;
+}
+
+.promo-detail-meta {
+  display: grid;
+  gap: 10px;
+  margin: 22px 0 0;
+}
+
+.promo-detail-meta span {
+  display: flex;
+  align-items: center;
+  min-height: 42px;
+  padding: 11px 14px;
+  border: 1px solid #e7edf3;
+  border-radius: 15px;
+  color: #0b1730;
+  background: #f7fafc;
+  font-weight: 950;
+}
+
+.promo-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin: 22px 0 0;
+}
+
+.promo-stat-grid div {
+  min-width: 0;
+  padding: 13px 10px;
+  border: 1px solid rgba(255, 208, 0, 0.68);
+  border-radius: 16px;
+  color: #07111f;
+  background: linear-gradient(180deg, #fffdf2, #ffffff);
+  text-align: center;
+}
+
+.promo-stat-grid strong {
+  display: block;
+  font-size: clamp(24px, 2.5vw, 34px);
+  line-height: 1;
+}
+
+.promo-stat-grid span {
+  display: block;
+  margin-top: 5px;
+  color: #344158;
+  font-size: 12px;
+  font-weight: 950;
+}
+
+.interest-message {
+  margin-top: 14px;
+  padding: 13px 15px;
+  border: 1px solid rgba(0, 138, 61, 0.24);
+  border-radius: 16px;
+  color: #007334;
+  background: #eafff0;
+  font-weight: 950;
+}
+
+.promo-primary-actions,
+.promo-action-grid,
+.promo-owner-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.promo-primary-actions {
+  margin-top: 18px;
+}
+
+.promo-primary-actions .btn,
+.promo-action-grid .btn,
+.promo-owner-actions .btn {
+  min-height: 52px;
+  border-radius: 16px;
+  font-weight: 950;
+}
+
+.promo-more-toggle {
+  margin-top: 16px;
+}
+
+.promo-more-toggle button {
+  width: 100%;
+  min-height: 44px;
+  border: 0;
+  border-radius: 14px;
+  color: #07111f;
+  background: transparent;
+  text-align: left;
+  font-weight: 950;
+  cursor: pointer;
+}
+
+.promo-action-grid-focused {
+  margin-top: 4px;
+}
+
+.promo-share-pack-open {
+  margin-top: 14px;
+  padding: 18px;
+  border: 1px solid rgba(0, 138, 61, 0.18);
+  border-radius: 22px;
+  background:
+    radial-gradient(circle at top left, rgba(255, 208, 0, 0.18), transparent 40%),
+    linear-gradient(135deg, #ffffff, #f8fafc);
+  box-shadow: 0 18px 50px rgba(7, 17, 31, 0.09);
+}
+
+.promo-share-pack-open h3 {
+  margin: 4px 0 6px;
+  color: #07111f;
+  font-size: 26px;
+  letter-spacing: -0.045em;
+}
+
+.promo-share-pack-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 14px;
+}
+
+.promo-share-pack-grid .btn-gold {
+  grid-column: 1 / -1;
+  color: #07110b;
+  background: #ffd400;
+}
+
+.promo-owner-actions {
+  margin-top: 18px;
+}
+
+.promo-claim-btn {
+  background: linear-gradient(135deg, #008a3d, #006b31) !important;
+}
+
+.promo-report-btn {
+  color: #b42318 !important;
+  border: 1px solid rgba(255, 149, 0, 0.42) !important;
+  background: #fff7ed !important;
+}
+
+.promo-detail-sections {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(18px, 2.5vw, 28px);
+}
+
+.promo-detail-sections .panel {
+  color: #07111f;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at top right, rgba(255, 208, 0, 0.10), transparent 34%),
+    #ffffff;
+  box-shadow: 0 20px 80px rgba(0, 0, 0, 0.18);
+}
+
+.promo-detail-sections .panel h2 {
+  margin-top: 6px;
+  color: #07111f;
+  font-size: clamp(34px, 4vw, 56px);
+  line-height: 0.94;
+  letter-spacing: -0.07em;
+}
+
+.promo-detail-list {
+  display: grid;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.promo-detail-list > div {
+  display: grid;
+  gap: 6px;
+  padding: 14px;
+  border: 1px solid #e3ebf3;
+  border-radius: 16px;
+  background: #f7fafc;
+}
+
+.promo-map-list {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.promo-detail-list strong {
+  color: #07111f;
+  font-size: 13px;
+}
+
+.promo-detail-list span {
+  color: #64748b;
+  font-weight: 850;
+}
+
+.promo-map-frame {
+  width: 100%;
+  min-height: 270px;
+  margin-top: 16px;
+  border: 0;
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.promo-wide-btn {
+  width: 100%;
+  margin-top: 16px;
+}
+
+.promo-compact-empty {
+  min-height: 170px;
+  padding: 22px;
+  border: 1px dashed rgba(255, 208, 0, 0.46);
+  border-radius: 20px;
+  background: linear-gradient(135deg, rgba(255, 208, 0, 0.08), rgba(255, 255, 255, 0.8));
+}
+
+.promo-related-section {
+  margin-top: clamp(28px, 4vw, 54px);
+  padding: clamp(20px, 3vw, 28px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 30px;
+  background: rgba(255, 255, 255, 0.045);
+}
+
+.promo-related-section .section-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  align-items: end;
+  margin-bottom: 18px;
+}
+
+.promo-related-section .section-head h2 {
+  color: #ffffff;
+}
+
+.promo-related-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.promo-suggestion-card {
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr);
+  gap: 14px;
+  overflow: hidden;
+  min-height: 170px;
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 22px;
+  color: #ffffff;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.035));
+  text-decoration: none;
+}
+
+.promo-suggestion-image {
+  overflow: hidden;
+  border-radius: 16px;
+  background: #07110b;
+}
+
+.promo-suggestion-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.promo-suggestion-body {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.promo-suggestion-body h3 {
+  margin: 0;
+  color: #ffffff;
+  font-size: 22px;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.promo-suggestion-body .muted {
+  color: rgba(255, 255, 255, 0.68) !important;
+}
+
+.promo-suggestion-link {
+  margin-top: 10px;
+  color: #ffd400;
+  font-weight: 950;
+}
+
+.promo-action-modal-overlay {
+  background: rgba(0, 0, 0, 0.72);
+  backdrop-filter: blur(10px);
+}
+
+.promo-action-modal {
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 28px;
+  box-shadow: 0 34px 100px rgba(0, 0, 0, 0.42);
+}
+
+@media (max-width: 1100px) {
+  .promo-detail-shell > .container {
+    width: min(100% - 30px, 1280px);
+  }
+
+  .promo-detail-hero,
+  .promo-detail-sections {
+    grid-template-columns: 1fr;
+  }
+
+  .promo-detail-poster.card {
+    min-height: auto;
+  }
+
+  .promo-related-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .promo-suggestion-card {
+    grid-template-columns: 170px minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .promo-detail-shell > .container {
+    width: min(100% - 22px, 1280px);
+  }
+
+  .promo-detail-hero {
+    padding: 12px;
+    border-radius: 24px;
+  }
+
+  .promo-detail-poster.card,
+  .promo-detail-panel.panel,
+  .promo-detail-sections .panel,
+  .promo-related-section {
+    border-radius: 22px;
+  }
+
+  .promo-detail-poster.card img {
+    max-height: 68vh;
+  }
+
+  .promo-stat-grid,
+  .promo-primary-actions,
+  .promo-action-grid,
+  .promo-owner-actions,
+  .promo-map-list {
+    grid-template-columns: 1fr;
+  }
+
+  .promo-share-pack-grid .btn-gold {
+    grid-column: auto;
+  }
+
+  .promo-suggestion-card {
+    grid-template-columns: 1fr;
+  }
+
+  .promo-suggestion-image {
+    height: 220px;
+  }
+
+  .promo-related-section .section-head {
+    align-items: start;
+    flex-direction: column;
+  }
+}
+
+/* =========================================================
+   Phase 9 — Mobile, navigation, and final polish
+   CSS-only phase. Keeps all app logic untouched.
+   ========================================================= */
+
+/* Make global scrolling feel cleaner on the dark interface. */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+/* Header polish for the new premium dark direction. */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 80;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background:
+    linear-gradient(180deg, rgba(2, 8, 6, 0.96), rgba(2, 8, 6, 0.90)) !important;
+  backdrop-filter: blur(18px);
+}
+
+.header .nav {
+  min-height: 82px;
+}
+
+.header .brand-logo {
+  min-width: 0;
+}
+
+.header .brand-icon-img {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px rgba(255, 212, 0, 0.25), 0 12px 28px rgba(0, 0, 0, 0.35);
+}
+
+.header .brand-wordmark-img {
+  max-width: 230px;
+  height: auto;
+}
+
+.header .brand-copy small {
+  color: rgba(255, 255, 255, 0.72);
+  letter-spacing: 0.06em;
+}
+
+.nav-links {
+  gap: clamp(12px, 1.6vw, 24px);
+}
+
+.nav-links a,
+.nav-links button {
+  color: rgba(255, 255, 255, 0.9) !important;
+  font-weight: 950;
+}
+
+.nav-links a:hover,
+.nav-links button:hover {
+  color: #ffd400 !important;
+}
+
+.nav-links a[href="/create"] {
+  padding: 13px 18px;
+  border-radius: 14px;
+  color: #06110b !important;
+  background: #ffd400;
+  box-shadow: 0 14px 34px rgba(255, 212, 0, 0.18);
+}
+
+.launch-banner {
+  border-top: 1px solid rgba(255, 212, 0, 0.18);
+  border-bottom: 1px solid rgba(255, 212, 0, 0.22);
+  background: linear-gradient(90deg, #ffd400, #fff2a8, #ffd400) !important;
+}
+
+.launch-banner-inner {
+  min-height: 46px;
+}
+
+.launch-banner-inner div,
+.launch-banner-inner strong,
+.launch-banner-inner span {
+  color: #07110b !important;
+}
+
+.launch-banner-inner a {
+  color: #ffffff !important;
+  background: #07111f !important;
+}
+
+/* Footer polish. */
+.footer {
+  color: rgba(255, 255, 255, 0.76);
+  border-top: 1px solid rgba(255, 255, 255, 0.10);
+  background:
+    radial-gradient(circle at 12% 0%, rgba(0, 138, 61, 0.18), transparent 28%),
+    linear-gradient(180deg, #020806, #010403) !important;
+}
+
+.footer .footer-inner {
+  align-items: start;
+}
+
+.footer strong,
+.footer a {
+  color: #ffffff !important;
+}
+
+.footer a:hover {
+  color: #ffd400 !important;
+}
+
+.footer .muted {
+  color: rgba(255, 255, 255, 0.62) !important;
+}
+
+.footer-logo-row img {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+}
+
+/* Homepage final spacing polish. */
+.yp-home,
+.home-dark,
+main[class*="home"] {
+  overflow-x: hidden;
+}
+
+.yp-dark-hero,
+.home-hero,
+.hero-dark {
+  min-height: auto;
+}
+
+.yp-category-strip,
+.category-strip,
+.home-category-strip {
+  scrollbar-width: none;
+}
+
+.yp-category-strip::-webkit-scrollbar,
+.category-strip::-webkit-scrollbar,
+.home-category-strip::-webkit-scrollbar {
+  display: none;
+}
+
+/* Avoid clipped card buttons across the new homepage/browse cards. */
+.promo-card-actions,
+.card-actions,
+.yp-card-actions,
+.promo-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.promo-card-actions a,
+.card-actions a,
+.yp-card-actions a,
+.promo-actions a,
+.promo-card-actions button,
+.card-actions button,
+.yp-card-actions button,
+.promo-actions button {
+  flex: 1 1 130px;
+  min-width: 0;
+  white-space: nowrap;
+}
+
+/* Browse page final polish. */
+[class*="BrowseDark_page"] {
+  overflow-x: hidden;
+}
+
+[class*="BrowseDark_quickRow"] {
+  padding-bottom: 10px;
+}
+
+[class*="BrowseDark_cardActions"] a {
+  min-width: 0;
+}
+
+/* Link-Up page final polish. */
+.linkup-shell,
+.linkup-page,
+.plan-linkup-page {
+  overflow-x: hidden;
+}
+
+.linkup-plan-row,
+.linkup-suggestion-card,
+.linkup-deal-card {
+  min-width: 0;
+}
+
+/* Ad detail final polish. */
+.promo-detail-shell {
+  overflow-x: hidden;
+}
+
+.promo-detail-panel .btn,
+.promo-detail-sections .btn,
+.promo-share-pack .btn,
+.promo-owner-actions .btn {
+  text-align: center;
+}
+
+.promo-detail-panel .btn:focus-visible,
+.promo-detail-sections .btn:focus-visible,
+.promo-share-pack .btn:focus-visible,
+.promo-owner-actions .btn:focus-visible,
+.nav-links a:focus-visible,
+.launch-banner-inner a:focus-visible {
+  outline: 3px solid rgba(255, 212, 0, 0.85);
+  outline-offset: 3px;
+}
+
+/* Better tablet layout. */
+@media (max-width: 1180px) {
+  .header .container.nav {
+    width: min(100% - 28px, 1200px);
+  }
+
+  .header .brand-wordmark-img {
+    max-width: 190px;
+  }
+
+  .nav-links {
+    gap: 12px;
+  }
+
+  .nav-links a,
+  .nav-links button {
+    font-size: 14px;
+  }
+
+  .nav-links a[href="/create"] {
+    padding: 11px 14px;
+  }
+
+  .launch-banner-inner {
+    width: min(100% - 28px, 1200px);
+  }
+}
+
+/* Main mobile navigation treatment.
+   It keeps existing links visible without requiring JS changes. */
+@media (max-width: 900px) {
+  .header {
+    position: sticky;
+  }
+
+  .header .container.nav {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding-top: 14px;
+    padding-bottom: 12px;
+  }
+
+  .header .brand-logo {
+    justify-content: center;
+  }
+
+  .header .brand-icon-img {
+    width: 48px;
+    height: 48px;
+  }
+
+  .header .brand-wordmark-img {
+    max-width: 210px;
+  }
+
+  .header .brand-copy small {
+    text-align: center;
+  }
+
+  .nav-links {
+    display: flex !important;
+    width: 100%;
+    justify-content: flex-start;
+    gap: 8px;
+    padding: 8px 4px 4px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .nav-links::-webkit-scrollbar {
+    display: none;
+  }
+
+  .nav-links a,
+  .nav-links button {
+    flex: 0 0 auto;
+    min-height: 42px;
+    padding: 11px 13px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.06);
+    font-size: 13px;
+    line-height: 1;
+  }
+
+  .nav-links a[href="/create"] {
+    border-color: rgba(255, 212, 0, 0.7);
+  }
+
+  .launch-banner-inner {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding: 10px 0;
+    text-align: center;
+  }
+
+  .launch-banner-inner a {
+    justify-self: center;
+    min-height: 40px;
+    padding: 10px 16px;
+  }
+}
+
+/* Phone layout polish. */
+@media (max-width: 640px) {
+  .header .container.nav {
+    width: min(100% - 18px, 1200px);
+  }
+
+  .header .brand-logo {
+    gap: 10px;
+  }
+
+  .header .brand-wordmark-img {
+    max-width: 178px;
+  }
+
+  .header .brand-copy small {
+    font-size: 11px;
+  }
+
+  .launch-banner-inner {
+    width: min(100% - 18px, 1200px);
+    font-size: 13px;
+  }
+
+  .launch-banner-inner span {
+    display: inline;
+  }
+
+  .promo-detail-shell > .container,
+  [class*="BrowseDark_wrap"] {
+    width: min(100% - 18px, 1280px) !important;
+  }
+
+  .promo-detail-panel.panel h1 {
+    font-size: clamp(34px, 12vw, 50px);
+  }
+
+  .promo-detail-sections .panel h2,
+  .promo-related-section .section-head h2 {
+    font-size: clamp(30px, 10vw, 42px);
+  }
+
+  .promo-detail-summary {
+    font-size: 15px;
+  }
+
+  .promo-detail-badges span {
+    min-height: 32px;
+    padding: 7px 10px;
+    font-size: 11px;
+  }
+
+  .promo-share-pack-open {
+    padding: 14px;
+  }
+
+  .promo-share-pack-open h3 {
+    font-size: 22px;
+  }
+
+  .footer .footer-inner {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 22px;
+    text-align: center;
+  }
+
+  .footer-logo-row {
+    justify-content: center;
+  }
+
+  .footer-links {
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .footer-links a {
+    display: inline-flex;
+    min-height: 36px;
+    align-items: center;
+  }
+}
+
+/* Very small screens. */
+@media (max-width: 390px) {
+  .header .brand-wordmark-img {
+    max-width: 150px;
+  }
+
+  .nav-links a,
+  .nav-links button {
+    padding: 10px 11px;
+    font-size: 12px;
+  }
+
+  .promo-primary-actions,
+  .promo-action-grid,
+  .promo-owner-actions {
+    gap: 9px;
+  }
+
+  .promo-detail-panel .btn,
+  .promo-detail-sections .btn,
+  .promo-share-pack .btn,
+  .promo-owner-actions .btn {
+    min-height: 48px;
+    font-size: 13px;
+  }
+}
+
+/* Print-friendly fallback, useful if promoters print a page. */
+@media print {
+  .header,
+  .launch-banner,
+  .footer,
+  .promo-more-toggle,
+  .promo-action-grid,
+  .promo-owner-actions,
+  .promo-related-section {
+    display: none !important;
+  }
+
+  body,
+  .promo-detail-shell {
+    color: #000 !important;
+    background: #fff !important;
+  }
+
+  .promo-detail-hero,
+  .promo-detail-panel.panel,
+  .promo-detail-poster.card,
+  .promo-detail-sections .panel {
+    box-shadow: none !important;
+    border-color: #ddd !important;
+  }
+}
+
+/* =========================================================
+   Phase 10 — Dashboard/Admin safe polish + build readiness
+   CSS-only phase. Keeps auth, roles, Supabase queries, and
+   dashboard/admin functions untouched.
+   ========================================================= */
+
+/* Shared dashboard/admin dark shell support. These selectors are broad
+   enough to polish the current pages without requiring JS changes. */
+.dashboard-page,
+.admin-page,
+.account-page,
+.uploader-page,
+.create-page,
+.page-dashboard,
+.page-admin,
+main:has(.table-wrap),
+main:has(.admin-table-wrap) {
+  overflow-x: hidden;
+}
+
+/* If dashboard/admin pages use the standard section/container layout,
+   gently connect them to the new YardPromoJa premium look. */
+.dashboard-page .section,
+.admin-page .section,
+.page-dashboard .section,
+.page-admin .section {
+  background:
+    radial-gradient(circle at 8% 4%, rgba(0, 138, 61, 0.14), transparent 30%),
+    linear-gradient(180deg, #f8fafc 0%, #eef6f0 100%);
+}
+
+/* Page hero/panel polish without changing markup. */
+.page-hero,
+.dashboard-hero,
+.admin-hero {
+  border: 1px solid rgba(0, 138, 61, 0.12);
+  border-radius: 30px;
+  background:
+    radial-gradient(circle at top right, rgba(255, 212, 0, 0.16), transparent 34%),
+    linear-gradient(135deg, #ffffff, #f8fafc);
+  box-shadow: 0 20px 70px rgba(7, 17, 31, 0.08);
+  padding: clamp(24px, 4vw, 42px);
+  margin-bottom: 24px;
+}
+
+.page-hero h1,
+.dashboard-hero h1,
+.admin-hero h1 {
+  color: #07111f;
+  line-height: 0.96;
+  letter-spacing: -0.07em;
+}
+
+.page-hero p,
+.dashboard-hero p,
+.admin-hero p {
+  max-width: 760px;
+  color: #64748b;
+}
+
+/* Stats/cards used across admin and dashboard. */
+.stat,
+.stats-card,
+.dashboard-stat,
+.admin-stat,
+.metric-card,
+.kpi-card {
+  border: 1px solid rgba(0, 138, 61, 0.12) !important;
+  border-radius: 24px !important;
+  background:
+    radial-gradient(circle at top right, rgba(255, 212, 0, 0.12), transparent 34%),
+    #ffffff !important;
+  box-shadow: 0 16px 44px rgba(7, 17, 31, 0.07) !important;
+}
+
+.stat strong,
+.stats-card strong,
+.dashboard-stat strong,
+.admin-stat strong,
+.metric-card strong,
+.kpi-card strong {
+  color: #07111f;
+  letter-spacing: -0.04em;
+}
+
+.stat span,
+.stats-card span,
+.dashboard-stat span,
+.admin-stat span,
+.metric-card span,
+.kpi-card span {
+  color: #64748b;
+  font-weight: 850;
+}
+
+/* Table polish. Keeps the current data and actions unchanged. */
+.table-wrap,
+.admin-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid #dfe7ef;
+  border-radius: 24px;
+  background: #ffffff;
+  box-shadow: 0 18px 50px rgba(7, 17, 31, 0.07);
+}
+
+.table-wrap table,
+.admin-table-wrap table {
+  margin: 0;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.table-wrap th,
+.admin-table-wrap th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  color: #475569;
+  background: #f8fafc;
+  font-size: 12px;
+  font-weight: 950;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.table-wrap td,
+.admin-table-wrap td {
+  color: #0f172a;
+  vertical-align: middle;
+}
+
+.table-wrap tr:hover td,
+.admin-table-wrap tr:hover td {
+  background: #fbfdf8;
+}
+
+/* Keep table action buttons usable without changing logic. */
+.table-wrap .btn,
+.admin-table-wrap .btn,
+.table-wrap button,
+.admin-table-wrap button,
+td .btn,
+td button {
+  min-height: 38px;
+  border-radius: 12px;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.table-wrap td:last-child,
+.admin-table-wrap td:last-child {
+  min-width: 160px;
+}
+
+/* Row ad/image previews. */
+.row-ad img,
+.admin-table-wrap img,
+.table-wrap img {
+  object-fit: cover;
+}
+
+.row-ad {
+  min-width: 260px;
+}
+
+/* Status chips. */
+.status {
+  border: 1px solid transparent;
+  font-weight: 950;
+}
+
+.status.active,
+.status.approved,
+.status.confirmed {
+  border-color: rgba(0, 138, 61, 0.16);
+  background: #eafff0;
+  color: #007334;
+}
+
+.status.pending,
+.status.new,
+.status.review {
+  border-color: rgba(255, 212, 0, 0.30);
+  background: #fff8d6;
+  color: #7a5b00;
+}
+
+.status.rejected,
+.status.cancelled,
+.status.inactive {
+  border-color: rgba(180, 35, 24, 0.12);
+  background: #fff1f2;
+  color: #b42318;
+}
+
+/* Forms used in dashboard/admin/create flows. */
+.form-card,
+.create-main-card,
+.create-sidebar,
+.auth-card,
+.claim-card,
+.report-card,
+.dashboard-card,
+.admin-card,
+.panel {
+  border-color: #dfe7ef;
+}
+
+.dashboard-page input,
+.dashboard-page select,
+.dashboard-page textarea,
+.admin-page input,
+.admin-page select,
+.admin-page textarea,
+.page-dashboard input,
+.page-dashboard select,
+.page-dashboard textarea,
+.page-admin input,
+.page-admin select,
+.page-admin textarea {
+  border-radius: 14px;
+}
+
+.dashboard-page input:focus,
+.dashboard-page select:focus,
+.dashboard-page textarea:focus,
+.admin-page input:focus,
+.admin-page select:focus,
+.admin-page textarea:focus,
+.page-dashboard input:focus,
+.page-dashboard select:focus,
+.page-dashboard textarea:focus,
+.page-admin input:focus,
+.page-admin select:focus,
+.page-admin textarea:focus {
+  border-color: #008a3d;
+  box-shadow: 0 0 0 4px rgba(0, 138, 61, 0.12);
+}
+
+/* Button polish across management pages. */
+.dashboard-page .btn,
+.admin-page .btn,
+.page-dashboard .btn,
+.page-admin .btn,
+.form-card .btn,
+.create-main-card .btn,
+.create-sidebar .btn {
+  border-radius: 15px;
+  font-weight: 950;
+}
+
+.dashboard-page .btn-primary,
+.admin-page .btn-primary,
+.page-dashboard .btn-primary,
+.page-admin .btn-primary {
+  background: linear-gradient(135deg, #008a3d, #006b31);
+}
+
+.dashboard-page .btn-gold,
+.admin-page .btn-gold,
+.page-dashboard .btn-gold,
+.page-admin .btn-gold {
+  color: #07110b;
+  background: #ffd400;
+}
+
+/* Tabs and filter rows. */
+.tabs,
+.filters,
+.admin-filters,
+.dashboard-filters,
+.filter-row {
+  gap: 10px;
+}
+
+.tabs button,
+.admin-filters button,
+.dashboard-filters button,
+.filter-row button {
+  border-radius: 999px;
+  font-weight: 950;
+}
+
+.tabs button.active,
+.admin-filters button.active,
+.dashboard-filters button.active,
+.filter-row button.active {
+  color: #07110b;
+  border-color: #ffd400;
+  background: #ffd400;
+}
+
+/* Empty states. */
+.dashboard-page .empty,
+.admin-page .empty,
+.page-dashboard .empty,
+.page-admin .empty {
+  border: 1px dashed rgba(0, 138, 61, 0.28);
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at top right, rgba(255, 212, 0, 0.10), transparent 35%),
+    #ffffff;
+}
+
+/* Modals used by admin/dashboard. */
+.modal,
+.yp-modal-card,
+.yp-action-modal {
+  border-radius: 28px;
+  border: 1px solid rgba(7, 17, 31, 0.10);
+}
+
+.modal-backdrop,
+.yp-modal-backdrop {
+  backdrop-filter: blur(8px);
+}
+
+/* Safer responsive management layout. */
+@media (max-width: 980px) {
+  .layout-2,
+  .create-grid,
+  .profile-hero,
+  .dashboard-grid,
+  .admin-grid,
+  .stats-grid,
+  .metrics-grid,
+  .kpi-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .filters,
+  .admin-filters,
+  .dashboard-filters {
+    grid-template-columns: 1fr !important;
+  }
+
+  .table-wrap,
+  .admin-table-wrap {
+    border-radius: 20px;
+  }
+
+  .table-wrap table,
+  .admin-table-wrap table {
+    min-width: 820px;
+  }
+}
+
+@media (max-width: 640px) {
+  .page-hero,
+  .dashboard-hero,
+  .admin-hero,
+  .form-card,
+  .create-main-card,
+  .create-sidebar,
+  .dashboard-card,
+  .admin-card {
+    padding: 18px !important;
+    border-radius: 22px !important;
+  }
+
+  .page-hero h1,
+  .dashboard-hero h1,
+  .admin-hero h1 {
+    font-size: clamp(34px, 12vw, 48px);
+  }
+
+  .table-wrap,
+  .admin-table-wrap {
+    margin-left: -2px;
+    margin-right: -2px;
+  }
+
+  .tabs {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: 4px;
+    scrollbar-width: none;
+  }
+
+  .tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .tabs button {
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+
+  .form-row,
+  .admin-action-row,
+  .dashboard-action-row {
+    grid-template-columns: 1fr !important;
+  }
+
+  .dashboard-page .btn,
+  .admin-page .btn,
+  .page-dashboard .btn,
+  .page-admin .btn {
+    width: 100%;
+  }
+}
+
+/* =========================================================
+   Phase 11 — Campaigns & Giveaways polish
+   CSS-only phase. Keeps campaign entry/vote/share/localStorage
+   behavior untouched.
+   ========================================================= */
+
+.campaigns-page,
+.campaign-detail-page {
+  position: relative;
+  isolation: isolate;
+  overflow-x: hidden;
+  color: #ffffff;
+  background:
+    radial-gradient(circle at 8% 8%, rgba(0, 138, 61, 0.26), transparent 30%),
+    radial-gradient(circle at 92% 12%, rgba(255, 212, 0, 0.16), transparent 28%),
+    linear-gradient(180deg, #020806 0%, #06130d 52%, #020806 100%);
+}
+
+.campaigns-page::before,
+.campaign-detail-page::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  opacity: 0.34;
+  background:
+    linear-gradient(135deg, rgba(255,255,255,.035) 25%, transparent 25%) 0 0 / 34px 34px,
+    linear-gradient(225deg, rgba(255,255,255,.024) 25%, transparent 25%) 0 0 / 34px 34px;
+  pointer-events: none;
+}
+
+.campaigns-page > .container,
+.campaign-detail-page > .container {
+  width: min(100% - 48px, 1280px);
+}
+
+/* Campaign listing hero */
+.campaigns-hero.panel {
+  position: relative;
+  overflow: hidden;
+  min-height: 430px;
+  display: grid;
+  align-content: center;
+  padding: clamp(28px, 5vw, 58px);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: clamp(28px, 5vw, 44px);
+  color: #ffffff;
+  background:
+    radial-gradient(circle at 84% 20%, rgba(255, 212, 0, 0.22), transparent 32%),
+    radial-gradient(circle at 12% 12%, rgba(0, 138, 61, 0.35), transparent 34%),
+    linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,.025));
+  box-shadow: 0 34px 100px rgba(0, 0, 0, 0.36);
+}
+
+.campaigns-hero.panel::after {
+  content: "WIN • VOTE • RSVP";
+  position: absolute;
+  right: -24px;
+  bottom: 18px;
+  color: rgba(255, 255, 255, 0.055);
+  font-size: clamp(58px, 10vw, 138px);
+  font-weight: 1000;
+  letter-spacing: -0.08em;
+  line-height: 0.8;
+  pointer-events: none;
+}
+
+.campaigns-hero .kicker,
+.campaign-detail-hero .kicker {
+  color: #ffd400;
+}
+
+.campaigns-hero h1 {
+  max-width: 920px;
+  margin: 0;
+  color: #ffffff;
+  font-size: clamp(44px, 6vw, 92px);
+  line-height: 0.92;
+  letter-spacing: -0.08em;
+  text-transform: uppercase;
+}
+
+.campaigns-hero p {
+  position: relative;
+  z-index: 1;
+  max-width: 760px;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: clamp(16px, 1.5vw, 21px);
+  line-height: 1.58;
+}
+
+.campaigns-page .section-head {
+  color: #ffffff;
+  margin-top: clamp(32px, 5vw, 58px);
+}
+
+.campaigns-page .section-head h2 {
+  color: #ffffff;
+}
+
+.campaign-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 22px;
+  margin-top: 24px;
+}
+
+.campaign-card.campaign-feature-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 28px;
+  background: #ffffff;
+  box-shadow: 0 28px 88px rgba(0, 0, 0, 0.30);
+}
+
+.campaign-card-media {
+  position: relative;
+  min-height: 210px;
+  background:
+    radial-gradient(circle at 50% 10%, rgba(255, 212, 0, 0.28), transparent 35%),
+    radial-gradient(circle at 18% 84%, rgba(0, 138, 61, 0.34), transparent 35%),
+    linear-gradient(135deg, #06130d, #020806);
+}
+
+.campaign-placeholder {
+  width: 100%;
+  height: 100%;
+  min-height: 210px;
+  display: grid;
+  place-items: center;
+  padding: 22px;
+  color: #ffffff;
+  text-align: center;
+}
+
+.campaign-placeholder span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 58px;
+  padding: 14px 18px;
+  border: 1px solid rgba(255, 212, 0, 0.44);
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.26);
+  color: #ffd400;
+  font-weight: 1000;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.campaign-feature-card .featured-tag {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  color: #07110b;
+  background: #ffd400;
+}
+
+.campaign-feature-card .campaign-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 22px;
+  color: #07111f;
+}
+
+.campaign-type {
+  align-self: flex-start;
+  border: 1px solid rgba(0, 138, 61, 0.16);
+  background: #eafff0;
+  color: #007334;
+}
+
+.campaign-feature-card h3 {
+  margin: 14px 0 0;
+  color: #07111f;
+  font-size: clamp(24px, 2vw, 32px);
+  line-height: 0.98;
+  letter-spacing: -0.055em;
+}
+
+.campaign-feature-card .muted {
+  color: #64748b !important;
+}
+
+.campaign-mini-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 16px 0;
+}
+
+.campaign-mini-stats span {
+  display: inline-flex;
+  min-height: 32px;
+  align-items: center;
+  padding: 7px 10px;
+  border: 1px solid #dfe7ef;
+  border-radius: 999px;
+  color: #334155;
+  background: #f8fafc;
+  font-size: 12px;
+  font-weight: 950;
+}
+
+.campaign-reward {
+  margin-top: auto;
+  color: #07111f;
+  font-weight: 850;
+}
+
+.campaign-feature-card .btn {
+  width: 100%;
+  margin-top: 12px;
+  min-height: 50px;
+  border-radius: 16px;
+}
+
+/* Campaign detail page */
+.campaign-detail-page .btn-light[href="/campaigns"] {
+  margin-bottom: 20px;
+  color: #07110b !important;
+  border: 1px solid rgba(255, 212, 0, 0.52);
+  background: #ffd400 !important;
+  font-weight: 950;
+}
+
+.campaign-detail-shell {
+  display: grid;
+  gap: 24px;
+}
+
+.campaign-detail-hero.panel {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(340px, .72fr);
+  gap: clamp(18px, 3vw, 34px);
+  align-items: stretch;
+  padding: clamp(24px, 4vw, 48px);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: clamp(28px, 4vw, 42px);
+  color: #ffffff;
+  background:
+    radial-gradient(circle at 84% 18%, rgba(255, 212, 0, 0.20), transparent 32%),
+    radial-gradient(circle at 14% 14%, rgba(0, 138, 61, 0.32), transparent 34%),
+    linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+  box-shadow: 0 34px 100px rgba(0,0,0,.34);
+}
+
+.campaign-detail-hero h1 {
+  max-width: 850px;
+  margin: 0;
+  color: #ffffff;
+  font-size: clamp(44px, 5.8vw, 86px);
+  line-height: 0.92;
+  letter-spacing: -0.08em;
+  text-transform: uppercase;
+}
+
+.campaign-detail-hero .muted {
+  max-width: 720px;
+  color: rgba(255, 255, 255, 0.75) !important;
+  font-size: clamp(16px, 1.4vw, 20px);
+}
+
+.campaign-detail-hero .trust-row span {
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.campaign-detail-hero .hero-actions {
+  margin-top: 22px;
+}
+
+.campaign-detail-hero .hero-actions .btn {
+  min-height: 50px;
+  border-radius: 16px;
+}
+
+.campaign-score-card {
+  display: grid;
+  place-items: center;
+  min-width: 0;
+  padding: 20px;
+  border: 1px solid rgba(255, 212, 0, 0.24);
+  border-radius: 28px;
+  background: rgba(0, 0, 0, 0.22);
+}
+
+.campaign-score-card .engagement-strip {
+  width: 100%;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.campaign-score-card .engagement-stat {
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.campaign-score-card .engagement-stat strong {
+  color: #ffd400;
+}
+
+.campaign-score-card .engagement-stat span {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.campaign-detail-page .mini-success {
+  border: 1px solid rgba(0, 138, 61, 0.24);
+  border-radius: 18px;
+  color: #007334;
+  background: #eafff0;
+}
+
+.campaign-detail-page .layout-2 {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, .48fr);
+  gap: 24px;
+}
+
+.campaign-detail-page .layout-2 > .panel {
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 28px;
+  background: #ffffff;
+  color: #07111f;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.22);
+}
+
+.campaign-detail-page .layout-2 > .panel h2 {
+  color: #07111f;
+  font-size: clamp(34px, 4vw, 58px);
+  line-height: .95;
+  letter-spacing: -.07em;
+}
+
+.campaign-detail-page .layout-2 > .panel h3 {
+  color: #07111f;
+}
+
+.campaign-option {
+  padding: 16px;
+  border: 1px solid #dfe7ef;
+  border-radius: 18px;
+  background: #f8fafc;
+}
+
+.campaign-option > span {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  color: #07111f;
+  font-weight: 950;
+}
+
+.campaign-option strong {
+  display: block;
+  margin: 10px 0;
+  color: #007334;
+}
+
+.progress-line {
+  height: 10px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #e2e8f0;
+}
+
+.progress-line span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #008a3d, #ffd400);
+}
+
+.campaign-rules {
+  display: grid;
+  gap: 10px;
+  padding: 0;
+  margin: 18px 0;
+  list-style: none;
+}
+
+.campaign-rules li {
+  position: relative;
+  padding: 13px 14px 13px 40px;
+  border: 1px solid #dfe7ef;
+  border-radius: 16px;
+  color: #334155;
+  background: #f8fafc;
+  font-weight: 850;
+}
+
+.campaign-rules li::before {
+  content: "✓";
+  position: absolute;
+  top: 12px;
+  left: 14px;
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  color: #07110b;
+  background: #ffd400;
+  font-size: 12px;
+  font-weight: 1000;
+}
+
+.campaign-detail-page .form-grid {
+  gap: 16px;
+}
+
+.campaign-detail-page input,
+.campaign-detail-page select,
+.campaign-detail-page textarea {
+  min-height: 48px;
+  border-radius: 15px;
+}
+
+.campaign-detail-page .form-row {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 14px;
+}
+
+.campaign-detail-page .form-grid .btn {
+  min-height: 52px;
+  border-radius: 16px;
+}
+
+/* Empty state on campaigns page */
+.campaigns-page .empty {
+  border: 1px dashed rgba(255, 212, 0, 0.34);
+  border-radius: 26px;
+  color: rgba(255, 255, 255, 0.74);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.campaigns-page .empty h3 {
+  color: #ffffff;
+}
+
+/* Responsive campaign layout */
+@media (max-width: 1180px) {
+  .campaign-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .campaign-detail-hero.panel,
+  .campaign-detail-page .layout-2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .campaigns-page > .container,
+  .campaign-detail-page > .container {
+    width: min(100% - 22px, 1280px);
+  }
+
+  .campaigns-hero.panel,
+  .campaign-detail-hero.panel,
+  .campaign-detail-page .layout-2 > .panel {
+    border-radius: 22px;
+    padding: 20px;
+  }
+
+  .campaigns-hero h1,
+  .campaign-detail-hero h1 {
+    font-size: clamp(36px, 13vw, 54px);
+  }
+
+  .campaign-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .campaign-score-card .engagement-strip,
+  .campaign-detail-page .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .campaign-detail-hero .hero-actions .btn {
+    width: 100%;
+  }
+}
+
+/* =========================================================
+   Phase 12 — Auth, Contact, Saved, Claim/Report, Support polish
+   CSS-only phase. Keeps all page logic untouched.
+   ========================================================= */
+
+/* Shared polish for lighter utility pages so they feel connected
+   to the new premium YardPromoJa design without changing functions. */
+.auth-page,
+.login-page,
+.signup-page,
+.contact-page,
+.saved-page,
+.claim-page,
+.report-page,
+.advertise-page,
+.pricing-page,
+.terms-page,
+.privacy-page,
+.about-page,
+.account-page,
+.services-page {
+  overflow-x: hidden;
+}
+
+/* Pages that use standard section/container layouts. */
+.auth-page.section,
+.login-page.section,
+.signup-page.section,
+.contact-page.section,
+.saved-page.section,
+.claim-page.section,
+.report-page.section,
+.advertise-page.section,
+.pricing-page.section,
+.about-page.section,
+.account-page.section,
+.services-page.section,
+main.auth-page,
+main.login-page,
+main.contact-page,
+main.saved-page,
+main.claim-page,
+main.report-page,
+main.advertise-page,
+main.pricing-page,
+main.about-page {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 8% 6%, rgba(0, 138, 61, 0.16), transparent 30%),
+    radial-gradient(circle at 92% 8%, rgba(255, 212, 0, 0.12), transparent 27%),
+    linear-gradient(180deg, #f8fafc 0%, #eef6f0 100%);
+}
+
+/* Auth/login cards. */
+.auth-card,
+.login-card,
+.signup-card,
+.contact-card,
+.saved-card,
+.claim-card,
+.report-card,
+.advertise-card,
+.pricing-card,
+.account-card,
+.service-card {
+  border: 1px solid rgba(0, 138, 61, 0.12) !important;
+  border-radius: 28px !important;
+  background:
+    radial-gradient(circle at top right, rgba(255, 212, 0, 0.13), transparent 34%),
+    #ffffff !important;
+  box-shadow: 0 22px 70px rgba(7, 17, 31, 0.10) !important;
+}
+
+.auth-card h1,
+.login-card h1,
+.signup-card h1,
+.contact-card h1,
+.saved-card h1,
+.claim-card h1,
+.report-card h1,
+.advertise-card h1,
+.pricing-card h1,
+.account-card h1,
+.service-card h1,
+.auth-card h2,
+.login-card h2,
+.signup-card h2,
+.contact-card h2,
+.saved-card h2,
+.claim-card h2,
+.report-card h2,
+.advertise-card h2,
+.pricing-card h2,
+.account-card h2,
+.service-card h2 {
+  color: #07111f;
+  line-height: 0.96;
+  letter-spacing: -0.065em;
+}
+
+/* Generic form polish across these utility pages. */
+.auth-card label,
+.login-card label,
+.signup-card label,
+.contact-card label,
+.claim-card label,
+.report-card label,
+.account-card label,
+.auth-page label,
+.login-page label,
+.signup-page label,
+.contact-page label,
+.claim-page label,
+.report-page label {
+  color: #0f172a;
+  font-weight: 950;
+}
+
+.auth-card input,
+.auth-card select,
+.auth-card textarea,
+.login-card input,
+.login-card select,
+.login-card textarea,
+.signup-card input,
+.signup-card select,
+.signup-card textarea,
+.contact-card input,
+.contact-card select,
+.contact-card textarea,
+.claim-card input,
+.claim-card select,
+.claim-card textarea,
+.report-card input,
+.report-card select,
+.report-card textarea,
+.account-card input,
+.account-card select,
+.account-card textarea,
+.auth-page input,
+.auth-page select,
+.auth-page textarea,
+.login-page input,
+.login-page select,
+.login-page textarea,
+.contact-page input,
+.contact-page select,
+.contact-page textarea,
+.claim-page input,
+.claim-page select,
+.claim-page textarea,
+.report-page input,
+.report-page select,
+.report-page textarea {
+  min-height: 48px;
+  border-radius: 15px;
+  border-color: #dfe7ef;
+  background: #ffffff;
+}
+
+.auth-card input:focus,
+.auth-card select:focus,
+.auth-card textarea:focus,
+.login-card input:focus,
+.login-card select:focus,
+.login-card textarea:focus,
+.signup-card input:focus,
+.signup-card select:focus,
+.signup-card textarea:focus,
+.contact-card input:focus,
+.contact-card select:focus,
+.contact-card textarea:focus,
+.claim-card input:focus,
+.claim-card select:focus,
+.claim-card textarea:focus,
+.report-card input:focus,
+.report-card select:focus,
+.report-card textarea:focus,
+.account-card input:focus,
+.account-card select:focus,
+.account-card textarea:focus {
+  border-color: #008a3d;
+  box-shadow: 0 0 0 4px rgba(0, 138, 61, 0.12);
+}
+
+/* Login/signup mode switch rows. */
+.auth-switch-row,
+.login-switch-row,
+.signup-switch-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.auth-switch-row .btn,
+.login-switch-row .btn,
+.signup-switch-row .btn {
+  flex: 1 1 160px;
+}
+
+/* Utility page buttons. */
+.auth-card .btn,
+.login-card .btn,
+.signup-card .btn,
+.contact-card .btn,
+.saved-card .btn,
+.claim-card .btn,
+.report-card .btn,
+.advertise-card .btn,
+.pricing-card .btn,
+.account-card .btn,
+.service-card .btn {
+  min-height: 48px;
+  border-radius: 15px;
+  font-weight: 950;
+}
+
+.auth-card .btn-primary,
+.login-card .btn-primary,
+.signup-card .btn-primary,
+.contact-card .btn-primary,
+.claim-card .btn-primary,
+.report-card .btn-primary,
+.account-card .btn-primary {
+  background: linear-gradient(135deg, #008a3d, #006b31);
+}
+
+.auth-card .btn-gold,
+.login-card .btn-gold,
+.signup-card .btn-gold,
+.contact-card .btn-gold,
+.claim-card .btn-gold,
+.report-card .btn-gold,
+.advertise-card .btn-gold,
+.pricing-card .btn-gold {
+  color: #07110b;
+  background: #ffd400;
+}
+
+/* Contact page presentation. */
+.contact-page .layout-2,
+.contact-grid,
+.support-grid {
+  align-items: start;
+}
+
+.contact-page .panel,
+.contact-info-card,
+.support-card {
+  border-radius: 26px;
+  box-shadow: 0 18px 60px rgba(7, 17, 31, 0.08);
+}
+
+.contact-page .panel .kicker,
+.contact-info-card .kicker,
+.support-card .kicker {
+  color: #008a3d;
+}
+
+/* Saved promos page. */
+.saved-page .empty,
+.saved-empty,
+.saved-page .panel {
+  border: 1px dashed rgba(0, 138, 61, 0.28);
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at top right, rgba(255, 212, 0, 0.10), transparent 34%),
+    #ffffff;
+}
+
+.saved-page .ads-grid,
+.saved-grid {
+  margin-top: 22px;
+}
+
+/* Claim/report trust styling. */
+.claim-page .mini-success,
+.report-page .mini-success,
+.claim-card .mini-success,
+.report-card .mini-success {
+  border: 1px solid rgba(0, 138, 61, 0.20);
+  border-radius: 16px;
+  color: #007334;
+  background: #eafff0;
+}
+
+.claim-page .alert,
+.report-page .alert,
+.claim-card .alert,
+.report-card .alert {
+  border-radius: 16px;
+}
+
+/* Advertise/pricing cards. */
+.price-card,
+.pricing-card,
+.advertise-card,
+.package-card,
+.plan-card {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(0, 138, 61, 0.12) !important;
+  border-radius: 28px !important;
+  background:
+    radial-gradient(circle at top right, rgba(255, 212, 0, 0.14), transparent 34%),
+    #ffffff !important;
+  box-shadow: 0 18px 58px rgba(7, 17, 31, 0.08) !important;
+}
+
+.price-card::before,
+.pricing-card::before,
+.advertise-card::before,
+.package-card::before,
+.plan-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 5px;
+  background: linear-gradient(90deg, #008a3d, #ffd400);
+}
+
+.price-card h3,
+.pricing-card h3,
+.advertise-card h3,
+.package-card h3,
+.plan-card h3 {
+  color: #07111f;
+  letter-spacing: -0.04em;
+}
+
+.price-card ul,
+.pricing-card ul,
+.advertise-card ul,
+.package-card ul,
+.plan-card ul {
+  display: grid;
+  gap: 10px;
+  padding-left: 0;
+  list-style: none;
+}
+
+.price-card li,
+.pricing-card li,
+.advertise-card li,
+.package-card li,
+.plan-card li {
+  position: relative;
+  padding-left: 28px;
+  color: #334155;
+}
+
+.price-card li::before,
+.pricing-card li::before,
+.advertise-card li::before,
+.package-card li::before,
+.plan-card li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  top: 1px;
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  color: #07110b;
+  background: #ffd400;
+  font-size: 12px;
+  font-weight: 1000;
+}
+
+/* Legal/content pages. */
+.terms-page .panel,
+.privacy-page .panel,
+.about-page .panel,
+.legal-card,
+.content-card {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 28px;
+  background: #ffffff;
+  box-shadow: 0 18px 60px rgba(7, 17, 31, 0.08);
+}
+
+.terms-page .panel h1,
+.privacy-page .panel h1,
+.about-page .panel h1,
+.legal-card h1,
+.content-card h1 {
+  color: #07111f;
+  letter-spacing: -0.065em;
+}
+
+/* Toast and status polish. */
+.toast,
+.yp-toast {
+  border: 1px solid rgba(255, 212, 0, 0.24);
+  background: #07111f;
+}
+
+/* Mobile treatment for utility pages. */
+@media (max-width: 900px) {
+  .auth-page .layout-2,
+  .login-page .layout-2,
+  .signup-page .layout-2,
+  .contact-page .layout-2,
+  .claim-page .layout-2,
+  .report-page .layout-2,
+  .contact-grid,
+  .support-grid,
+  .pricing-grid,
+  .packages-grid,
+  .plans-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .auth-card,
+  .login-card,
+  .signup-card,
+  .contact-card,
+  .saved-card,
+  .claim-card,
+  .report-card,
+  .advertise-card,
+  .pricing-card,
+  .account-card,
+  .service-card,
+  .price-card,
+  .package-card,
+  .plan-card {
+    border-radius: 24px !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .auth-card,
+  .login-card,
+  .signup-card,
+  .contact-card,
+  .saved-card,
+  .claim-card,
+  .report-card,
+  .advertise-card,
+  .pricing-card,
+  .account-card,
+  .service-card,
+  .price-card,
+  .package-card,
+  .plan-card,
+  .terms-page .panel,
+  .privacy-page .panel,
+  .about-page .panel,
+  .legal-card,
+  .content-card {
+    padding: 18px !important;
+    border-radius: 22px !important;
+  }
+
+  .auth-card h1,
+  .login-card h1,
+  .signup-card h1,
+  .contact-card h1,
+  .saved-card h1,
+  .claim-card h1,
+  .report-card h1,
+  .advertise-card h1,
+  .pricing-card h1,
+  .account-card h1,
+  .service-card h1,
+  .terms-page .panel h1,
+  .privacy-page .panel h1,
+  .about-page .panel h1 {
+    font-size: clamp(34px, 12vw, 48px);
+  }
+
+  .auth-switch-row .btn,
+  .login-switch-row .btn,
+  .signup-switch-row .btn,
+  .auth-card .btn,
+  .login-card .btn,
+  .signup-card .btn,
+  .contact-card .btn,
+  .claim-card .btn,
+  .report-card .btn {
+    width: 100%;
+  }
+}
+
+/* =========================================================
+   Phase 13 — System pages + build readiness polish
+   Adds styling for app/not-found.js, app/loading.js, and app/error.js.
+   Keeps all route/business logic untouched.
+   ========================================================= */
+
+.yp-system-page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: clamp(24px, 5vw, 56px);
+  color: #ffffff;
+  background:
+    radial-gradient(circle at 8% 8%, rgba(0, 138, 61, 0.26), transparent 30%),
+    radial-gradient(circle at 92% 12%, rgba(255, 212, 0, 0.18), transparent 28%),
+    linear-gradient(180deg, #020806 0%, #06130d 52%, #020806 100%);
+  overflow-x: hidden;
+}
+
+.yp-system-card {
+  width: min(100%, 860px);
+  position: relative;
+  overflow: hidden;
+  padding: clamp(26px, 5vw, 58px);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: clamp(28px, 5vw, 44px);
+  background:
+    radial-gradient(circle at 88% 14%, rgba(255, 212, 0, 0.18), transparent 34%),
+    radial-gradient(circle at 12% 16%, rgba(0, 138, 61, 0.28), transparent 34%),
+    linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,.025));
+  box-shadow: 0 34px 100px rgba(0, 0, 0, 0.36);
+  text-align: center;
+}
+
+.yp-system-card::after {
+  content: "YP";
+  position: absolute;
+  right: -18px;
+  bottom: -18px;
+  color: rgba(255, 255, 255, 0.055);
+  font-size: clamp(120px, 22vw, 240px);
+  font-weight: 1000;
+  letter-spacing: -0.14em;
+  line-height: 0.78;
+  pointer-events: none;
+}
+
+.yp-system-card .kicker {
+  position: relative;
+  z-index: 1;
+  color: #ffd400;
+}
+
+.yp-system-card h1 {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  color: #ffffff;
+  font-size: clamp(42px, 7vw, 86px);
+  line-height: 0.92;
+  letter-spacing: -0.08em;
+  text-transform: uppercase;
+}
+
+.yp-system-card p {
+  position: relative;
+  z-index: 1;
+  max-width: 680px;
+  margin: 18px auto 0;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: clamp(16px, 1.5vw, 20px);
+}
+
+.yp-system-actions {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 26px;
+}
+
+.yp-system-actions .btn {
+  min-height: 50px;
+  border-radius: 16px;
+  font-weight: 950;
+}
+
+.yp-system-actions .btn-gold {
+  color: #07110b;
+  background: #ffd400;
+}
+
+.yp-loader-mark {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  gap: 9px;
+  margin-bottom: 22px;
+}
+
+.yp-loader-mark span {
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  background: #ffd400;
+  animation: ypLoaderPulse 900ms ease-in-out infinite alternate;
+}
+
+.yp-loader-mark span:nth-child(2) {
+  background: #22c55e;
+  animation-delay: 150ms;
+}
+
+.yp-loader-mark span:nth-child(3) {
+  background: #ffffff;
+  animation-delay: 300ms;
+}
+
+@keyframes ypLoaderPulse {
+  from {
+    transform: translateY(0);
+    opacity: 0.45;
+  }
+  to {
+    transform: translateY(-9px);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 640px) {
+  .yp-system-page {
+    padding: 18px;
+  }
+
+  .yp-system-card {
+    border-radius: 24px;
+    padding: 24px;
+  }
+
+  .yp-system-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .yp-system-actions .btn {
+    width: 100%;
+  }
+}
+
+/* =========================================================
+   Phase 14/15 — SEO/PWA/release readiness note
+   No visual changes required. System page styling remains active.
+   ========================================================= */
+
+/* =========================================================
+   Phase 17 — Accessibility + performance polish
+   CSS-only phase. Keeps routes, data, auth, Supabase, admin,
+   campaign, and ad detail functions untouched.
+   ========================================================= */
+
+/* Consistent visible keyboard focus across links/buttons/forms. */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: 3px solid rgba(255, 212, 0, 0.92) !important;
+  outline-offset: 3px !important;
+}
+
+/* Improve touch targets without changing layout logic. */
+button,
+.btn,
+a.btn,
+.nav-links a,
+.nav-links button,
+.launch-banner-inner a,
+input,
+select,
+textarea {
+  touch-action: manipulation;
+}
+
+button,
+.btn,
+a.btn,
+.nav-links a,
+.nav-links button {
+  min-height: 42px;
+}
+
+/* Make media safer by default. */
+img,
+video,
+canvas,
+iframe {
+  max-width: 100%;
+}
+
+img {
+  height: auto;
+}
+
+/* Avoid accidental horizontal overflow from long text/URLs. */
+p,
+li,
+span,
+strong,
+small,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+td,
+th,
+label {
+  overflow-wrap: anywhere;
+}
+
+/* Better table accessibility on small screens. */
+.table-wrap,
+.admin-table-wrap,
+.yp-table-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 138, 61, 0.6) rgba(7, 17, 31, 0.08);
+}
+
+.table-wrap::-webkit-scrollbar,
+.admin-table-wrap::-webkit-scrollbar,
+.yp-table-scroll::-webkit-scrollbar {
+  height: 9px;
+}
+
+.table-wrap::-webkit-scrollbar-track,
+.admin-table-wrap::-webkit-scrollbar-track,
+.yp-table-scroll::-webkit-scrollbar-track {
+  background: rgba(7, 17, 31, 0.08);
+  border-radius: 999px;
+}
+
+.table-wrap::-webkit-scrollbar-thumb,
+.admin-table-wrap::-webkit-scrollbar-thumb,
+.yp-table-scroll::-webkit-scrollbar-thumb {
+  background: rgba(0, 138, 61, 0.7);
+  border-radius: 999px;
+}
+
+/* Respect reduced motion preferences. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.001ms !important;
+  }
+
+  .yp-loader-mark span {
+    animation: none !important;
+  }
+}
+
+/* Improve contrast for muted text on dark cards. */
+.yp-system-card p,
+.campaigns-hero p,
+.campaign-detail-hero .muted,
+.promo-related-section .muted,
+.footer .muted {
+  color: rgba(255, 255, 255, 0.78) !important;
+}
+
+/* Prevent fixed/sticky header anchor jumps from hiding headings. */
+[id] {
+  scroll-margin-top: 140px;
+}
+
+@media (max-width: 900px) {
+  [id] {
+    scroll-margin-top: 180px;
+  }
+}
+
+/* Safer mobile form zoom/readability. */
+@media (max-width: 640px) {
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+  }
+
+  button,
+  .btn,
+  a.btn {
+    min-height: 48px;
+  }
+}
+
+/* Better print output for business/contact/legal pages. */
+@media print {
+  .header,
+  .launch-banner,
+  .footer,
+  .nav-links,
+  .hero-actions,
+  .yp-system-actions,
+  .promo-primary-actions,
+  .promo-more-toggle,
+  .promo-owner-actions {
+    display: none !important;
+  }
+
+  body {
+    color: #000 !important;
+    background: #fff !important;
+  }
+
+  a {
+    color: #000 !important;
+    text-decoration: underline !important;
+  }
+}
+
+/* =========================================================
+   Phase 21 — Homepage final hero tune
+   CSS-only phase. Keeps all homepage/search/carousel/card logic untouched.
+   Goal: tighten the first screen and move the live build closer to
+   the reference image while preserving current functions.
+   ========================================================= */
+
+/* Header + banner relationship with the hero. */
+.header + .launch-banner + .hero,
+.launch-banner + .hero,
+section.hero:first-of-type {
+  padding-top: clamp(34px, 5vw, 72px);
+}
+
+/* Homepage hero only. */
+section.hero {
+  position: relative;
+  overflow: hidden;
+  min-height: calc(100vh - 146px);
+  display: flex;
+  align-items: center;
+  background:
+    radial-gradient(circle at 12% 18%, rgba(0, 138, 61, 0.22), transparent 30%),
+    radial-gradient(circle at 78% 18%, rgba(255, 212, 0, 0.13), transparent 28%),
+    linear-gradient(90deg, #020806 0%, #030b07 52%, #07120b 100%);
+}
+
+section.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.55;
+  background:
+    linear-gradient(90deg, rgba(0, 0, 0, 0.86), rgba(0, 0, 0, 0.44)),
+    radial-gradient(circle at 42% 10%, rgba(255, 212, 0, 0.10), transparent 34%);
+  pointer-events: none;
+}
+
+section.hero > .container,
+section.hero > .hero-grid {
+  position: relative;
+  z-index: 1;
+}
+
+section.hero .hero-grid,
+section.hero.container.hero-grid,
+section.hero .container.hero-grid {
+  width: min(100% - 70px, 1500px);
+  display: grid;
+  grid-template-columns: minmax(520px, 0.94fr) minmax(440px, 0.86fr);
+  gap: clamp(30px, 5vw, 84px);
+  align-items: center;
+  margin: 0 auto;
+}
+
+/* Make the main line feel closer to the reference image. */
+section.hero h1 {
+  max-width: 760px;
+  margin: 0;
+  color: #ffffff;
+  font-size: clamp(58px, 6.4vw, 118px);
+  line-height: 0.9;
+  letter-spacing: -0.085em;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+section.hero h1 .green,
+section.hero h1 em,
+section.hero h1 strong {
+  color: #35d044;
+}
+
+/* Since the current text is plain, color the second YardPromo line through text shadow
+   polish rather than editing JSX. */
+section.hero h1 {
+  text-shadow: 0 14px 42px rgba(0, 0, 0, 0.34);
+}
+
+section.hero .eyebrow,
+section.hero .kicker {
+  color: #ffd400;
+  font-weight: 1000;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+section.hero p {
+  max-width: 700px;
+  margin-top: 20px;
+  color: rgba(255, 255, 255, 0.86);
+  font-size: clamp(16px, 1.35vw, 21px);
+  line-height: 1.55;
+}
+
+/* Search panel and action buttons in the first screen. */
+section.hero form,
+section.hero .home-search,
+section.hero .search-panel,
+section.hero .hero-search,
+section.hero [class*="SearchPanel"],
+section.hero .yp-search-panel {
+  margin-top: 24px;
+  max-width: 820px;
+}
+
+section.hero .hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 20px;
+}
+
+section.hero .hero-actions .btn,
+section.hero .hero-actions a {
+  min-height: 54px;
+  min-width: 190px;
+  border-radius: 15px;
+  font-weight: 1000;
+}
+
+/* Right-side featured carousel/poster card. */
+section.hero .poster-stack {
+  position: relative;
+  width: min(100%, 650px);
+  min-height: clamp(360px, 38vw, 525px);
+  justify-self: end;
+  display: grid;
+  place-items: center;
+  padding: clamp(18px, 3vw, 34px);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: clamp(26px, 3.5vw, 42px);
+  background:
+    radial-gradient(circle at 72% 24%, rgba(255, 212, 0, 0.16), transparent 34%),
+    radial-gradient(circle at 28% 82%, rgba(0, 138, 61, 0.14), transparent 34%),
+    rgba(255, 255, 255, 0.07);
+  box-shadow: 0 32px 100px rgba(0, 0, 0, 0.38);
+  isolation: isolate;
+}
+
+section.hero .poster-stack::before {
+  content: "Featured event";
+  position: absolute;
+  top: clamp(18px, 2vw, 28px);
+  left: clamp(18px, 2vw, 28px);
+  z-index: 5;
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  padding: 10px 16px;
+  border-radius: 999px;
+  color: #07110b;
+  background: #ffd400;
+  font-weight: 1000;
+  box-shadow: 0 12px 32px rgba(255, 212, 0, 0.22);
+}
+
+section.hero .mini-poster {
+  position: absolute;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: clamp(20px, 2.6vw, 30px);
+  background: #07110b;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.38);
+  transition: transform 180ms ease, filter 180ms ease;
+}
+
+section.hero .mini-poster img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+section.hero .mini-poster.main {
+  z-index: 4;
+  width: 72%;
+  height: 72%;
+  transform: translate(6%, 4%);
+}
+
+section.hero .mini-poster.two {
+  z-index: 2;
+  width: 54%;
+  height: 62%;
+  transform: translate(-34%, 12%) rotate(-9deg);
+  opacity: 0.52;
+  filter: saturate(0.82) brightness(0.72);
+}
+
+section.hero .mini-poster.three {
+  z-index: 1;
+  width: 54%;
+  height: 62%;
+  transform: translate(38%, 14%) rotate(8deg);
+  opacity: 0.46;
+  filter: saturate(0.82) brightness(0.68);
+}
+
+section.hero .mini-poster.main:hover {
+  transform: translate(6%, 2%) scale(1.018);
+}
+
+section.hero .poster-label {
+  position: absolute;
+  left: clamp(22px, 3vw, 40px);
+  right: clamp(22px, 3vw, 40px);
+  bottom: clamp(22px, 3vw, 40px);
+  z-index: 6;
+  display: inline-flex;
+  min-height: 58px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  color: #07110b;
+  background: #ffd400;
+  font-weight: 1000;
+  box-shadow: 0 16px 42px rgba(255, 212, 0, 0.24);
+}
+
+/* Dots under the feature stack if current carousel dots exist. */
+section.hero .poster-stack + .hero-dots,
+section.hero .hero-dots,
+section.hero .slider-dots,
+section.hero [class*="dots"] {
+  margin-top: 14px;
+}
+
+/* Category strip spacing directly after hero. */
+section.hero + section,
+section.hero + .section {
+  margin-top: 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.09);
+}
+
+/* Improve the first cards section alignment under the hero. */
+section.hero ~ .section:first-of-type,
+section.hero + .section {
+  padding-top: clamp(26px, 4vw, 44px);
+}
+
+/* Desktop: prevent the browser window from making the hero feel oversized. */
+@media (min-width: 1400px) {
+  section.hero {
+    min-height: calc(100vh - 132px);
+  }
+
+  section.hero h1 {
+    font-size: clamp(72px, 6vw, 112px);
+  }
+}
+
+/* Tablet: stack hero more gracefully. */
+@media (max-width: 1120px) {
+  section.hero {
+    min-height: auto;
+    padding-bottom: 46px;
+  }
+
+  section.hero .hero-grid,
+  section.hero.container.hero-grid,
+  section.hero .container.hero-grid {
+    width: min(100% - 34px, 1500px);
+    grid-template-columns: 1fr;
+  }
+
+  section.hero .poster-stack {
+    justify-self: stretch;
+    width: 100%;
+    min-height: 420px;
+  }
+
+  section.hero h1 {
+    max-width: 980px;
+  }
+}
+
+/* Phone: keep first screen readable and avoid clipped action buttons. */
+@media (max-width: 640px) {
+  section.hero {
+    padding-top: 34px;
+    padding-bottom: 34px;
+  }
+
+  section.hero .hero-grid,
+  section.hero.container.hero-grid,
+  section.hero .container.hero-grid {
+    width: min(100% - 22px, 1500px);
+    gap: 26px;
+  }
+
+  section.hero h1 {
+    font-size: clamp(42px, 14vw, 66px);
+    letter-spacing: -0.075em;
+  }
+
+  section.hero p {
+    font-size: 16px;
+  }
+
+  section.hero .hero-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  section.hero .hero-actions .btn,
+  section.hero .hero-actions a {
+    width: 100%;
+    min-width: 0;
+  }
+
+  section.hero .poster-stack {
+    min-height: 330px;
+    padding: 16px;
+    border-radius: 24px;
+  }
+
+  section.hero .poster-stack::before {
+    top: 14px;
+    left: 14px;
+    min-height: 36px;
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+
+  section.hero .mini-poster.main {
+    width: 78%;
+    height: 72%;
+    transform: translate(5%, 8%);
+  }
+
+  section.hero .mini-poster.two,
+  section.hero .mini-poster.three {
+    width: 56%;
+    height: 58%;
+  }
+
+  section.hero .poster-label {
+    left: 22px;
+    right: 22px;
+    bottom: 22px;
+    min-height: 48px;
+  }
+}
+
+/* =========================================================
+   Phase 22 — Homepage sections polish
+   CSS-only phase. Keeps homepage data, search, cards, routes,
+   Supabase, and all click behavior untouched.
+   Goal: polish the area below the hero so the full homepage feels
+   closer to the premium reference image.
+   ========================================================= */
+
+/* Homepage sections after the hero. */
+section.hero ~ .section {
+  position: relative;
+  padding: clamp(34px, 5vw, 66px) 0;
+  color: #ffffff;
+  background:
+    radial-gradient(circle at 8% 8%, rgba(0, 138, 61, 0.12), transparent 26%),
+    linear-gradient(180deg, #020806 0%, #06130d 100%);
+}
+
+section.hero ~ .section:nth-of-type(even) {
+  background:
+    radial-gradient(circle at 92% 10%, rgba(255, 212, 0, 0.10), transparent 26%),
+    linear-gradient(180deg, #06130d 0%, #020806 100%);
+}
+
+section.hero ~ .section > .container {
+  width: min(100% - 70px, 1500px);
+}
+
+/* Section headings should feel like the reference layout. */
+section.hero ~ .section .section-head {
+  align-items: end;
+  margin-bottom: clamp(18px, 3vw, 28px);
+}
+
+section.hero ~ .section .section-head h2,
+section.hero ~ .section h2 {
+  color: #ffffff;
+  font-size: clamp(32px, 4vw, 58px);
+  line-height: 0.96;
+  letter-spacing: -0.07em;
+}
+
+section.hero ~ .section .section-head .btn,
+section.hero ~ .section .section-head a.btn {
+  min-height: 44px;
+  border-radius: 999px;
+  border-color: rgba(255, 212, 0, 0.32);
+  color: #35d044;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* Make AdsGrid areas feel like a premium dark card frame without changing AdsGrid code. */
+section.hero ~ .section .ads-grid,
+section.hero ~ .section .grid:not(.grid-4) {
+  padding: clamp(14px, 2vw, 22px);
+  border: 1px solid rgba(255, 255, 255, 0.11);
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at top right, rgba(255, 212, 0, 0.08), transparent 32%),
+    rgba(255, 255, 255, 0.045);
+  box-shadow: 0 24px 88px rgba(0, 0, 0, 0.24);
+}
+
+/* Better promo card consistency if AdsGrid uses common card classes. */
+section.hero ~ .section .ad-card,
+section.hero ~ .section .promo-card,
+section.hero ~ .section article.card,
+section.hero ~ .section .listing-card {
+  overflow: hidden;
+  border-radius: 24px;
+  box-shadow: 0 22px 70px rgba(0, 0, 0, 0.26);
+}
+
+section.hero ~ .section .ad-card img,
+section.hero ~ .section .promo-card img,
+section.hero ~ .section article.card img,
+section.hero ~ .section .listing-card img {
+  object-fit: cover;
+}
+
+section.hero ~ .section .ad-card .btn,
+section.hero ~ .section .promo-card .btn,
+section.hero ~ .section article.card .btn,
+section.hero ~ .section .listing-card .btn {
+  min-height: 46px;
+  border-radius: 999px;
+}
+
+/* Campaigns/offers + What can you promote area. */
+.smart-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(360px, 0.65fr);
+  gap: clamp(18px, 3vw, 30px);
+  align-items: stretch;
+}
+
+.smart-card {
+  position: relative;
+  overflow: hidden;
+  min-height: 360px;
+  padding: clamp(24px, 4vw, 40px);
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 30px;
+  color: #ffffff;
+  background:
+    radial-gradient(circle at 86% 18%, rgba(255, 212, 0, 0.15), transparent 32%),
+    rgba(255, 255, 255, 0.07);
+  box-shadow: 0 28px 88px rgba(0, 0, 0, 0.30);
+}
+
+.smart-card.dark {
+  background:
+    radial-gradient(circle at 92% 14%, rgba(255, 212, 0, 0.20), transparent 32%),
+    radial-gradient(circle at 8% 88%, rgba(0, 138, 61, 0.28), transparent 34%),
+    linear-gradient(135deg, rgba(4, 25, 15, 0.94), rgba(2, 8, 6, 0.96));
+}
+
+.smart-card.dark::after {
+  content: "OFFERS";
+  position: absolute;
+  right: -18px;
+  bottom: -16px;
+  color: rgba(255, 255, 255, 0.055);
+  font-size: clamp(72px, 10vw, 148px);
+  font-weight: 1000;
+  letter-spacing: -0.10em;
+  line-height: 0.8;
+  pointer-events: none;
+}
+
+.smart-card h2 {
+  position: relative;
+  z-index: 1;
+  max-width: 780px;
+}
+
+.smart-card p,
+.smart-card .muted {
+  position: relative;
+  z-index: 1;
+  color: rgba(255, 255, 255, 0.74) !important;
+  font-size: 16px;
+  line-height: 1.55;
+}
+
+.action-row {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 22px;
+}
+
+.action-row .btn,
+.action-row a {
+  min-height: 50px;
+  border-radius: 16px;
+  font-weight: 1000;
+}
+
+.mood-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.mood-pill {
+  display: flex;
+  align-items: center;
+  min-height: 48px;
+  padding: 12px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.07);
+  font-weight: 950;
+  text-decoration: none;
+}
+
+.mood-pill:hover {
+  border-color: rgba(255, 212, 0, 0.46);
+  color: #ffd400;
+}
+
+/* Popular categories. */
+.grid.grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.category-card {
+  position: relative;
+  overflow: hidden;
+  min-height: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  padding: 22px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 24px;
+  color: #ffffff;
+  background:
+    radial-gradient(circle at 82% 18%, rgba(255, 212, 0, 0.18), transparent 32%),
+    rgba(255, 255, 255, 0.065);
+  text-decoration: none;
+  box-shadow: 0 18px 58px rgba(0, 0, 0, 0.22);
+}
+
+.category-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto auto 0;
+  width: 5px;
+  height: 100%;
+  background: linear-gradient(180deg, #ffd400, #008a3d);
+}
+
+.category-card strong {
+  position: relative;
+  z-index: 1;
+  color: #ffffff;
+  font-size: clamp(22px, 2.2vw, 30px);
+  line-height: 1;
+  letter-spacing: -0.05em;
+}
+
+.category-card p {
+  position: relative;
+  z-index: 1;
+  margin-bottom: 0;
+  color: rgba(255, 255, 255, 0.68) !important;
+}
+
+/* Bottom trust band should feel like the stats strip in the reference. */
+.trust-band {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  overflow: hidden;
+  margin-top: clamp(24px, 4vw, 42px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at 92% 15%, rgba(255, 212, 0, 0.12), transparent 30%),
+    rgba(255, 255, 255, 0.06);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.24);
+}
+
+.trust-tile {
+  min-height: 132px;
+  padding: 24px;
+  border-right: 1px solid rgba(255, 255, 255, 0.10);
+}
+
+.trust-tile:last-child {
+  border-right: 0;
+}
+
+.trust-tile strong {
+  display: block;
+  color: #ffd400;
+  font-size: clamp(20px, 2vw, 28px);
+  letter-spacing: -0.04em;
+}
+
+.trust-tile p {
+  margin: 8px 0 0;
+  color: rgba(255, 255, 255, 0.68) !important;
+}
+
+/* Promote/business CTA area if present on homepage from previous phases. */
+.home-business-cta,
+.promote-business-card,
+section.hero ~ .section .cta-card {
+  border: 1px solid rgba(0, 138, 61, 0.42);
+  border-radius: 30px;
+  background:
+    radial-gradient(circle at 92% 18%, rgba(255, 212, 0, 0.16), transparent 32%),
+    linear-gradient(135deg, rgba(0, 138, 61, 0.20), rgba(255, 255, 255, 0.05));
+  box-shadow: 0 28px 88px rgba(0, 0, 0, 0.28);
+}
+
+/* Tablet. */
+@media (max-width: 1120px) {
+  section.hero ~ .section > .container {
+    width: min(100% - 34px, 1500px);
+  }
+
+  .smart-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .grid.grid-4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .trust-band {
+    grid-template-columns: 1fr;
+  }
+
+  .trust-tile {
+    border-right: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+  }
+
+  .trust-tile:last-child {
+    border-bottom: 0;
+  }
+}
+
+/* Phone. */
+@media (max-width: 640px) {
+  section.hero ~ .section {
+    padding: 30px 0;
+  }
+
+  section.hero ~ .section > .container {
+    width: min(100% - 22px, 1500px);
+  }
+
+  section.hero ~ .section .section-head {
+    align-items: start;
+    flex-direction: column;
+  }
+
+  section.hero ~ .section .section-head .btn,
+  section.hero ~ .section .section-head a.btn {
+    width: 100%;
+  }
+
+  section.hero ~ .section .ads-grid,
+  section.hero ~ .section .grid:not(.grid-4),
+  .smart-card,
+  .category-card,
+  .trust-band {
+    border-radius: 22px;
+  }
+
+  .smart-card {
+    min-height: auto;
+    padding: 20px;
+  }
+
+  .mood-grid,
+  .grid.grid-4 {
+    grid-template-columns: 1fr;
+  }
+
+  .action-row {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .action-row .btn,
+  .action-row a {
+    width: 100%;
+  }
+
+  .trust-tile {
+    min-height: auto;
+    padding: 20px;
+  }
+}
+
+/* =========================================================
+   Phase 24 — Homepage card buttons + footer cleanup
+   CSS-only phase. Keeps all homepage card data, routing, Supabase,
+   click behavior, and ad detail logic untouched.
+   Fixes low-contrast Plan Link-Up buttons and footer overflow.
+   ========================================================= */
+
+/* Promo/listing card action buttons:
+   The screenshot shows View Details looking good, but Plan Link-Up is too pale.
+   These rules make the secondary action readable while keeping it secondary. */
+section.hero ~ .section .ad-card .card-actions,
+section.hero ~ .section .promo-card .card-actions,
+section.hero ~ .section article.card .card-actions,
+section.hero ~ .section .listing-card .card-actions,
+section.hero ~ .section .promo-card-actions,
+section.hero ~ .section .card-actions,
+section.hero ~ .section .yp-card-actions,
+section.hero ~ .section .promo-actions {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  align-items: stretch;
+}
+
+section.hero ~ .section .ad-card .card-actions a,
+section.hero ~ .section .promo-card .card-actions a,
+section.hero ~ .section article.card .card-actions a,
+section.hero ~ .section .listing-card .card-actions a,
+section.hero ~ .section .promo-card-actions a,
+section.hero ~ .section .card-actions a,
+section.hero ~ .section .yp-card-actions a,
+section.hero ~ .section .promo-actions a,
+section.hero ~ .section .ad-card .card-actions button,
+section.hero ~ .section .promo-card .card-actions button,
+section.hero ~ .section article.card .card-actions button,
+section.hero ~ .section .listing-card .card-actions button,
+section.hero ~ .section .promo-card-actions button,
+section.hero ~ .section .card-actions button,
+section.hero ~ .section .yp-card-actions button,
+section.hero ~ .section .promo-actions button {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  min-width: 0 !important;
+  min-height: 48px;
+  padding: 11px 14px;
+  border-radius: 999px;
+  font-weight: 1000;
+  line-height: 1.05;
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+/* Primary card action remains strong green. */
+section.hero ~ .section .ad-card .card-actions a:first-child,
+section.hero ~ .section .promo-card .card-actions a:first-child,
+section.hero ~ .section article.card .card-actions a:first-child,
+section.hero ~ .section .listing-card .card-actions a:first-child,
+section.hero ~ .section .promo-card-actions a:first-child,
+section.hero ~ .section .card-actions a:first-child,
+section.hero ~ .section .yp-card-actions a:first-child,
+section.hero ~ .section .promo-actions a:first-child {
+  color: #ffffff !important;
+  border: 1px solid #008a3d !important;
+  background: #008a3d !important;
+  box-shadow: 0 12px 26px rgba(0, 138, 61, 0.18);
+}
+
+/* Secondary Plan Link-Up action becomes readable but not louder than View Details. */
+section.hero ~ .section .ad-card .card-actions a:nth-child(2),
+section.hero ~ .section .promo-card .card-actions a:nth-child(2),
+section.hero ~ .section article.card .card-actions a:nth-child(2),
+section.hero ~ .section .listing-card .card-actions a:nth-child(2),
+section.hero ~ .section .promo-card-actions a:nth-child(2),
+section.hero ~ .section .card-actions a:nth-child(2),
+section.hero ~ .section .yp-card-actions a:nth-child(2),
+section.hero ~ .section .promo-actions a:nth-child(2),
+section.hero ~ .section a[href*="/link-up"] {
+  color: #07110b !important;
+  border: 1px solid rgba(255, 212, 0, 0.85) !important;
+  background: #ffd400 !important;
+  opacity: 1 !important;
+  box-shadow: 0 12px 26px rgba(255, 212, 0, 0.16);
+}
+
+/* Prevent pale disabled-looking buttons unless they are truly disabled. */
+section.hero ~ .section a:not([aria-disabled="true"]):not(.disabled),
+section.hero ~ .section button:not(:disabled) {
+  opacity: 1;
+}
+
+section.hero ~ .section button:disabled,
+section.hero ~ .section a[aria-disabled="true"],
+section.hero ~ .section .disabled {
+  opacity: 0.56;
+  cursor: not-allowed;
+}
+
+/* Card text spacing fix where action buttons were pushed too low. */
+section.hero ~ .section .ad-card,
+section.hero ~ .section .promo-card,
+section.hero ~ .section article.card,
+section.hero ~ .section .listing-card {
+  display: flex;
+  flex-direction: column;
+}
+
+section.hero ~ .section .ad-card > div:last-child,
+section.hero ~ .section .promo-card > div:last-child,
+section.hero ~ .section article.card > div:last-child,
+section.hero ~ .section .listing-card > div:last-child {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+section.hero ~ .section .ad-card .card-actions,
+section.hero ~ .section .promo-card .card-actions,
+section.hero ~ .section article.card .card-actions,
+section.hero ~ .section .listing-card .card-actions {
+  margin-top: auto;
+}
+
+/* Footer cleanup from screenshot:
+   Make the footer look intentional and stop link crowding/cropping. */
+.footer {
+  padding-top: clamp(28px, 5vw, 56px) !important;
+  padding-bottom: clamp(28px, 5vw, 56px) !important;
+}
+
+.footer .footer-inner {
+  width: min(100% - 70px, 1500px);
+  display: grid !important;
+  grid-template-columns: minmax(230px, 0.7fr) minmax(0, 1.3fr);
+  gap: clamp(22px, 4vw, 56px);
+  align-items: start;
+  margin: 0 auto;
+}
+
+.footer-logo-row {
+  align-items: center;
+  gap: 12px;
+}
+
+.footer-links {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 10px 18px !important;
+  justify-content: flex-end;
+  align-items: center;
+  min-width: 0;
+}
+
+.footer-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  white-space: nowrap;
+}
+
+.footer .muted {
+  max-width: 310px;
+  line-height: 1.55;
+}
+
+/* Add clear grouping if the footer has many text links. */
+.footer-links a[href="/advertise"],
+.footer-links a[href="/advertise/packages"],
+.footer-links a[href="/media-kit"] {
+  color: #ffd400 !important;
+}
+
+/* Lower value tiles should not hide text when screen is narrow. */
+.trust-band,
+.trust-tile {
+  min-width: 0;
+}
+
+.trust-tile strong,
+.trust-tile p {
+  overflow-wrap: normal;
+  word-break: normal;
+}
+
+/* Tablet and mobile footer/card fixes. */
+@media (max-width: 960px) {
+  .footer .footer-inner {
+    width: min(100% - 34px, 1500px);
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .footer-logo-row {
+    justify-content: center;
+  }
+
+  .footer .muted {
+    max-width: 520px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .footer-links {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 640px) {
+  section.hero ~ .section .ad-card .card-actions,
+  section.hero ~ .section .promo-card .card-actions,
+  section.hero ~ .section article.card .card-actions,
+  section.hero ~ .section .listing-card .card-actions,
+  section.hero ~ .section .promo-card-actions,
+  section.hero ~ .section .card-actions,
+  section.hero ~ .section .yp-card-actions,
+  section.hero ~ .section .promo-actions {
+    grid-template-columns: 1fr;
+  }
+
+  section.hero ~ .section .ad-card .card-actions a,
+  section.hero ~ .section .promo-card .card-actions a,
+  section.hero ~ .section article.card .card-actions a,
+  section.hero ~ .section .listing-card .card-actions a,
+  section.hero ~ .section .promo-card-actions a,
+  section.hero ~ .section .card-actions a,
+  section.hero ~ .section .yp-card-actions a,
+  section.hero ~ .section .promo-actions a,
+  section.hero ~ .section .ad-card .card-actions button,
+  section.hero ~ .section .promo-card .card-actions button,
+  section.hero ~ .section article.card .card-actions button,
+  section.hero ~ .section .listing-card .card-actions button,
+  section.hero ~ .section .promo-card-actions button,
+  section.hero ~ .section .card-actions button,
+  section.hero ~ .section .yp-card-actions button,
+  section.hero ~ .section .promo-actions button {
+    width: 100%;
+  }
+
+  .footer .footer-inner {
+    width: min(100% - 22px, 1500px);
+  }
+
+  .footer-links {
+    gap: 8px 12px !important;
+  }
+
+  .footer-links a {
+    min-height: 40px;
+    padding: 0 4px;
+    font-size: 13px;
+  }
+}
+
+/* =========================================================
+   Phase 25 — Trending cards + sticky/sidebar card fix
+   CSS-only phase. Keeps all card links, data, Supabase, routing,
+   AdsGrid logic, Link-Up logic, and ad detail logic untouched.
+   ========================================================= */
+
+/* Fix the homepage right-side support cards feeling stuck/cut off.
+   Keep them visible in the layout, but do not let them stick over the page. */
+section.hero ~ .section aside,
+section.hero ~ .section .sidebar,
+section.hero ~ .section .home-sidebar,
+section.hero ~ .section .side-panel,
+section.hero ~ .section .right-rail,
+section.hero ~ .section .sticky-card,
+section.hero ~ .section [class*="sidebar"],
+section.hero ~ .section [class*="Side"],
+section.hero ~ .section [class*="Rail"],
+section.hero ~ .section [class*="sticky"],
+section.hero ~ .section [class*="Sticky"] {
+  position: static !important;
+  top: auto !important;
+  align-self: stretch;
+}
+
+/* Keep the homepage section grid from making the right rail too tall or clipped. */
+section.hero ~ .section .smart-grid,
+section.hero ~ .section .home-content-grid,
+section.hero ~ .section .homepage-grid,
+section.hero ~ .section [class*="contentGrid"],
+section.hero ~ .section [class*="ContentGrid"] {
+  align-items: start !important;
+}
+
+/* Right-column cards should be stacked cleanly with breathing room. */
+section.hero ~ .section aside > *,
+section.hero ~ .section .sidebar > *,
+section.hero ~ .section .home-sidebar > *,
+section.hero ~ .section .right-rail > *,
+section.hero ~ .section .side-panel > * {
+  margin-bottom: 18px;
+}
+
+section.hero ~ .section aside > *:last-child,
+section.hero ~ .section .sidebar > *:last-child,
+section.hero ~ .section .home-sidebar > *:last-child,
+section.hero ~ .section .right-rail > *:last-child,
+section.hero ~ .section .side-panel > *:last-child {
+  margin-bottom: 0;
+}
+
+/* Trending card redesign:
+   Make the live white promo cards look closer to the premium dark/reference cards:
+   image-led, compact, dark body, readable text, strong CTA. */
+section.hero ~ .section .ads-grid {
+  align-items: stretch;
+}
+
+section.hero ~ .section .ads-grid > *,
+section.hero ~ .section .ad-card,
+section.hero ~ .section .promo-card,
+section.hero ~ .section article.card,
+section.hero ~ .section .listing-card {
+  min-width: 0;
+}
+
+section.hero ~ .section .ad-card,
+section.hero ~ .section .promo-card,
+section.hero ~ .section article.card,
+section.hero ~ .section .listing-card {
+  overflow: hidden !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: 22px !important;
+  color: #ffffff !important;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.075), rgba(255,255,255,0.035)),
+    #07110b !important;
+  box-shadow: 0 22px 70px rgba(0, 0, 0, 0.32) !important;
+}
+
+/* Image area: make all trending cards consistent and less stretched. */
+section.hero ~ .section .ad-card > a:first-child,
+section.hero ~ .section .promo-card > a:first-child,
+section.hero ~ .section article.card > a:first-child,
+section.hero ~ .section .listing-card > a:first-child,
+section.hero ~ .section .ad-card .card-media,
+section.hero ~ .section .promo-card .card-media,
+section.hero ~ .section article.card .card-media,
+section.hero ~ .section .listing-card .card-media {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  min-height: 0;
+  aspect-ratio: 4 / 3;
+  background: #020806;
+}
+
+section.hero ~ .section .ad-card img,
+section.hero ~ .section .promo-card img,
+section.hero ~ .section article.card img,
+section.hero ~ .section .listing-card img {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  object-fit: cover !important;
+  transform: scale(1.01);
+}
+
+/* Dark body instead of tall white body. */
+section.hero ~ .section .ad-card > div,
+section.hero ~ .section .promo-card > div,
+section.hero ~ .section article.card > div,
+section.hero ~ .section .listing-card > div {
+  color: #ffffff !important;
+  background: transparent !important;
+}
+
+section.hero ~ .section .ad-card > div:last-child,
+section.hero ~ .section .promo-card > div:last-child,
+section.hero ~ .section article.card > div:last-child,
+section.hero ~ .section .listing-card > div:last-child {
+  min-height: 300px;
+  padding: 18px !important;
+}
+
+/* Card category/kicker. */
+section.hero ~ .section .ad-card .kicker,
+section.hero ~ .section .promo-card .kicker,
+section.hero ~ .section article.card .kicker,
+section.hero ~ .section .listing-card .kicker,
+section.hero ~ .section .ad-card [class*="category"],
+section.hero ~ .section .promo-card [class*="category"],
+section.hero ~ .section article.card [class*="category"],
+section.hero ~ .section .listing-card [class*="category"] {
+  color: #35d044 !important;
+  letter-spacing: 0.12em;
+}
+
+/* Main card text. */
+section.hero ~ .section .ad-card h3,
+section.hero ~ .section .promo-card h3,
+section.hero ~ .section article.card h3,
+section.hero ~ .section .listing-card h3,
+section.hero ~ .section .ad-card h2,
+section.hero ~ .section .promo-card h2,
+section.hero ~ .section article.card h2,
+section.hero ~ .section .listing-card h2 {
+  color: #ffffff !important;
+  font-size: clamp(22px, 1.8vw, 30px) !important;
+  line-height: 0.98 !important;
+  letter-spacing: -0.055em !important;
+}
+
+/* Location pill and stat chips should sit on dark cards clearly. */
+section.hero ~ .section .ad-card .pill,
+section.hero ~ .section .promo-card .pill,
+section.hero ~ .section article.card .pill,
+section.hero ~ .section .listing-card .pill,
+section.hero ~ .section .ad-card [class*="location"],
+section.hero ~ .section .promo-card [class*="location"],
+section.hero ~ .section article.card [class*="location"],
+section.hero ~ .section .listing-card [class*="location"] {
+  color: #07110b !important;
+  background: #eafff0 !important;
+}
+
+section.hero ~ .section .ad-card .stat,
+section.hero ~ .section .promo-card .stat,
+section.hero ~ .section article.card .stat,
+section.hero ~ .section .listing-card .stat,
+section.hero ~ .section .ad-card [class*="stat"],
+section.hero ~ .section .promo-card [class*="stat"],
+section.hero ~ .section article.card [class*="stat"],
+section.hero ~ .section .listing-card [class*="stat"] {
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  box-shadow: none !important;
+}
+
+/* Date/contact text on dark card. */
+section.hero ~ .section .ad-card p,
+section.hero ~ .section .promo-card p,
+section.hero ~ .section article.card p,
+section.hero ~ .section .listing-card p,
+section.hero ~ .section .ad-card span,
+section.hero ~ .section .promo-card span,
+section.hero ~ .section article.card span,
+section.hero ~ .section .listing-card span {
+  color: rgba(255, 255, 255, 0.78);
+}
+
+section.hero ~ .section .ad-card strong,
+section.hero ~ .section .promo-card strong,
+section.hero ~ .section article.card strong,
+section.hero ~ .section .listing-card strong {
+  color: #ffffff;
+}
+
+/* Featured badge remains gold and visible over the image. */
+section.hero ~ .section .ad-card .featured-tag,
+section.hero ~ .section .promo-card .featured-tag,
+section.hero ~ .section article.card .featured-tag,
+section.hero ~ .section .listing-card .featured-tag,
+section.hero ~ .section .ad-card [class*="featured"],
+section.hero ~ .section .promo-card [class*="featured"],
+section.hero ~ .section article.card [class*="featured"],
+section.hero ~ .section .listing-card [class*="featured"] {
+  color: #07110b !important;
+  background: #ffd400 !important;
+}
+
+/* Keep action buttons strong and compact on dark cards. */
+section.hero ~ .section .ad-card .card-actions,
+section.hero ~ .section .promo-card .card-actions,
+section.hero ~ .section article.card .card-actions,
+section.hero ~ .section .listing-card .card-actions,
+section.hero ~ .section .promo-card-actions,
+section.hero ~ .section .yp-card-actions,
+section.hero ~ .section .promo-actions {
+  margin-top: auto !important;
+  padding-top: 14px;
+}
+
+section.hero ~ .section .ad-card .card-actions a:first-child,
+section.hero ~ .section .promo-card .card-actions a:first-child,
+section.hero ~ .section article.card .card-actions a:first-child,
+section.hero ~ .section .listing-card .card-actions a:first-child,
+section.hero ~ .section .promo-card-actions a:first-child,
+section.hero ~ .section .yp-card-actions a:first-child,
+section.hero ~ .section .promo-actions a:first-child {
+  color: #ffffff !important;
+  background: #008a3d !important;
+  border-color: #008a3d !important;
+}
+
+section.hero ~ .section .ad-card .card-actions a:nth-child(2),
+section.hero ~ .section .promo-card .card-actions a:nth-child(2),
+section.hero ~ .section article.card .card-actions a:nth-child(2),
+section.hero ~ .section .listing-card .card-actions a:nth-child(2),
+section.hero ~ .section .promo-card-actions a:nth-child(2),
+section.hero ~ .section .yp-card-actions a:nth-child(2),
+section.hero ~ .section .promo-actions a:nth-child(2) {
+  color: #07110b !important;
+  background: #ffd400 !important;
+  border-color: #ffd400 !important;
+}
+
+/* On wider screens, keep trending cards the same height instead of long uneven columns. */
+@media (min-width: 900px) {
+  section.hero ~ .section .ads-grid {
+    grid-auto-rows: 1fr;
+  }
+
+  section.hero ~ .section .ad-card,
+  section.hero ~ .section .promo-card,
+  section.hero ~ .section article.card,
+  section.hero ~ .section .listing-card {
+    height: 100%;
+  }
+}
+
+/* Mobile: dark cards remain readable and buttons stack. */
+@media (max-width: 640px) {
+  section.hero ~ .section .ad-card,
+  section.hero ~ .section .promo-card,
+  section.hero ~ .section article.card,
+  section.hero ~ .section .listing-card {
+    border-radius: 20px !important;
+  }
+
+  section.hero ~ .section .ad-card > div:last-child,
+  section.hero ~ .section .promo-card > div:last-child,
+  section.hero ~ .section article.card > div:last-child,
+  section.hero ~ .section .listing-card > div:last-child {
+    min-height: auto;
+    padding: 16px !important;
+  }
+
+  section.hero ~ .section .ad-card > a:first-child,
+  section.hero ~ .section .promo-card > a:first-child,
+  section.hero ~ .section article.card > a:first-child,
+  section.hero ~ .section .listing-card > a:first-child,
+  section.hero ~ .section .ad-card .card-media,
+  section.hero ~ .section .promo-card .card-media,
+  section.hero ~ .section article.card .card-media,
+  section.hero ~ .section .listing-card .card-media {
+    aspect-ratio: 16 / 11;
+  }
+}
+
+/* =========================================================
+   Phase 26 — By Parish front page section with Jamaica map
+   Adds a premium parish discovery panel to the homepage.
+   ========================================================= */
+
+.yp-parish-section {
+  padding-top: clamp(34px, 5vw, 72px);
+  padding-bottom: clamp(34px, 5vw, 72px);
+}
+
+.yp-parish-panel {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(18px, 2.6vw, 30px);
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 30px;
+  background:
+    radial-gradient(circle at 82% 18%, rgba(255, 212, 0, 0.10), transparent 28%),
+    radial-gradient(circle at 10% 18%, rgba(0, 138, 61, 0.16), transparent 30%),
+    rgba(255, 255, 255, 0.045);
+  box-shadow: 0 28px 88px rgba(0, 0, 0, 0.28);
+}
+
+.yp-parish-head {
+  margin-bottom: 20px;
+}
+
+.yp-parish-head h2 {
+  margin: 0;
+  color: #ffffff;
+  font-size: clamp(32px, 4.6vw, 62px);
+  line-height: 0.94;
+  letter-spacing: -0.075em;
+  text-transform: uppercase;
+}
+
+.yp-parish-head p:not(.yp-kicker) {
+  max-width: 680px;
+  margin: 9px 0 0;
+  color: rgba(255, 255, 255, 0.72);
+  line-height: 1.5;
+}
+
+.yp-new-pill {
+  display: inline-flex;
+  margin-left: 8px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  color: #07110b;
+  background: #35d044;
+  font-size: 10px;
+  letter-spacing: 0.05em;
+  vertical-align: middle;
+}
+
+.yp-parish-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.12fr) minmax(390px, 0.88fr);
+  gap: clamp(22px, 3vw, 34px);
+  align-items: stretch;
+}
+
+.yp-parish-card-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.yp-parish-card {
+  position: relative;
+  overflow: hidden;
+  min-height: clamp(148px, 12vw, 205px);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 13px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 16px;
+  color: #ffffff;
+  background-color: #07110b;
+  background-position: center;
+  background-size: cover;
+  text-decoration: none;
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.28);
+  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.yp-parish-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0.80)),
+    radial-gradient(circle at top right, rgba(255, 212, 0, 0.16), transparent 38%);
+  pointer-events: none;
+}
+
+.yp-parish-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(255, 212, 0, 0.48);
+  box-shadow: 0 24px 62px rgba(0, 0, 0, 0.38);
+}
+
+.yp-parish-card strong,
+.yp-parish-card small,
+.yp-parish-card em {
+  position: relative;
+  z-index: 1;
+}
+
+.yp-parish-card strong {
+  color: #ffffff;
+  font-size: clamp(17px, 1.2vw, 22px);
+  line-height: 1.0;
+  letter-spacing: -0.045em;
+}
+
+.yp-parish-card small {
+  margin-top: 3px;
+  color: rgba(255, 255, 255, 0.86);
+  font-weight: 800;
+}
+
+.yp-parish-card em {
+  margin-top: 4px;
+  color: #ffd400;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 950;
+}
+
+.yp-parish-map-panel {
+  display: grid;
+  grid-template-rows: minmax(230px, 1fr) auto;
+  gap: 16px;
+  min-width: 0;
+}
+
+.yp-parish-map-panel img {
+  width: 100%;
+  height: 100%;
+  min-height: 260px;
+  object-fit: contain;
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 24px;
+  background: rgba(0, 0, 0, 0.18);
+  box-shadow: 0 22px 68px rgba(0, 0, 0, 0.30);
+}
+
+.yp-parish-map-cta {
+  padding: clamp(18px, 2.4vw, 26px);
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at 94% 18%, rgba(255, 212, 0, 0.12), transparent 30%),
+    rgba(255, 255, 255, 0.065);
+}
+
+.yp-parish-map-cta h3 {
+  margin: 0;
+  color: #ffffff;
+  font-size: clamp(26px, 3vw, 38px);
+  line-height: 0.96;
+  letter-spacing: -0.06em;
+}
+
+.yp-parish-map-cta p {
+  margin: 10px 0 16px;
+  color: rgba(255, 255, 255, 0.72);
+  line-height: 1.5;
+}
+
+/* Keep Parish Pulse category aligned with new By Parish section. */
+.yp-category-pill[href="/browse"]:last-child {
+  border-color: rgba(255, 212, 0, 0.28);
+}
+
+/* Tablet */
+@media (max-width: 1180px) {
+  .yp-parish-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .yp-parish-card-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .yp-parish-map-panel {
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 0.75fr);
+    grid-template-rows: auto;
+    align-items: stretch;
+  }
+}
+
+/* Small tablet */
+@media (max-width: 840px) {
+  .yp-parish-card-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .yp-parish-map-panel {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Phone */
+@media (max-width: 640px) {
+  .yp-parish-panel {
+    padding: 16px;
+    border-radius: 22px;
+  }
+
+  .yp-parish-head {
+    align-items: start;
+    flex-direction: column;
+  }
+
+  .yp-parish-card-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .yp-parish-card {
+    min-height: 150px;
+    border-radius: 14px;
+  }
+
+  .yp-parish-card strong {
+    font-size: 18px;
+  }
+
+  .yp-parish-map-panel img,
+  .yp-parish-map-cta {
+    border-radius: 18px;
+  }
+
+  .yp-parish-map-panel img {
+    min-height: 220px;
+  }
+}
+
+@media (max-width: 420px) {
+  .yp-parish-card-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =========================================================
+   Phase 28 — YardPromo Reels + bottom footer-style marketing
+   Adds a premium reels strip, business CTA, and newsletter band
+   inspired by the supplied reference image.
+   ========================================================= */
+
+.yp-reels-section {
+  padding-top: clamp(34px, 5vw, 70px);
+  padding-bottom: clamp(26px, 4vw, 44px);
+}
+
+.yp-reels-head {
+  align-items: end;
+  margin-bottom: 16px;
+}
+
+.yp-reels-head h2 {
+  margin: 0;
+  color: #ffffff;
+  font-size: clamp(32px, 4vw, 58px);
+  line-height: 0.95;
+  letter-spacing: -0.07em;
+  text-transform: uppercase;
+}
+
+.yp-reels-head h2 span {
+  color: #35d044;
+}
+
+.yp-reels-head p {
+  margin: 4px 0 0;
+  color: rgba(255, 255, 255, 0.70);
+}
+
+.yp-reels-head a {
+  display: inline-flex;
+  min-height: 38px;
+  align-items: center;
+  justify-content: center;
+  padding: 9px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.045);
+  font-size: 13px;
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.yp-reels-head a:hover {
+  color: #07110b;
+  border-color: #ffd400;
+  background: #ffd400;
+}
+
+.yp-reels-row {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: 14px;
+  overflow-x: auto;
+  padding-bottom: 6px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 212, 0, 0.75) rgba(255, 255, 255, 0.08);
+}
+
+.yp-reels-row::-webkit-scrollbar {
+  height: 8px;
+}
+
+.yp-reels-row::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+}
+
+.yp-reels-row::-webkit-scrollbar-thumb {
+  background: rgba(255, 212, 0, 0.78);
+  border-radius: 999px;
+}
+
+.yp-reel-card {
+  position: relative;
+  overflow: hidden;
+  min-width: 142px;
+  height: clamp(170px, 16vw, 235px);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 16px;
+  color: #ffffff;
+  background-color: #07110b;
+  background-position: center;
+  background-size: cover;
+  text-decoration: none;
+  box-shadow: 0 18px 56px rgba(0, 0, 0, 0.32);
+  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.yp-reel-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255, 212, 0, 0.52);
+  box-shadow: 0 26px 70px rgba(0, 0, 0, 0.42);
+}
+
+.yp-reel-gradient {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.06), transparent 20%),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0.84));
+  pointer-events: none;
+}
+
+.yp-reel-play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  transform: translate(-50%, -50%);
+  border-radius: 999px;
+  color: #07110b;
+  background: rgba(255, 255, 255, 0.82);
+  font-size: 16px;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.32);
+}
+
+.yp-reel-card strong,
+.yp-reel-card small {
+  position: relative;
+  z-index: 2;
+}
+
+.yp-reel-card strong {
+  color: #ffffff;
+  font-size: 15px;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+
+.yp-reel-card small {
+  margin-top: 3px;
+  color: rgba(255, 255, 255, 0.78);
+  font-weight: 800;
+}
+
+/* Bottom split card: Promote business + Stay in the loop. */
+.yp-bottom-marketing-section {
+  padding-top: clamp(20px, 3vw, 34px);
+  padding-bottom: clamp(30px, 5vw, 60px);
+}
+
+.yp-bottom-marketing {
+  display: grid;
+  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+  overflow: hidden;
+  border: 1px solid rgba(255, 212, 0, 0.18);
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at 86% 20%, rgba(255, 212, 0, 0.16), transparent 32%),
+    linear-gradient(135deg, rgba(0, 138, 61, 0.23), rgba(87, 45, 18, 0.34)),
+    rgba(255, 255, 255, 0.06);
+  box-shadow: 0 26px 90px rgba(0, 0, 0, 0.32);
+}
+
+.yp-promote-banner,
+.yp-newsletter-banner {
+  position: relative;
+  min-height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 22px;
+  padding: clamp(22px, 3.5vw, 38px);
+}
+
+.yp-promote-banner {
+  background:
+    linear-gradient(90deg, rgba(0,0,0,.28), rgba(0,0,0,.08)),
+    radial-gradient(circle at 88% 42%, rgba(255, 212, 0, 0.16), transparent 24%);
+}
+
+.yp-promote-banner::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 45%;
+  height: 100%;
+  opacity: 0.62;
+  background:
+    radial-gradient(circle at 55% 52%, rgba(255, 212, 0, 0.28), transparent 20%),
+    linear-gradient(135deg, transparent, rgba(0, 0, 0, 0.24));
+  pointer-events: none;
+}
+
+.yp-newsletter-banner {
+  border-left: 1px solid rgba(255, 255, 255, 0.12);
+  background:
+    radial-gradient(circle at 92% 24%, rgba(0, 138, 61, 0.20), transparent 32%),
+    linear-gradient(90deg, rgba(38, 20, 9, .30), rgba(0,0,0,.15));
+}
+
+.yp-promote-banner h2,
+.yp-newsletter-banner h2 {
+  margin: 0;
+  color: #ffffff;
+  font-size: clamp(28px, 3.2vw, 44px);
+  line-height: 0.98;
+  letter-spacing: -0.06em;
+}
+
+.yp-promote-banner p,
+.yp-newsletter-banner p {
+  margin: 7px 0 0;
+  color: rgba(255, 255, 255, 0.76);
+}
+
+.yp-newsletter-form {
+  display: grid;
+  grid-template-columns: minmax(190px, 1fr) auto;
+  gap: 10px;
+  width: min(100%, 460px);
+}
+
+.yp-newsletter-form input {
+  min-height: 48px;
+  padding: 0 16px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  color: #ffffff;
+  background: rgba(0, 0, 0, 0.26);
+  outline: none;
+}
+
+.yp-newsletter-form input::placeholder {
+  color: rgba(255, 255, 255, 0.58);
+}
+
+.yp-newsletter-form button {
+  min-height: 48px;
+  padding: 0 22px;
+  border: 0;
+  border-radius: 999px;
+  color: #ffffff;
+  background: #008a3d;
+  font-weight: 950;
+  cursor: pointer;
+}
+
+.yp-newsletter-form button:hover {
+  background: #00a84a;
+}
+
+/* Footer upgrade to match the reference more closely if the global footer is present. */
+.footer {
+  color: #ffffff !important;
+  background:
+    radial-gradient(circle at 12% 0%, rgba(0, 138, 61, 0.14), transparent 25%),
+    linear-gradient(180deg, #06130d 0%, #020806 100%) !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.10) !important;
+}
+
+.footer .footer-inner {
+  grid-template-columns: minmax(260px, 0.7fr) minmax(0, 1.35fr) !important;
+}
+
+.footer-logo-row strong,
+.footer a {
+  color: #ffffff !important;
+}
+
+.footer a:hover {
+  color: #ffd400 !important;
+}
+
+.footer .muted,
+.footer p {
+  color: rgba(255, 255, 255, 0.68) !important;
+}
+
+/* Tablet */
+@media (max-width: 1080px) {
+  .yp-reels-row {
+    grid-template-columns: repeat(8, 150px);
+  }
+
+  .yp-bottom-marketing {
+    grid-template-columns: 1fr;
+  }
+
+  .yp-newsletter-banner {
+    border-left: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+  }
+}
+
+/* Phone */
+@media (max-width: 640px) {
+  .yp-reels-head {
+    align-items: start;
+    flex-direction: column;
+  }
+
+  .yp-reels-head a {
+    width: 100%;
+  }
+
+  .yp-reels-row {
+    grid-template-columns: repeat(8, 142px);
+  }
+
+  .yp-bottom-marketing {
+    border-radius: 22px;
+  }
+
+  .yp-promote-banner,
+  .yp-newsletter-banner {
+    min-height: auto;
+    align-items: stretch;
+    flex-direction: column;
+    padding: 20px;
+  }
+
+  .yp-newsletter-form {
+    grid-template-columns: 1fr;
+  }
+
+  .yp-newsletter-form button {
+    width: 100%;
+  }
+}
+
+/* =========================================================
+   Phase 29 — Full footer polish + Reels route support
+   ========================================================= */
+
+.yp-full-footer {
+  color: #ffffff;
+  background:
+    radial-gradient(circle at 12% 0%, rgba(0, 138, 61, 0.16), transparent 26%),
+    linear-gradient(180deg, #06130d 0%, #020806 100%);
+  border-top: 1px solid rgba(255, 255, 255, 0.10);
+  padding: clamp(34px, 5vw, 62px) 0 24px;
+}
+
+.yp-full-footer-grid {
+  display: grid;
+  grid-template-columns: minmax(250px, 0.62fr) minmax(0, 1.38fr);
+  gap: clamp(26px, 5vw, 74px);
+  align-items: start;
+}
+
+.yp-footer-logo {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
+  color: #ffffff;
+  font-size: clamp(26px, 3vw, 40px);
+  font-weight: 1000;
+  letter-spacing: -0.07em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.yp-footer-logo span {
+  font-size: 30px;
+  letter-spacing: 0;
+}
+
+.yp-footer-logo strong {
+  color: #ffd400;
+}
+
+.yp-footer-logo em {
+  color: #35d044;
+  font-style: normal;
+}
+
+.yp-footer-brand p {
+  max-width: 340px;
+  margin: 14px 0 0;
+  color: rgba(255, 255, 255, 0.68);
+  line-height: 1.6;
+}
+
+.yp-footer-socials {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.yp-footer-socials a {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.06);
+  font-weight: 1000;
+  text-decoration: none;
+}
+
+.yp-footer-socials a:hover {
+  color: #07110b;
+  border-color: #ffd400;
+  background: #ffd400;
+}
+
+.yp-footer-brand small {
+  display: block;
+  margin-top: 24px;
+  color: rgba(255, 255, 255, 0.48);
+}
+
+.yp-footer-columns {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: clamp(18px, 3vw, 32px);
+}
+
+.yp-footer-column h3 {
+  margin: 0 0 12px;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 1000;
+}
+
+.yp-footer-column a {
+  display: flex;
+  width: fit-content;
+  margin-top: 8px;
+  color: rgba(255, 255, 255, 0.64);
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.yp-footer-column a:hover {
+  color: #ffd400;
+}
+
+.yp-footer-download {
+  padding-left: clamp(0px, 2vw, 22px);
+  border-left: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.yp-store-badge {
+  width: 158px !important;
+  min-height: 48px;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px !important;
+  padding: 8px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 10px;
+  color: #ffffff !important;
+  background: #050505;
+}
+
+.yp-store-badge span {
+  color: #35d044;
+  font-size: 22px;
+}
+
+.yp-store-badge strong {
+  display: grid;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 10px;
+  line-height: 1.05;
+}
+
+.yp-store-badge em {
+  color: #ffffff;
+  font-size: 16px;
+  font-style: normal;
+}
+
+.yp-footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: clamp(24px, 4vw, 42px);
+  padding-top: 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.10);
+  color: rgba(255, 255, 255, 0.52);
+  font-size: 13px;
+}
+
+.yp-footer-bottom a {
+  color: #ffd400;
+  font-weight: 950;
+  text-decoration: none;
+}
+
+@media (max-width: 1100px) {
+  .yp-full-footer-grid,
+  .yp-footer-columns {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .yp-footer-download {
+    padding-left: 0;
+    border-left: 0;
+  }
+}
+
+@media (max-width: 700px) {
+  .yp-full-footer-grid,
+  .yp-footer-columns {
+    grid-template-columns: 1fr;
+  }
+
+  .yp-footer-bottom {
+    flex-direction: column;
+  }
+
+  .yp-store-badge {
+    width: 100% !important;
+  }
+}
+
+/* =========================================================
+   Phase 33 — Hero showcase single-card carousel fix
+   CSS-only phase.
+   Goal: remove the visible stacked/angled background cards so the hero
+   showcase presents one clean promo at a time, fully inside the border.
+   ========================================================= */
+
+.yp-hero-showcase {
+  overflow: hidden !important;
+  isolation: isolate;
+  padding: clamp(12px, 1.4vw, 18px) !important;
+}
+
+/* Keep the showcase itself as one clean premium card. */
+.yp-hero-showcase .hero-stack {
+  position: relative !important;
+  width: 100% !important;
+  min-height: clamp(330px, 33vw, 500px) !important;
+  height: clamp(330px, 33vw, 500px) !important;
+  overflow: hidden !important;
+  border-radius: 26px !important;
+}
+
+/* Most HeroStack implementations use direct children for each card.
+   Flatten those cards so none peek out behind the active one. */
+.yp-hero-showcase .hero-stack > :is(a, article, section, div):not([class*="control"]):not([class*="Control"]):not([class*="arrow"]):not([class*="Arrow"]):not([class*="dot"]):not([class*="Dot"]):not([class*="indicator"]):not([class*="Indicator"]) {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  max-width: none !important;
+  height: 100% !important;
+  margin: 0 !important;
+  transform: none !important;
+  rotate: 0deg !important;
+  scale: 1 !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  z-index: 0 !important;
+  border-radius: 24px !important;
+  overflow: hidden !important;
+}
+
+/* Show the active/current card if the component marks one. */
+.yp-hero-showcase .hero-stack:has(.active) > .active,
+.yp-hero-showcase .hero-stack:has(.is-active) > .is-active,
+.yp-hero-showcase .hero-stack:has([aria-current="true"]) > [aria-current="true"],
+.yp-hero-showcase .hero-stack:has([data-active="true"]) > [data-active="true"],
+.yp-hero-showcase .hero-stack:has([data-state="active"]) > [data-state="active"],
+.yp-hero-showcase .hero-stack:has([class*="active"]) > [class*="active"],
+.yp-hero-showcase .hero-stack:has([class*="Active"]) > [class*="Active"] {
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  z-index: 2 !important;
+}
+
+/* Fallback: if HeroStack does not mark an active slide, show only the first card.
+   This prevents the stacked-photo look from returning. */
+.yp-hero-showcase .hero-stack:not(:has(.active)):not(:has(.is-active)):not(:has([aria-current="true"])):not(:has([data-active="true"])):not(:has([data-state="active"])) > :is(a, article, section, div):first-child {
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  z-index: 2 !important;
+}
+
+/* Images/videos should fill the full hero card border cleanly. */
+.yp-hero-showcase .hero-stack img,
+.yp-hero-showcase .hero-stack picture,
+.yp-hero-showcase .hero-stack video,
+.yp-hero-showcase .hero-stack canvas {
+  display: block !important;
+  width: 100% !important;
+  max-width: none !important;
+  height: 100% !important;
+  min-height: 100% !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  border-radius: 24px !important;
+}
+
+/* If a card uses background images instead of <img>, make it fill the card too. */
+.yp-hero-showcase .hero-stack > :is(a, article, section, div) {
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+}
+
+/* Remove visible side/behind-card styling from stack layers. */
+.yp-hero-showcase .hero-stack > :is(a, article, section, div)::before,
+.yp-hero-showcase .hero-stack > :is(a, article, section, div)::after {
+  transform: none !important;
+}
+
+/* Keep arrows, dots, and carousel controls visible if they live inside HeroStack. */
+.yp-hero-showcase .hero-stack :is(button, [role="button"], [class*="arrow"], [class*="Arrow"], [class*="control"], [class*="Control"], [class*="dot"], [class*="Dot"], [class*="indicator"], [class*="Indicator"]) {
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  z-index: 20 !important;
+}
+
+/* Make the dots sit neatly inside the single card. */
+.yp-hero-showcase .hero-stack :is([class*="dot"], [class*="Dot"], [class*="indicator"], [class*="Indicator"]) {
+  transform: none !important;
+}
+
+/* If the component adds decorative ghost cards outside .hero-stack, hide them. */
+.yp-hero-showcase > :is(a, article, section, div):not(.hero-stack):not(.yp-feature-ribbon):not([class*="control"]):not([class*="Control"]):not([class*="arrow"]):not([class*="Arrow"]) {
+  transform: none !important;
+}
+
+/* Mobile: keep it full, but slightly shorter for the viewport. */
+@media (max-width: 900px) {
+  .yp-hero-showcase .hero-stack {
+    min-height: clamp(300px, 62vw, 470px) !important;
+    height: clamp(300px, 62vw, 470px) !important;
+  }
+}
+
+@media (max-width: 560px) {
+  .yp-hero-showcase {
+    padding: 10px !important;
+    border-radius: 22px !important;
+  }
+
+  .yp-hero-showcase .hero-stack {
+    min-height: 320px !important;
+    height: 320px !important;
+    border-radius: 18px !important;
+  }
+
+  .yp-hero-showcase .hero-stack img,
+  .yp-hero-showcase .hero-stack picture,
+  .yp-hero-showcase .hero-stack video,
+  .yp-hero-showcase .hero-stack canvas {
+    border-radius: 18px !important;
+  }
+}
