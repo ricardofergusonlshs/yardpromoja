@@ -1,0 +1,316 @@
+-- YardPromoJa Content Uploader Role Migration
+-- Run in Supabase SQL Editor.
+-- Purpose:
+-- 1) Add content_uploader role support
+-- 2) Add safe review/workflow columns to ads
+-- 3) Add source tracking
+-- 4) Add optional payout tracking
+-- 5) Add RLS policies for uploader-created listings
+
+create extension if not exists pgcrypto;
+
+-- =========================================================
+-- 1) Profiles role support
+-- =========================================================
+
+alter table public.profiles
+add column if not exists role text default 'customer',
+add column if not exists full_name text,
+add column if not exists username text,
+add column if not exists avatar_url text,
+add column if not exists parish text,
+add column if not exists updated_at timestamptz default now();
+
+create unique index if not exists profiles_username_unique_idx
+on public.profiles (lower(username))
+where username is not null and username <> '';
+
+-- Helper function for admin checks.
+create or replace function public.is_admin()
+returns boolean
+language sql
+security definer
+set search_path = public
+as $$
+  select exists (
+    select 1
+    from public.profiles
+    where id = auth.uid()
+      and role in ('admin', 'super_admin')
+  );
+$$;
+
+-- Helper function for uploader/admin access.
+create or replace function public.is_content_team()
+returns boolean
+language sql
+security definer
+set search_path = public
+as $$
+  select exists (
+    select 1
+    from public.profiles
+    where id = auth.uid()
+      and role in ('content_uploader', 'admin', 'super_admin')
+  );
+$$;
+
+-- =========================================================
+-- 2) Ads workflow columns
+-- =========================================================
+-- These columns let uploaders submit listings without directly publishing.
+
+alter table public.ads
+add column if not exists submitted_by uuid references auth.users(id) on delete set null,
+add column if not exists submitted_at timestamptz,
+add column if not exists reviewed_by uuid references auth.users(id) on delete set null,
+add column if not exists reviewed_at timestamptz,
+add column if not exists review_status text default 'draft',
+add column if not exists claim_status text default 'unclaimed',
+add column if not exists source_type text default 'curated',
+add column if not exists created_by_role text,
+add column if not exists image_permission_status text default 'placeholder_used',
+add column if not exists source_url text,
+add column if not exists source_notes text,
+add column if not exists admin_notes text,
+add column if not exists contact_name text,
+add column if not exists phone text,
+add column if not exists whatsapp text,
+add column if not exists instagram text,
+add column if not exists tiktok text,
+add column if not exists facebook text,
+add column if not exists website text,
+add column if not exists google_maps_url text,
+add column if not exists opening_hours text,
+add column if not exists rejection_reason text;
+
+create index if not exists ads_submitted_by_idx on public.ads(submitted_by);
+create index if not exists ads_review_status_idx on public.ads(review_status);
+create index if not exists ads_claim_status_idx on public.ads(claim_status);
+create index if not exists ads_source_type_idx on public.ads(source_type);
+
+-- Helpful check constraint.
+do $$
+begin
+  if not exists (
+    select 1
+    from pg_constraint
+    where conname = 'ads_review_status_check'
+  ) then
+    alter table public.ads
+    add constraint ads_review_status_check
+    check (
+      review_status in (
+        'draft',
+        'pending_review',
+        'needs_correction',
+        'approved',
+        'rejected',
+        'published'
+      )
+    );
+  end if;
+end $$;
+
+do $$
+begin
+  if not exists (
+    select 1
+    from pg_constraint
+    where conname = 'ads_claim_status_check'
+  ) then
+    alter table public.ads
+    add constraint ads_claim_status_check
+    check (
+      claim_status in (
+        'unclaimed',
+        'claim_requested',
+        'claimed',
+        'verified'
+      )
+    );
+  end if;
+end $$;
+
+-- =========================================================
+-- 3) Content source table
+-- =========================================================
+
+create table if not exists public.content_upload_sources (
+  id uuid primary key default gen_random_uuid(),
+  ad_id uuid references public.ads(id) on delete cascade,
+  uploader_id uuid references auth.users(id) on delete set null,
+  source_url text not null,
+  source_type text default 'official_or_public_source',
+  permission_status text default 'needs_permission',
+  notes text,
+  created_at timestamptz default now()
+);
+
+create index if not exists content_upload_sources_ad_id_idx
+on public.content_upload_sources(ad_id);
+
+create index if not exists content_upload_sources_uploader_id_idx
+on public.content_upload_sources(uploader_id);
+
+alter table public.content_upload_sources enable row level security;
+
+drop policy if exists "Uploaders can view own content sources" on public.content_upload_sources;
+drop policy if exists "Uploaders can insert own content sources" on public.content_upload_sources;
+drop policy if exists "Uploaders can update own content sources" on public.content_upload_sources;
+drop policy if exists "Admins can manage content sources" on public.content_upload_sources;
+
+create policy "Uploaders can view own content sources"
+on public.content_upload_sources
+for select
+using (auth.uid() = uploader_id or public.is_admin());
+
+create policy "Uploaders can insert own content sources"
+on public.content_upload_sources
+for insert
+with check (auth.uid() = uploader_id and public.is_content_team());
+
+create policy "Uploaders can update own content sources"
+on public.content_upload_sources
+for update
+using (auth.uid() = uploader_id and public.is_content_team())
+with check (auth.uid() = uploader_id and public.is_content_team());
+
+create policy "Admins can manage content sources"
+on public.content_upload_sources
+for all
+using (public.is_admin())
+with check (public.is_admin());
+
+-- =========================================================
+-- 4) Optional payout tracking
+-- =========================================================
+
+create table if not exists public.content_uploader_payouts (
+  id uuid primary key default gen_random_uuid(),
+  uploader_id uuid not null references auth.users(id) on delete cascade,
+  period_start date,
+  period_end date,
+  approved_count integer default 0,
+  rejected_count integer default 0,
+  pending_count integer default 0,
+  amount_jmd numeric(12,2) default 0,
+  status text default 'pending',
+  notes text,
+  paid_at timestamptz,
+  created_at timestamptz default now()
+);
+
+create index if not exists content_uploader_payouts_uploader_id_idx
+on public.content_uploader_payouts(uploader_id);
+
+alter table public.content_uploader_payouts enable row level security;
+
+drop policy if exists "Uploaders can view own payouts" on public.content_uploader_payouts;
+drop policy if exists "Admins can manage payouts" on public.content_uploader_payouts;
+
+create policy "Uploaders can view own payouts"
+on public.content_uploader_payouts
+for select
+using (auth.uid() = uploader_id or public.is_admin());
+
+create policy "Admins can manage payouts"
+on public.content_uploader_payouts
+for all
+using (public.is_admin())
+with check (public.is_admin());
+
+-- =========================================================
+-- 5) RLS policies
+-- =========================================================
+
+alter table public.profiles enable row level security;
+alter table public.ads enable row level security;
+
+-- Profiles policies.
+drop policy if exists "Public can view profiles" on public.profiles;
+drop policy if exists "Users can insert own profile" on public.profiles;
+drop policy if exists "Users can update own profile" on public.profiles;
+drop policy if exists "Admins can manage profiles" on public.profiles;
+
+create policy "Public can view profiles"
+on public.profiles
+for select
+using (true);
+
+create policy "Users can insert own profile"
+on public.profiles
+for insert
+with check (auth.uid() = id);
+
+create policy "Users can update own profile"
+on public.profiles
+for update
+using (auth.uid() = id)
+with check (auth.uid() = id);
+
+create policy "Admins can manage profiles"
+on public.profiles
+for all
+using (public.is_admin())
+with check (public.is_admin());
+
+-- Ads policies for uploader workflow.
+-- Keep existing public/admin policies if your app already has them.
+-- These add uploader-specific access.
+
+drop policy if exists "Content uploaders can insert draft ads" on public.ads;
+drop policy if exists "Content uploaders can view own submissions" on public.ads;
+drop policy if exists "Content uploaders can update own draft submissions" on public.ads;
+drop policy if exists "Admins can manage uploader submissions" on public.ads;
+
+create policy "Content uploaders can insert draft ads"
+on public.ads
+for insert
+with check (
+  public.is_content_team()
+  and submitted_by = auth.uid()
+  and review_status in ('draft', 'pending_review')
+  and coalesce(status, 'draft') in ('draft', 'pending', 'pending_review')
+);
+
+create policy "Content uploaders can view own submissions"
+on public.ads
+for select
+using (
+  submitted_by = auth.uid()
+  or public.is_admin()
+  or lower(coalesce(status, '')) in ('active', 'approved', 'published')
+  or review_status in ('approved', 'published')
+);
+
+create policy "Content uploaders can update own draft submissions"
+on public.ads
+for update
+using (
+  public.is_content_team()
+  and submitted_by = auth.uid()
+  and review_status in ('draft', 'pending_review', 'needs_correction')
+)
+with check (
+  public.is_content_team()
+  and submitted_by = auth.uid()
+  and review_status in ('draft', 'pending_review', 'needs_correction')
+);
+
+create policy "Admins can manage uploader submissions"
+on public.ads
+for all
+using (public.is_admin())
+with check (public.is_admin());
+
+-- =========================================================
+-- 6) How to promote a user to content uploader
+-- =========================================================
+-- Replace the email below and run after the user signs up:
+--
+-- update public.profiles
+-- set role = 'content_uploader'
+-- where id = (
+--   select id from auth.users where email = 'uploader@example.com'
+-- );

@@ -9,6 +9,7 @@ const publicLinks = [
   { href: "/", label: "Home" },
   { href: "/browse", label: "Browse" },
   { href: "/weekend", label: "Weekend" },
+  { href: "/itinerary", label: "Itinerary" },
   { href: "/calendar", label: "Calendar" },
 ];
 
@@ -92,6 +93,7 @@ export default function AuthNav() {
   }
 
   const isAdmin = role === "admin" || role === "super_admin";
+  const isUploader = ["content_uploader", "admin", "super_admin"].includes(role);
 
   const links = user
     ? customerLinks.filter((link) => {
@@ -113,7 +115,25 @@ export default function AuthNav() {
         </Link>
       ))}
 
-      {user && isAdmin ? <Link href="/admin">Admin</Link> : null}
+      {isUploader ? (
+        <Link
+          href="/uploader"
+          aria-current={pathname.startsWith("/uploader") ? "page" : undefined}
+          className={pathname.startsWith("/uploader") ? "active" : undefined}
+        >
+          Uploader
+        </Link>
+      ) : null}
+
+      {isAdmin ? (
+        <Link
+          href="/admin"
+          aria-current={pathname.startsWith("/admin") ? "page" : undefined}
+          className={pathname.startsWith("/admin") ? "active" : undefined}
+        >
+          Admin
+        </Link>
+      ) : null}
 
       {authChecked && user ? (
         <button

@@ -1,0 +1,12 @@
+Optional itinerary paid services.
+
+insert into public.paid_services
+(name, slug, description, amount_jmd, amount_usd, active, service_type)
+values
+('Featured Itinerary Placement', 'featured-itinerary-placement', 'Feature a business or promo inside itinerary pages.', 5000, 40, true, 'itinerary_feature'),
+('Sponsored Itinerary Stop', 'sponsored-itinerary-stop', 'Place a sponsored stop inside a relevant itinerary.', 3500, 30, true, 'itinerary_stop'),
+('Weekend Planner Boost', 'weekend-planner-boost', 'Boost a promo/business inside weekend planner experiences.', 4000, 32, true, 'weekend_planner')
+on conflict (slug) do update
+set name=excluded.name, description=excluded.description, amount_jmd=excluded.amount_jmd,
+amount_usd=excluded.amount_usd, active=excluded.active, service_type=excluded.service_type,
+updated_at=now();

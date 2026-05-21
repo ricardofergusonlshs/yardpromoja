@@ -9,6 +9,7 @@ const publicLinks = [
   { href: "/", label: "Home" },
   { href: "/browse", label: "Browse" },
   { href: "/weekend", label: "Weekend" },
+  { href: "/itinerary", label: "Itinerary" },
   { href: "/calendar", label: "Calendar" },
 ];
 
@@ -19,6 +20,7 @@ const customerLinks = [
   { href: "/calendar", label: "Calendar" },
   { href: "/dashboard", label: "Dashboard" },
   { href: "/post-promo", label: "Post Promo" },
+  { href: "/itinerary", label: "Itinerary" },
   { href: "/services", label: "Services" },
   { href: "/account", label: "Account" },
 ];

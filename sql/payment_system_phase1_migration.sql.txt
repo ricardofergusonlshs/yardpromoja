@@ -1,0 +1,188 @@
+-- YardPromoJa Payment System Phase 1 Migration
+-- Run this in Supabase SQL Editor.
+-- Safe to run multiple times.
+
+create extension if not exists pgcrypto;
+
+create or replace function public.is_admin()
+returns boolean
+language sql
+security definer
+set search_path = public
+as $$
+  select exists (
+    select 1
+    from public.profiles
+    where id = auth.uid()
+      and role in ('admin', 'super_admin')
+  );
+$$;
+
+create table if not exists public.paid_services (
+  id uuid primary key default gen_random_uuid(),
+  name text not null,
+  slug text not null unique,
+  description text,
+  amount_jmd numeric(12,2) not null default 0,
+  amount_usd numeric(12,2),
+  active boolean default true,
+  service_type text not null default 'general',
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
+alter table public.paid_services enable row level security;
+
+drop policy if exists "Public can view active paid services" on public.paid_services;
+drop policy if exists "Admins can manage paid services" on public.paid_services;
+
+create policy "Public can view active paid services"
+on public.paid_services
+for select
+using (active = true or public.is_admin());
+
+create policy "Admins can manage paid services"
+on public.paid_services
+for all
+using (public.is_admin())
+with check (public.is_admin());
+
+insert into public.paid_services
+(name, slug, description, amount_jmd, amount_usd, active, service_type)
+values
+('Featured Placement', 'featured-placement', 'Boost your promo with featured placement across YardPromoJa.', 2500, 20, true, 'featured'),
+('Premium Promotion', 'premium-promotion', 'Get premium visibility for your promo or business listing.', 5000, 40, true, 'premium'),
+('Weekend Boost', 'weekend-boost', 'Boost visibility for weekend traffic and event discovery.', 3000, 25, true, 'weekend'),
+('Campaign Setup', 'campaign-setup', 'Set up a promotional campaign connected to your YardPromo listing.', 4500, 35, true, 'campaign'),
+('Sale Offer Promotion', 'sale-offer-promotion', 'Promote discounts, bundles, specials, and limited-time offers.', 3000, 25, true, 'sale_offer'),
+('Flyer / Poster Design', 'flyer-poster-design', 'Request a clean flyer or poster design service.', 6000, 50, true, 'design'),
+('Social Media Share Pack', 'social-media-share-pack', 'Get branded sharing assets for WhatsApp, Instagram, Facebook, TikTok, and X.', 3500, 30, true, 'share_pack'),
+('Business Listing Claim', 'business-listing-claim', 'Claim and manage your curated YardPromoJa business listing.', 2000, 15, true, 'claim'),
+('Monthly Promoter Plan', 'monthly-promoter-plan', 'Monthly plan for regular promoters and businesses.', 12000, 95, true, 'subscription'),
+('Annual Promoter Plan', 'annual-promoter-plan', 'Annual plan for regular promoters and businesses.', 100000, 780, true, 'subscription')
+on conflict (slug) do update
+set
+  name = excluded.name,
+  description = excluded.description,
+  amount_jmd = excluded.amount_jmd,
+  amount_usd = excluded.amount_usd,
+  active = excluded.active,
+  service_type = excluded.service_type,
+  updated_at = now();
+
+create table if not exists public.payments (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users(id) on delete cascade,
+  service_id uuid references public.paid_services(id) on delete set null,
+  ad_id uuid references public.ads(id) on delete set null,
+  amount numeric(12,2) not null default 0,
+  currency text default 'JMD',
+  payment_method text not null default 'bank_transfer',
+  payment_status text not null default 'pending',
+  provider text,
+  provider_payment_id text,
+  provider_checkout_url text,
+  receipt_url text,
+  bank_reference text,
+  proof_image_url text,
+  admin_notes text,
+  paid_at timestamptz,
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
+create index if not exists payments_user_id_idx on public.payments(user_id);
+create index if not exists payments_service_id_idx on public.payments(service_id);
+create index if not exists payments_ad_id_idx on public.payments(ad_id);
+create index if not exists payments_status_idx on public.payments(payment_status);
+create index if not exists payments_created_at_idx on public.payments(created_at desc);
+
+alter table public.payments drop constraint if exists payments_status_check;
+alter table public.payments add constraint payments_status_check check (payment_status in ('pending','pending_review','paid','failed','cancelled','rejected','refunded')) not valid;
+
+alter table public.payments drop constraint if exists payments_method_check;
+alter table public.payments add constraint payments_method_check check (payment_method in ('card','bank_transfer','paypal')) not valid;
+
+alter table public.payments enable row level security;
+
+drop policy if exists "Customers can view own payments" on public.payments;
+drop policy if exists "Customers can create own payments" on public.payments;
+drop policy if exists "Customers can update own pending bank payments" on public.payments;
+drop policy if exists "Admins can manage payments" on public.payments;
+
+create policy "Customers can view own payments"
+on public.payments
+for select
+using (auth.uid() = user_id or public.is_admin());
+
+create policy "Customers can create own payments"
+on public.payments
+for insert
+with check (auth.uid() = user_id and payment_status in ('pending', 'pending_review'));
+
+create policy "Customers can update own pending bank payments"
+on public.payments
+for update
+using (auth.uid() = user_id and payment_method = 'bank_transfer' and payment_status in ('pending', 'pending_review'))
+with check (auth.uid() = user_id and payment_method = 'bank_transfer' and payment_status in ('pending', 'pending_review'));
+
+create policy "Admins can manage payments"
+on public.payments
+for all
+using (public.is_admin())
+with check (public.is_admin());
+
+create table if not exists public.payment_events (
+  id uuid primary key default gen_random_uuid(),
+  payment_id uuid references public.payments(id) on delete cascade,
+  event_type text not null,
+  provider text,
+  payload jsonb default '{}'::jsonb,
+  created_at timestamptz default now()
+);
+
+create index if not exists payment_events_payment_id_idx on public.payment_events(payment_id);
+create index if not exists payment_events_created_at_idx on public.payment_events(created_at desc);
+
+alter table public.payment_events enable row level security;
+
+drop policy if exists "Admins can view payment events" on public.payment_events;
+drop policy if exists "Admins can insert payment events" on public.payment_events;
+
+create policy "Admins can view payment events"
+on public.payment_events
+for select
+using (public.is_admin());
+
+create policy "Admins can insert payment events"
+on public.payment_events
+for insert
+with check (public.is_admin());
+
+insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+values ('payment-proofs', 'payment-proofs', true, 5242880, array['image/jpeg', 'image/png', 'image/webp', 'application/pdf'])
+on conflict (id) do update
+set public = true,
+    file_size_limit = 5242880,
+    allowed_mime_types = array['image/jpeg', 'image/png', 'image/webp', 'application/pdf'];
+
+drop policy if exists "Public can view payment proof files" on storage.objects;
+drop policy if exists "Users can upload own payment proof files" on storage.objects;
+
+create policy "Public can view payment proof files"
+on storage.objects
+for select
+using (bucket_id = 'payment-proofs');
+
+create policy "Users can upload own payment proof files"
+on storage.objects
+for insert
+to authenticated
+with check (bucket_id = 'payment-proofs' and (storage.foldername(name))[1] = auth.uid()::text);
+
+alter table public.ads
+add column if not exists is_featured boolean default false,
+add column if not exists is_premium boolean default false,
+add column if not exists is_weekend_pick boolean default false;
+
+notify pgrst, 'reload schema';

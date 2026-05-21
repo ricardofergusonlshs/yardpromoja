@@ -1,5 +1,5 @@
 "use client";
-
+import AddToItineraryButton from "@/app/components/AddToItineraryButton";
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
@@ -651,6 +651,7 @@ function getComplementaryCategories(category) {
       "dancehall",
       "reggae",
       "stage show",
+      "attraction",
       "concert",
       "sound clash",
       "event",

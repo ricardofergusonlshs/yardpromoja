@@ -138,6 +138,7 @@ export default function AdminPage() {
   function approveAd(ad) {
     return updateAd(ad.id, {
       status: "active",
+      review_status: "approved",
     });
   }
 
@@ -187,8 +188,16 @@ export default function AdminPage() {
   return (
     <main className="section">
       <div className="container">
-        <p className="kicker">Admin</p>
-        <h2>Approve and manage YardPromo ads.</h2>
+        <div className="section-head">
+          <div>
+            <p className="kicker">Admin</p>
+            <h2>Approve and manage YardPromo ads.</h2>
+          </div>
+
+          <Link className="btn btn-primary" href="/admin/uploader-submissions">
+            Review Uploader Submissions
+          </Link>
+        </div>
 
         {message ? (
           <div className="toast error admin-message">{message}</div>

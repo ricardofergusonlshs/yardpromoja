@@ -1,0 +1,23 @@
+Add these cards to your /services page services array.
+
+{
+  title: "Pricing",
+  description: "View paid YardPromoJa services such as featured placement, premium promotion, weekend boosts, and share packs.",
+  href: "/pricing",
+  button: "View Pricing",
+  tag: "Payments",
+},
+{
+  title: "My Payments",
+  description: "Track your payment status, proof uploads, and paid service requests.",
+  href: "/dashboard/payments",
+  button: "View Payments",
+  tag: "Account",
+},
+{
+  title: "Admin Payments",
+  description: "Review bank transfer proofs and manage customer payments.",
+  href: "/admin/payments",
+  button: "Review Payments",
+  tag: "Admin",
+}

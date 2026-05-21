@@ -1,0 +1,10 @@
+Add Itinerary to app/components/AuthNav.js
+
+In publicLinks add:
+{ href: "/itinerary", label: "Itinerary" },
+
+In customerLinks add:
+{ href: "/itinerary", label: "Itinerary" },
+
+Recommended public header:
+Home, Browse, Weekend, Calendar, Itinerary, Login

@@ -1,0 +1,13 @@
+Optional dashboard links:
+
+<Link className="btn btn-light" href="/dashboard/payments">
+  My Payments
+</Link>
+
+<Link className="btn btn-primary" href="/admin/payments">
+  Review Payments
+</Link>
+
+<Link className="btn btn-primary" href="/pricing">
+  View Pricing
+</Link>

@@ -1,0 +1,10 @@
+Promo detail Add-to-Itinerary integration.
+
+File:
+app/ad/[slug]/AdDetailClient.js
+
+Add import:
+import AddToItineraryButton from "@/app/components/AddToItineraryButton";
+
+Add inside your promo action area:
+<AddToItineraryButton ad={ad} />

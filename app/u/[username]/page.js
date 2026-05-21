@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { use, useEffect, useMemo, useState } from "react";
+
 import Link from "next/link";
 import { createClient } from "@/lib/supabaseClient";
 
 export default function UserProfilePage({ params }) {
-  const { username } = params;
+  const { username } = use(params);
   const supabase = createClient();
   const [profile, setProfile] = useState(null);
   const [savedPromos, setSavedPromos] = useState([]);

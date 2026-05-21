@@ -1,0 +1,187 @@
+-- YardPromoJa Itinerary Phase 1 SQL
+create extension if not exists pgcrypto;
+
+create or replace function public.is_admin()
+returns boolean language sql security definer set search_path = public as $$
+  select exists (
+    select 1 from public.profiles
+    where id = auth.uid() and role in ('admin','super_admin')
+  );
+$$;
+
+create table if not exists public.itineraries (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid references auth.users(id) on delete cascade,
+  title text not null,
+  slug text not null unique,
+  description text,
+  parish text,
+  start_date date,
+  end_date date,
+  trip_length_days integer default 1,
+  visibility text default 'private',
+  status text default 'draft',
+  itinerary_type text,
+  budget_level text,
+  travel_style text,
+  cover_image_url text,
+  is_featured boolean default false,
+  is_sponsored boolean default false,
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
+create table if not exists public.itinerary_items (
+  id uuid primary key default gen_random_uuid(),
+  itinerary_id uuid not null references public.itineraries(id) on delete cascade,
+  ad_id uuid references public.ads(id) on delete set null,
+  title text not null,
+  description text,
+  item_type text default 'custom_stop',
+  parish text,
+  location text,
+  day_number integer default 1,
+  start_time time,
+  end_time time,
+  sort_order integer default 0,
+  notes text,
+  external_url text,
+  map_url text,
+  image_url text,
+  is_sponsored boolean default false,
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
+create table if not exists public.itinerary_saves (
+  id uuid primary key default gen_random_uuid(),
+  itinerary_id uuid not null references public.itineraries(id) on delete cascade,
+  user_id uuid not null references auth.users(id) on delete cascade,
+  created_at timestamptz default now(),
+  unique(itinerary_id, user_id)
+);
+
+create table if not exists public.itinerary_likes (
+  id uuid primary key default gen_random_uuid(),
+  itinerary_id uuid not null references public.itineraries(id) on delete cascade,
+  user_id uuid not null references auth.users(id) on delete cascade,
+  created_at timestamptz default now(),
+  unique(itinerary_id, user_id)
+);
+
+create table if not exists public.itinerary_templates (
+  id uuid primary key default gen_random_uuid(),
+  title text not null,
+  slug text not null unique,
+  description text,
+  parish text,
+  trip_length_days integer default 1,
+  itinerary_type text,
+  budget_level text,
+  travel_style text,
+  cover_image_url text,
+  active boolean default true,
+  is_featured boolean default false,
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
+create table if not exists public.itinerary_template_items (
+  id uuid primary key default gen_random_uuid(),
+  template_id uuid not null references public.itinerary_templates(id) on delete cascade,
+  title text not null,
+  description text,
+  item_type text default 'custom_stop',
+  parish text,
+  location text,
+  day_number integer default 1,
+  start_time time,
+  sort_order integer default 0,
+  external_url text,
+  map_url text,
+  image_url text,
+  created_at timestamptz default now()
+);
+
+alter table public.itineraries enable row level security;
+alter table public.itinerary_items enable row level security;
+alter table public.itinerary_saves enable row level security;
+alter table public.itinerary_likes enable row level security;
+alter table public.itinerary_templates enable row level security;
+alter table public.itinerary_template_items enable row level security;
+
+drop policy if exists "Read public itineraries" on public.itineraries;
+create policy "Read public itineraries" on public.itineraries for select
+using ((visibility in ('public','unlisted') and status='published') or user_id=auth.uid() or public.is_admin());
+
+drop policy if exists "Create own itineraries" on public.itineraries;
+create policy "Create own itineraries" on public.itineraries for insert
+with check (user_id=auth.uid());
+
+drop policy if exists "Update own itineraries" on public.itineraries;
+create policy "Update own itineraries" on public.itineraries for update
+using (user_id=auth.uid() or public.is_admin())
+with check (user_id=auth.uid() or public.is_admin());
+
+drop policy if exists "Delete own itineraries" on public.itineraries;
+create policy "Delete own itineraries" on public.itineraries for delete
+using (user_id=auth.uid() or public.is_admin());
+
+drop policy if exists "Read itinerary items" on public.itinerary_items;
+create policy "Read itinerary items" on public.itinerary_items for select
+using (exists (
+  select 1 from public.itineraries i
+  where i.id=itinerary_items.itinerary_id
+  and ((i.visibility in ('public','unlisted') and i.status='published') or i.user_id=auth.uid() or public.is_admin())
+));
+
+drop policy if exists "Manage own itinerary items" on public.itinerary_items;
+create policy "Manage own itinerary items" on public.itinerary_items for all
+using (exists (select 1 from public.itineraries i where i.id=itinerary_items.itinerary_id and (i.user_id=auth.uid() or public.is_admin())))
+with check (exists (select 1 from public.itineraries i where i.id=itinerary_items.itinerary_id and (i.user_id=auth.uid() or public.is_admin())));
+
+drop policy if exists "Users manage own itinerary saves" on public.itinerary_saves;
+create policy "Users manage own itinerary saves" on public.itinerary_saves for all
+using (user_id=auth.uid() or public.is_admin())
+with check (user_id=auth.uid() or public.is_admin());
+
+drop policy if exists "Public can view itinerary likes" on public.itinerary_likes;
+create policy "Public can view itinerary likes" on public.itinerary_likes for select using (true);
+
+drop policy if exists "Users manage own itinerary likes" on public.itinerary_likes;
+create policy "Users manage own itinerary likes" on public.itinerary_likes for all
+using (user_id=auth.uid() or public.is_admin())
+with check (user_id=auth.uid() or public.is_admin());
+
+drop policy if exists "Public reads active itinerary templates" on public.itinerary_templates;
+create policy "Public reads active itinerary templates" on public.itinerary_templates for select
+using (active=true or public.is_admin());
+
+drop policy if exists "Admins manage itinerary templates" on public.itinerary_templates;
+create policy "Admins manage itinerary templates" on public.itinerary_templates for all
+using (public.is_admin()) with check (public.is_admin());
+
+drop policy if exists "Public reads template items" on public.itinerary_template_items;
+create policy "Public reads template items" on public.itinerary_template_items for select
+using (exists (select 1 from public.itinerary_templates t where t.id=template_id and t.active=true) or public.is_admin());
+
+drop policy if exists "Admins manage template items" on public.itinerary_template_items;
+create policy "Admins manage template items" on public.itinerary_template_items for all
+using (public.is_admin()) with check (public.is_admin());
+
+insert into public.itinerary_templates
+(title,slug,description,parish,trip_length_days,itinerary_type,budget_level,travel_style,active,is_featured)
+values
+('Kingston Weekend','kingston-weekend','Culture, food, and nightlife in Kingston.','Kingston',2,'weekend','mid_range','local_weekend',true,true),
+('Montego Bay 3-Day Trip','montego-bay-3-day-trip','Beach, resort, food, and nightlife in Montego Bay.','St. James',3,'vacation','premium','tourist',true,true),
+('Ocho Rios Family Day','ocho-rios-family-day','Family-friendly Ocho Rios attractions and food stops.','St. Ann',1,'family_day','mid_range','family',true,true),
+('Negril Couples Weekend','negril-couples-weekend','Beach, sunset, and resort time in Negril.','Westmoreland',2,'couples_weekend','premium','couples',true,true),
+('Portland Nature Escape','portland-nature-escape','Beach, river, food, and waterfalls in Portland.','Portland',2,'nature_escape','mid_range','adventure',true,true),
+('South Coast Food & Falls Tour','south-coast-food-falls-tour','Falls, food, and local stops on the South Coast.','St. Elizabeth',1,'food_tour','mid_range','food',true,true)
+on conflict (slug) do update set
+title=excluded.title, description=excluded.description, parish=excluded.parish,
+trip_length_days=excluded.trip_length_days, itinerary_type=excluded.itinerary_type,
+budget_level=excluded.budget_level, travel_style=excluded.travel_style,
+active=excluded.active, is_featured=excluded.is_featured, updated_at=now();
+
+notify pgrst, 'reload schema';
