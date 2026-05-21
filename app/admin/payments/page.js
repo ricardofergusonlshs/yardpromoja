@@ -18,6 +18,11 @@ function PaymentStatusBadge({ status }) {
     className = "admin-status-badge is-active";
   }
 
+  if (value === "pending" || value === "pending_review" || value === "review") {
+    label = "Pending Review";
+    className = "admin-status-badge is-pending";
+  }
+
   if (value === "submitted") {
     label = "Submitted";
     className = "admin-status-badge is-pending";
@@ -25,6 +30,11 @@ function PaymentStatusBadge({ status }) {
 
   if (value === "rejected" || value === "failed" || value === "cancelled") {
     label = "Rejected";
+    className = "admin-status-badge is-expired";
+  }
+
+  if (value === "refunded") {
+    label = "Refunded";
     className = "admin-status-badge is-expired";
   }
 
@@ -61,10 +71,11 @@ function getCustomer(payment) {
 
 function getServiceName(payment) {
   return (
-    payment?.service?.name ||
     payment?.service_name ||
     payment?.service ||
     payment?.package_name ||
+    payment?.paid_service_name ||
+    payment?.service_id ||
     "Paid service"
   );
 }
@@ -82,8 +93,13 @@ function getReference(payment) {
     payment?.transaction_reference ||
     payment?.paypal_reference ||
     payment?.stripe_reference ||
+    payment?.provider_payment_id ||
     "—"
   );
+}
+
+function getProofUrl(payment) {
+  return payment?.proof_image_url || payment?.receipt_url || "";
 }
 
 export default function AdminPaymentsPage() {
@@ -101,7 +117,7 @@ export default function AdminPaymentsPage() {
     try {
       const { data, error } = await supabase
         .from("payments")
-        .select("*, service:paid_services(name,slug,description)")
+        .select("*")
         .order("created_at", { ascending: false });
 
       if (error) throw error;
@@ -129,12 +145,18 @@ export default function AdminPaymentsPage() {
           ? "payment_status"
           : "status";
 
+      const patch = {
+        [statusColumn]: newStatus,
+        updated_at: new Date().toISOString(),
+      };
+
+      if (newStatus === "paid" && Object.prototype.hasOwnProperty.call(payment, "paid_at")) {
+        patch.paid_at = new Date().toISOString();
+      }
+
       const { error } = await supabase
         .from("payments")
-        .update({
-          [statusColumn]: newStatus,
-          updated_at: new Date().toISOString(),
-        })
+        .update(patch)
         .eq("id", payment.id);
 
       if (error) throw error;
@@ -144,12 +166,13 @@ export default function AdminPaymentsPage() {
           item.id === payment.id
             ? {
                 ...item,
-                [statusColumn]: newStatus,
-                updated_at: new Date().toISOString(),
+                ...patch,
               }
             : item
         )
       );
+
+      setMessage(`Payment marked as ${newStatus.replaceAll("_", " ")}.`);
     } catch (error) {
       setMessage(error?.message || "Unable to update payment.");
     } finally {
@@ -182,7 +205,7 @@ export default function AdminPaymentsPage() {
             </div>
           </div>
 
-          {message ? <div className="toast error">{message}</div> : null}
+          {message ? <div className="toast">{message}</div> : null}
 
           {loading ? <div className="toast">Loading payments...</div> : null}
 
@@ -190,7 +213,8 @@ export default function AdminPaymentsPage() {
             <div className="empty">
               <h3>No payments yet</h3>
               <p className="muted">
-                Customer payment records will appear here.
+                Customer payment records will appear here after customers choose
+                a paid service or submit bank-transfer proof.
               </p>
             </div>
           ) : null}
@@ -215,6 +239,7 @@ export default function AdminPaymentsPage() {
                   {payments.map((payment) => {
                     const disabled = savingId === payment.id;
                     const status = getPaymentStatus(payment);
+                    const proofUrl = getProofUrl(payment);
 
                     return (
                       <tr key={payment.id}>
@@ -278,10 +303,10 @@ export default function AdminPaymentsPage() {
                               Reject
                             </button>
 
-                            {payment.proof_image_url ? (
+                            {proofUrl ? (
                               <a
                                 className="admin-action-btn"
-                                href={payment.proof_image_url}
+                                href={proofUrl}
                                 target="_blank"
                                 rel="noreferrer"
                               >
