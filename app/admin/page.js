@@ -194,9 +194,19 @@ export default function AdminPage() {
             <h2>Approve and manage YardPromo ads.</h2>
           </div>
 
-          <Link className="btn btn-primary" href="/admin/uploader-submissions">
-            Review Uploader Submissions
-          </Link>
+          <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+            <Link className="btn btn-primary" href="/admin/uploader-submissions">
+              Review Uploader Submissions
+            </Link>
+
+            <Link className="btn btn-light" href="/admin/payments">
+              Review Payments
+            </Link>
+
+            <Link className="btn btn-light" href="/admin/services">
+              Manage Services
+            </Link>
+          </div>
         </div>
 
         {message ? (
