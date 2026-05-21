@@ -186,8 +186,26 @@ export default function AdminPaymentsPage() {
         <div className="container">
           <div className="section-head">
             <div>
-              <p className="kicker">Admin Payments</p>
-              <h1>Review customer payments.</h1>
+              <div className="section-head">
+  <div>
+    <p className="kicker">Admin</p>
+    <h2>Approve and manage YardPromo ads.</h2>
+  </div>
+
+  <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+    <Link className="btn btn-primary" href="/admin/uploader-submissions">
+      Review Uploader Submissions
+    </Link>
+
+    <Link className="btn btn-light" href="/admin/payments">
+      Review Payments
+    </Link>
+
+    <Link className="btn btn-light" href="/admin/services">
+      Manage Services
+    </Link>
+  </div>
+</div>
               <p className="muted">
                 View payment requests, bank transfers, service purchases, and
                 approval status.

@@ -102,11 +102,11 @@ export default function CustomerPaymentsPage() {
           return;
         }
 
-        const { data, error } = await supabase
-          .from("payments")
-          .select("*, service:paid_services(name,slug,description)")
-          .eq("user_id", user.id)
-          .order("created_at", { ascending: false });
+       const { data, error } = await supabase
+  .from("payments")
+  .select("*")
+  .eq("user_id", user.id)
+  .order("created_at", { ascending: false });
 
         if (error) throw error;
 
@@ -182,9 +182,7 @@ export default function CustomerPaymentsPage() {
                     <tr key={payment.id}>
                       <td>
                         <strong>
-                          {payment.service?.name ||
-                            payment.service_name ||
-                            "YardPromo service"}
+                         {payment.service_name || payment.service || payment.package_name || "YardPromo service"}
                         </strong>
 
                         {payment.service?.description ? (
