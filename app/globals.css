@@ -5004,235 +5004,973 @@ section,
   .grid:has(.stats-large) {
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
   }
-}/* === YardPromoJa Phase 54 CSS Only Modern Hero Fix === */
-/*
-  This is intentionally CSS-only.
-  It visually replaces the old homepage headline without editing app/page.js.
+}
 
-  Old:
-  SOCIAL MEDIA GETS ATTENTION.
-  YARDPROMOJA TURNS IT INTO ACTION.
-
-  New:
-  What's happening
-  in Jamaica?
-*/
-
-/* Target the first homepage hero heading with several safe fallbacks. */
-body main > section:first-of-type h1,
-body main section:first-of-type h1:first-of-type,
-body main h1:first-of-type,
-.yp-hero h1,
-.ypHero h1,
-.hero h1,
-[class*="hero" i] h1 {
-  max-width: min(760px, 100%) !important;
-  color: transparent !important;
-  font-size: 0 !important;
-  line-height: 0 !important;
-  letter-spacing: 0 !important;
+/* === YardPromoJa Phase 59 Homepage Only Hero Text === */
+.ypHomeHeroTitle {
+  margin: 0 !important;
+  max-width: min(780px, 100%) !important;
+  color: #ffffff !important;
   text-transform: none !important;
   text-wrap: balance;
-  overflow: visible !important;
-}
-
-body main > section:first-of-type h1 *,
-body main section:first-of-type h1:first-of-type *,
-body main h1:first-of-type *,
-.yp-hero h1 *,
-.ypHero h1 *,
-.hero h1 *,
-[class*="hero" i] h1 * {
-  display: none !important;
-}
-
-body main > section:first-of-type h1::before,
-body main section:first-of-type h1:first-of-type::before,
-body main h1:first-of-type::before,
-.yp-hero h1::before,
-.ypHero h1::before,
-.hero h1::before,
-[class*="hero" i] h1::before {
-  content: "What's happening";
-  display: block;
-  color: #ffffff;
-  font-size: clamp(3.25rem, 7vw, 7.25rem);
-  font-weight: 1000;
-  line-height: 0.92;
-  letter-spacing: -0.07em;
-  text-transform: none;
+  letter-spacing: -0.07em !important;
+  line-height: 0.92 !important;
   filter: drop-shadow(0 5px 18px rgba(0, 0, 0, 0.38));
 }
 
-body main > section:first-of-type h1::after,
-body main section:first-of-type h1:first-of-type::after,
-body main h1:first-of-type::after,
-.yp-hero h1::after,
-.ypHero h1::after,
-.hero h1::after,
-[class*="hero" i] h1::after {
-  content: "in Jamaica?";
+.ypHomeHeroLine,
+.ypHomeHeroJamaica {
   display: block;
-  margin-top: 0.12em;
-  color: #ffd400;
+}
+
+.ypHomeHeroLine {
+  color: #ffffff !important;
+  font-size: clamp(3.25rem, 7vw, 7.25rem) !important;
+  font-weight: 1000 !important;
+  line-height: 0.92 !important;
+  letter-spacing: -0.07em !important;
+}
+
+.ypHomeHeroJamaica {
+  margin-top: 0.08em;
+  color: #ffd400 !important;
   font-family: "Segoe Script", "Brush Script MT", "Comic Sans MS", cursive;
-  font-size: clamp(3.25rem, 7.25vw, 7.4rem);
+  font-size: clamp(3.25rem, 7.25vw, 7.4rem) !important;
   font-style: italic;
-  font-weight: 900;
-  line-height: 0.86;
-  letter-spacing: -0.06em;
-  text-transform: none;
+  font-weight: 900 !important;
+  line-height: 0.86 !important;
+  letter-spacing: -0.06em !important;
   text-shadow:
     0 4px 22px rgba(255, 212, 0, 0.24),
     0 8px 34px rgba(0, 0, 0, 0.38);
   transform: rotate(-1deg);
 }
 
-/* Replace the old subtitle visually. */
-body main > section:first-of-type h1 + p,
-body main section:first-of-type h1:first-of-type + p,
-body main h1:first-of-type + p,
-.yp-hero h1 + p,
-.ypHero h1 + p,
-.hero h1 + p,
-[class*="hero" i] h1 + p {
-  max-width: 680px !important;
-  margin-top: clamp(18px, 2vw, 24px) !important;
-  color: transparent !important;
-  font-size: 0 !important;
-  line-height: 0 !important;
+@media (max-width: 760px) {
+  .ypHomeHeroLine,
+  .ypHomeHeroJamaica {
+    font-size: clamp(2.65rem, 14vw, 4.6rem) !important;
+  }
 }
+/* === End YardPromoJa Phase 59 Homepage Only Hero Text === */
 
-body main > section:first-of-type h1 + p::after,
-body main section:first-of-type h1:first-of-type + p::after,
-body main h1:first-of-type + p::after,
-.yp-hero h1 + p::after,
-.ypHero h1 + p::after,
-.hero h1 + p::after,
-[class*="hero" i] h1 + p::after {
-  content: "Find amazing places, events, restaurants, adventures and hidden gems near you.";
-  display: block;
-  color: rgba(255, 255, 255, 0.9);
-  font-size: clamp(1rem, 1.35vw, 1.28rem);
-  font-weight: 650;
-  line-height: 1.52;
-}
+/* === YardPromoJa Phase 62 Safe Category Icon Polish === */
+/*
+  Safe phase:
+  Does NOT edit app/page.js.
+  Does NOT replace the category section.
+  Only polishes the existing category rail/cards.
 
-/* Make the existing search feel closer to the reference, without replacing JSX. */
-body main > section:first-of-type form,
-body main section:first-of-type form:first-of-type,
-.yp-hero form,
-.ypHero form,
-.hero form,
-[class*="hero" i] form {
-  width: min(980px, 100%) !important;
-  min-height: 76px !important;
-  margin-top: clamp(22px, 3vw, 36px) !important;
-  overflow: hidden !important;
-  border: 1px solid rgba(255, 255, 255, 0.18) !important;
-  border-radius: 999px !important;
+  The selectors are intentionally focused on the category area near the top of the homepage.
+  If your exact class names differ, this may lightly improve the strip without breaking layout.
+*/
+
+/* Category rail wrapper / strip */
+.homeCategoryRail,
+.categoryRail,
+.categoryStrip,
+.categoriesRail,
+.categoriesStrip,
+[class*="categoryRail"],
+[class*="categoryStrip"],
+[class*="categoriesRail"],
+[class*="categoriesStrip"] {
+  border-block: 1px solid rgba(255, 255, 255, 0.08) !important;
   background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.13), rgba(255, 255, 255, 0.045)),
-    rgba(5, 8, 7, 0.72) !important;
-  box-shadow:
-    0 30px 80px rgba(0, 0, 0, 0.36),
-    inset 0 1px 0 rgba(255, 255, 255, 0.13) !important;
+    linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.012)),
+    rgba(5, 10, 8, 0.72) !important;
   backdrop-filter: blur(18px);
 }
 
-/* Form children: remove the boxy segmented look. */
-body main > section:first-of-type form input,
-body main section:first-of-type form:first-of-type input,
-.yp-hero form input,
-.ypHero form input,
-.hero form input,
-[class*="hero" i] form input {
-  border: 0 !important;
+/* Category scroll track */
+.homeCategoryRail > *,
+.categoryRail > *,
+.categoryStrip > *,
+.categoriesRail > *,
+.categoriesStrip > *,
+[class*="categoryRail"] > *,
+[class*="categoryStrip"] > *,
+[class*="categoriesRail"] > *,
+[class*="categoriesStrip"] > * {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 212, 0, 0.5) rgba(255, 255, 255, 0.08);
+}
+
+/* Category cards */
+.homeCategoryRail a,
+.categoryRail a,
+.categoryStrip a,
+.categoriesRail a,
+.categoriesStrip a,
+[class*="categoryRail"] a,
+[class*="categoryStrip"] a,
+[class*="categoriesRail"] a,
+[class*="categoriesStrip"] a,
+.homeCategoryRail button,
+.categoryRail button,
+.categoryStrip button,
+.categoriesRail button,
+.categoriesStrip button,
+[class*="categoryRail"] button,
+[class*="categoryStrip"] button,
+[class*="categoriesRail"] button,
+[class*="categoriesStrip"] button {
+  min-height: 98px !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: 22px !important;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(255, 212, 0, 0.11), transparent 46%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.03)),
+    rgba(17, 22, 19, 0.82) !important;
+  box-shadow:
+    0 18px 36px rgba(0, 0, 0, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    background 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.homeCategoryRail a:hover,
+.categoryRail a:hover,
+.categoryStrip a:hover,
+.categoriesRail a:hover,
+.categoriesStrip a:hover,
+[class*="categoryRail"] a:hover,
+[class*="categoryStrip"] a:hover,
+[class*="categoriesRail"] a:hover,
+[class*="categoriesStrip"] a:hover,
+.homeCategoryRail button:hover,
+.categoryRail button:hover,
+.categoryStrip button:hover,
+.categoriesRail button:hover,
+.categoriesStrip button:hover,
+[class*="categoryRail"] button:hover,
+[class*="categoryStrip"] button:hover,
+[class*="categoriesRail"] button:hover,
+[class*="categoriesStrip"] button:hover {
+  transform: translateY(-3px);
+  border-color: rgba(255, 212, 0, 0.44) !important;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(255, 212, 0, 0.18), transparent 46%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.105), rgba(255, 255, 255, 0.04)),
+    rgba(17, 22, 19, 0.92) !important;
+  box-shadow:
+    0 24px 54px rgba(0, 0, 0, 0.34),
+    0 0 28px rgba(255, 212, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
+}
+
+/* Icon circles inside the category cards */
+.homeCategoryRail a > :first-child,
+.categoryRail a > :first-child,
+.categoryStrip a > :first-child,
+.categoriesRail a > :first-child,
+.categoriesStrip a > :first-child,
+[class*="categoryRail"] a > :first-child,
+[class*="categoryStrip"] a > :first-child,
+[class*="categoriesRail"] a > :first-child,
+[class*="categoriesStrip"] a > :first-child,
+.homeCategoryRail button > :first-child,
+.categoryRail button > :first-child,
+.categoryStrip button > :first-child,
+.categoriesRail button > :first-child,
+.categoriesStrip button > :first-child,
+[class*="categoryRail"] button > :first-child,
+[class*="categoryStrip"] button > :first-child,
+[class*="categoriesRail"] button > :first-child,
+[class*="categoriesStrip"] button > :first-child {
+  width: 46px !important;
+  height: 46px !important;
+  display: grid !important;
+  place-items: center !important;
+  border: 1px solid rgba(255, 212, 0, 0.18) !important;
+  border-radius: 16px !important;
+  color: #ffd400 !important;
+  background:
+    radial-gradient(circle at 35% 25%, rgba(255, 255, 255, 0.18), transparent 32%),
+    linear-gradient(135deg, rgba(255, 212, 0, 0.16), rgba(56, 212, 48, 0.08)),
+    rgba(255, 255, 255, 0.045) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 12px 24px rgba(0, 0, 0, 0.24) !important;
+  filter: none !important;
+}
+
+/*
+  Tone down emoji-like icons if they remain.
+  This does not remove them; it makes them flatter and less toy-like.
+*/
+.homeCategoryRail a > :first-child,
+.categoryRail a > :first-child,
+.categoryStrip a > :first-child,
+.categoriesRail a > :first-child,
+.categoriesStrip a > :first-child,
+[class*="categoryRail"] a > :first-child,
+[class*="categoryStrip"] a > :first-child,
+[class*="categoriesRail"] a > :first-child,
+[class*="categoriesStrip"] a > :first-child {
+  font-size: 19px !important;
+  text-shadow: none !important;
+}
+
+/* Labels */
+.homeCategoryRail a,
+.categoryRail a,
+.categoryStrip a,
+.categoriesRail a,
+.categoriesStrip a,
+[class*="categoryRail"] a,
+[class*="categoryStrip"] a,
+[class*="categoriesRail"] a,
+[class*="categoriesStrip"] a {
+  color: rgba(255, 255, 255, 0.96) !important;
+  font-weight: 950 !important;
+  letter-spacing: -0.025em !important;
+  text-decoration: none !important;
+}
+
+/* Prevent this polish from creating huge blank space. */
+.homeCategoryRail,
+.categoryRail,
+.categoryStrip,
+.categoriesRail,
+.categoriesStrip,
+[class*="categoryRail"],
+[class*="categoryStrip"],
+[class*="categoriesRail"],
+[class*="categoriesStrip"] {
+  margin-bottom: 0 !important;
+}
+/* === End YardPromoJa Phase 62 Safe Category Icon Polish === */
+
+/* === YardPromoJa Phase 63 Real Image Category Icons === */
+/*
+  Safe image-icon phase:
+  - Does NOT edit app/page.js.
+  - Does NOT replace the category rail.
+  - Keeps the existing card size and layout.
+  - Hides the emoji/AI-looking symbol inside the existing icon circle.
+  - Uses real SVG image files from /public/assets/category-icons/.
+*/
+
+/* Keep icon holder same size. Only replace the symbol inside visually. */
+.homeCategoryRail a > :first-child,
+.categoryRail a > :first-child,
+.categoryStrip a > :first-child,
+.categoriesRail a > :first-child,
+.categoriesStrip a > :first-child,
+[class*="categoryRail"] a > :first-child,
+[class*="categoryStrip"] a > :first-child,
+[class*="categoriesRail"] a > :first-child,
+[class*="categoriesStrip"] a > :first-child,
+.homeCategoryRail button > :first-child,
+.categoryRail button > :first-child,
+.categoryStrip button > :first-child,
+.categoriesRail button > :first-child,
+.categoriesStrip button > :first-child,
+[class*="categoryRail"] button > :first-child,
+[class*="categoryStrip"] button > :first-child,
+[class*="categoriesRail"] button > :first-child,
+[class*="categoriesStrip"] button > :first-child {
+  color: transparent !important;
+  font-size: 0 !important;
+  text-shadow: none !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: 23px 23px !important;
+}
+
+/* If the old icon has nested spans/svg/text, hide them without changing holder size. */
+.homeCategoryRail a > :first-child *,
+.categoryRail a > :first-child *,
+.categoryStrip a > :first-child *,
+.categoriesRail a > :first-child *,
+.categoriesStrip a > :first-child *,
+[class*="categoryRail"] a > :first-child *,
+[class*="categoryStrip"] a > :first-child *,
+[class*="categoriesRail"] a > :first-child *,
+[class*="categoriesStrip"] a > :first-child *,
+.homeCategoryRail button > :first-child *,
+.categoryRail button > :first-child *,
+.categoryStrip button > :first-child *,
+.categoriesRail button > :first-child *,
+.categoriesStrip button > :first-child *,
+[class*="categoryRail"] button > :first-child *,
+[class*="categoryStrip"] button > :first-child *,
+[class*="categoriesRail"] button > :first-child *,
+[class*="categoriesStrip"] button > :first-child * {
+  opacity: 0 !important;
+}
+
+/* Real image icons by card order. This preserves existing format and size. */
+.homeCategoryRail a:nth-of-type(1) > :first-child,
+.categoryRail a:nth-of-type(1) > :first-child,
+.categoryStrip a:nth-of-type(1) > :first-child,
+.categoriesRail a:nth-of-type(1) > :first-child,
+.categoriesStrip a:nth-of-type(1) > :first-child,
+[class*="categoryRail"] a:nth-of-type(1) > :first-child,
+[class*="categoryStrip"] a:nth-of-type(1) > :first-child,
+[class*="categoriesRail"] a:nth-of-type(1) > :first-child,
+[class*="categoriesStrip"] a:nth-of-type(1) > :first-child {
+  background-image: url("/assets/category-icons/events.svg") !important;
+}
+
+.homeCategoryRail a:nth-of-type(2) > :first-child,
+.categoryRail a:nth-of-type(2) > :first-child,
+.categoryStrip a:nth-of-type(2) > :first-child,
+.categoriesRail a:nth-of-type(2) > :first-child,
+.categoriesStrip a:nth-of-type(2) > :first-child,
+[class*="categoryRail"] a:nth-of-type(2) > :first-child,
+[class*="categoryStrip"] a:nth-of-type(2) > :first-child,
+[class*="categoriesRail"] a:nth-of-type(2) > :first-child,
+[class*="categoriesStrip"] a:nth-of-type(2) > :first-child {
+  background-image: url("/assets/category-icons/food.svg") !important;
+}
+
+.homeCategoryRail a:nth-of-type(3) > :first-child,
+.categoryRail a:nth-of-type(3) > :first-child,
+.categoryStrip a:nth-of-type(3) > :first-child,
+.categoriesRail a:nth-of-type(3) > :first-child,
+.categoriesStrip a:nth-of-type(3) > :first-child,
+[class*="categoryRail"] a:nth-of-type(3) > :first-child,
+[class*="categoryStrip"] a:nth-of-type(3) > :first-child,
+[class*="categoriesRail"] a:nth-of-type(3) > :first-child,
+[class*="categoriesStrip"] a:nth-of-type(3) > :first-child {
+  background-image: url("/assets/category-icons/sale-offers.svg") !important;
+}
+
+.homeCategoryRail a:nth-of-type(4) > :first-child,
+.categoryRail a:nth-of-type(4) > :first-child,
+.categoryStrip a:nth-of-type(4) > :first-child,
+.categoriesRail a:nth-of-type(4) > :first-child,
+.categoriesStrip a:nth-of-type(4) > :first-child,
+[class*="categoryRail"] a:nth-of-type(4) > :first-child,
+[class*="categoryStrip"] a:nth-of-type(4) > :first-child,
+[class*="categoriesRail"] a:nth-of-type(4) > :first-child,
+[class*="categoriesStrip"] a:nth-of-type(4) > :first-child {
+  background-image: url("/assets/category-icons/campaigns.svg") !important;
+}
+
+.homeCategoryRail a:nth-of-type(5) > :first-child,
+.categoryRail a:nth-of-type(5) > :first-child,
+.categoryStrip a:nth-of-type(5) > :first-child,
+.categoriesRail a:nth-of-type(5) > :first-child,
+.categoriesStrip a:nth-of-type(5) > :first-child,
+[class*="categoryRail"] a:nth-of-type(5) > :first-child,
+[class*="categoryStrip"] a:nth-of-type(5) > :first-child,
+[class*="categoriesRail"] a:nth-of-type(5) > :first-child,
+[class*="categoriesStrip"] a:nth-of-type(5) > :first-child {
+  background-image: url("/assets/category-icons/beauty.svg") !important;
+}
+
+.homeCategoryRail a:nth-of-type(6) > :first-child,
+.categoryRail a:nth-of-type(6) > :first-child,
+.categoryStrip a:nth-of-type(6) > :first-child,
+.categoriesRail a:nth-of-type(6) > :first-child,
+.categoriesStrip a:nth-of-type(6) > :first-child,
+[class*="categoryRail"] a:nth-of-type(6) > :first-child,
+[class*="categoryStrip"] a:nth-of-type(6) > :first-child,
+[class*="categoriesRail"] a:nth-of-type(6) > :first-child,
+[class*="categoriesStrip"] a:nth-of-type(6) > :first-child {
+  background-image: url("/assets/category-icons/fashion.svg") !important;
+}
+
+.homeCategoryRail a:nth-of-type(7) > :first-child,
+.categoryRail a:nth-of-type(7) > :first-child,
+.categoryStrip a:nth-of-type(7) > :first-child,
+.categoriesRail a:nth-of-type(7) > :first-child,
+.categoriesStrip a:nth-of-type(7) > :first-child,
+[class*="categoryRail"] a:nth-of-type(7) > :first-child,
+[class*="categoryStrip"] a:nth-of-type(7) > :first-child,
+[class*="categoriesRail"] a:nth-of-type(7) > :first-child,
+[class*="categoriesStrip"] a:nth-of-type(7) > :first-child {
+  background-image: url("/assets/category-icons/transport.svg") !important;
+}
+
+.homeCategoryRail a:nth-of-type(8) > :first-child,
+.categoryRail a:nth-of-type(8) > :first-child,
+.categoryStrip a:nth-of-type(8) > :first-child,
+.categoriesRail a:nth-of-type(8) > :first-child,
+.categoriesStrip a:nth-of-type(8) > :first-child,
+[class*="categoryRail"] a:nth-of-type(8) > :first-child,
+[class*="categoryStrip"] a:nth-of-type(8) > :first-child,
+[class*="categoriesRail"] a:nth-of-type(8) > :first-child,
+[class*="categoriesStrip"] a:nth-of-type(8) > :first-child {
+  background-image: url("/assets/category-icons/stay.svg") !important;
+}
+
+.homeCategoryRail a:nth-of-type(9) > :first-child,
+.categoryRail a:nth-of-type(9) > :first-child,
+.categoryStrip a:nth-of-type(9) > :first-child,
+.categoriesRail a:nth-of-type(9) > :first-child,
+.categoriesStrip a:nth-of-type(9) > :first-child,
+[class*="categoryRail"] a:nth-of-type(9) > :first-child,
+[class*="categoryStrip"] a:nth-of-type(9) > :first-child,
+[class*="categoriesRail"] a:nth-of-type(9) > :first-child,
+[class*="categoriesStrip"] a:nth-of-type(9) > :first-child {
+  background-image: url("/assets/category-icons/weekend.svg") !important;
+}
+
+.homeCategoryRail a:nth-of-type(10) > :first-child,
+.categoryRail a:nth-of-type(10) > :first-child,
+.categoryStrip a:nth-of-type(10) > :first-child,
+.categoriesRail a:nth-of-type(10) > :first-child,
+.categoriesStrip a:nth-of-type(10) > :first-child,
+[class*="categoryRail"] a:nth-of-type(10) > :first-child,
+[class*="categoryStrip"] a:nth-of-type(10) > :first-child,
+[class*="categoriesRail"] a:nth-of-type(10) > :first-child,
+[class*="categoriesStrip"] a:nth-of-type(10) > :first-child {
+  background-image: url("/assets/category-icons/parish.svg") !important;
+}
+
+/* Same mapping if the category items are buttons instead of links. */
+.homeCategoryRail button:nth-of-type(1) > :first-child,
+.categoryRail button:nth-of-type(1) > :first-child,
+.categoryStrip button:nth-of-type(1) > :first-child,
+.categoriesRail button:nth-of-type(1) > :first-child,
+.categoriesStrip button:nth-of-type(1) > :first-child,
+[class*="categoryRail"] button:nth-of-type(1) > :first-child,
+[class*="categoryStrip"] button:nth-of-type(1) > :first-child,
+[class*="categoriesRail"] button:nth-of-type(1) > :first-child,
+[class*="categoriesStrip"] button:nth-of-type(1) > :first-child {
+  background-image: url("/assets/category-icons/events.svg") !important;
+}
+
+.homeCategoryRail button:nth-of-type(2) > :first-child,
+.categoryRail button:nth-of-type(2) > :first-child,
+.categoryStrip button:nth-of-type(2) > :first-child,
+.categoriesRail button:nth-of-type(2) > :first-child,
+.categoriesStrip button:nth-of-type(2) > :first-child,
+[class*="categoryRail"] button:nth-of-type(2) > :first-child,
+[class*="categoryStrip"] button:nth-of-type(2) > :first-child,
+[class*="categoriesRail"] button:nth-of-type(2) > :first-child,
+[class*="categoriesStrip"] button:nth-of-type(2) > :first-child {
+  background-image: url("/assets/category-icons/food.svg") !important;
+}
+
+.homeCategoryRail button:nth-of-type(3) > :first-child,
+.categoryRail button:nth-of-type(3) > :first-child,
+.categoryStrip button:nth-of-type(3) > :first-child,
+.categoriesRail button:nth-of-type(3) > :first-child,
+.categoriesStrip button:nth-of-type(3) > :first-child,
+[class*="categoryRail"] button:nth-of-type(3) > :first-child,
+[class*="categoryStrip"] button:nth-of-type(3) > :first-child,
+[class*="categoriesRail"] button:nth-of-type(3) > :first-child,
+[class*="categoriesStrip"] button:nth-of-type(3) > :first-child {
+  background-image: url("/assets/category-icons/sale-offers.svg") !important;
+}
+
+.homeCategoryRail button:nth-of-type(4) > :first-child,
+.categoryRail button:nth-of-type(4) > :first-child,
+.categoryStrip button:nth-of-type(4) > :first-child,
+.categoriesRail button:nth-of-type(4) > :first-child,
+.categoriesStrip button:nth-of-type(4) > :first-child,
+[class*="categoryRail"] button:nth-of-type(4) > :first-child,
+[class*="categoryStrip"] button:nth-of-type(4) > :first-child,
+[class*="categoriesRail"] button:nth-of-type(4) > :first-child,
+[class*="categoriesStrip"] button:nth-of-type(4) > :first-child {
+  background-image: url("/assets/category-icons/campaigns.svg") !important;
+}
+
+.homeCategoryRail button:nth-of-type(5) > :first-child,
+.categoryRail button:nth-of-type(5) > :first-child,
+.categoryStrip button:nth-of-type(5) > :first-child,
+.categoriesRail button:nth-of-type(5) > :first-child,
+.categoriesStrip button:nth-of-type(5) > :first-child,
+[class*="categoryRail"] button:nth-of-type(5) > :first-child,
+[class*="categoryStrip"] button:nth-of-type(5) > :first-child,
+[class*="categoriesRail"] button:nth-of-type(5) > :first-child,
+[class*="categoriesStrip"] button:nth-of-type(5) > :first-child {
+  background-image: url("/assets/category-icons/beauty.svg") !important;
+}
+
+.homeCategoryRail button:nth-of-type(6) > :first-child,
+.categoryRail button:nth-of-type(6) > :first-child,
+.categoryStrip button:nth-of-type(6) > :first-child,
+.categoriesRail button:nth-of-type(6) > :first-child,
+.categoriesStrip button:nth-of-type(6) > :first-child,
+[class*="categoryRail"] button:nth-of-type(6) > :first-child,
+[class*="categoryStrip"] button:nth-of-type(6) > :first-child,
+[class*="categoriesRail"] button:nth-of-type(6) > :first-child,
+[class*="categoriesStrip"] button:nth-of-type(6) > :first-child {
+  background-image: url("/assets/category-icons/fashion.svg") !important;
+}
+
+.homeCategoryRail button:nth-of-type(7) > :first-child,
+.categoryRail button:nth-of-type(7) > :first-child,
+.categoryStrip button:nth-of-type(7) > :first-child,
+.categoriesRail button:nth-of-type(7) > :first-child,
+.categoriesStrip button:nth-of-type(7) > :first-child,
+[class*="categoryRail"] button:nth-of-type(7) > :first-child,
+[class*="categoryStrip"] button:nth-of-type(7) > :first-child,
+[class*="categoriesRail"] button:nth-of-type(7) > :first-child,
+[class*="categoriesStrip"] button:nth-of-type(7) > :first-child {
+  background-image: url("/assets/category-icons/transport.svg") !important;
+}
+
+.homeCategoryRail button:nth-of-type(8) > :first-child,
+.categoryRail button:nth-of-type(8) > :first-child,
+.categoryStrip button:nth-of-type(8) > :first-child,
+.categoriesRail button:nth-of-type(8) > :first-child,
+.categoriesStrip button:nth-of-type(8) > :first-child,
+[class*="categoryRail"] button:nth-of-type(8) > :first-child,
+[class*="categoryStrip"] button:nth-of-type(8) > :first-child,
+[class*="categoriesRail"] button:nth-of-type(8) > :first-child,
+[class*="categoriesStrip"] button:nth-of-type(8) > :first-child {
+  background-image: url("/assets/category-icons/stay.svg") !important;
+}
+
+.homeCategoryRail button:nth-of-type(9) > :first-child,
+.categoryRail button:nth-of-type(9) > :first-child,
+.categoryStrip button:nth-of-type(9) > :first-child,
+.categoriesRail button:nth-of-type(9) > :first-child,
+.categoriesStrip button:nth-of-type(9) > :first-child,
+[class*="categoryRail"] button:nth-of-type(9) > :first-child,
+[class*="categoryStrip"] button:nth-of-type(9) > :first-child,
+[class*="categoriesRail"] button:nth-of-type(9) > :first-child,
+[class*="categoriesStrip"] button:nth-of-type(9) > :first-child {
+  background-image: url("/assets/category-icons/weekend.svg") !important;
+}
+
+.homeCategoryRail button:nth-of-type(10) > :first-child,
+.categoryRail button:nth-of-type(10) > :first-child,
+.categoryStrip button:nth-of-type(10) > :first-child,
+.categoriesRail button:nth-of-type(10) > :first-child,
+.categoriesStrip button:nth-of-type(10) > :first-child,
+[class*="categoryRail"] button:nth-of-type(10) > :first-child,
+[class*="categoryStrip"] button:nth-of-type(10) > :first-child,
+[class*="categoriesRail"] button:nth-of-type(10) > :first-child,
+[class*="categoriesStrip"] button:nth-of-type(10) > :first-child {
+  background-image: url("/assets/category-icons/parish.svg") !important;
+}
+/* === End YardPromoJa Phase 63 Real Image Category Icons === */
+
+/* === YardPromoJa Phase 65 Trending Landscape Overlay Cards === */
+/*
+  Goal:
+  Make the Trending Now promo cards feel more modern:
+  - landscape image across the whole card
+  - text lowered and centered over the image
+  - no left-image / right-text split
+  - keep the existing grid/section and do not edit app/page.js
+*/
+
+[class*="trending" i] a[href^="/ad/"],
+[class*="promo" i] [class*="trending" i] a[href^="/ad/"],
+[class*="adsgrid" i] a[href^="/ad/"],
+[class*="AdsGrid" i] a[href^="/ad/"] {
+  position: relative !important;
+  display: block !important;
+  min-height: clamp(210px, 18vw, 270px) !important;
+  aspect-ratio: 16 / 9 !important;
+  overflow: hidden !important;
+  border-radius: 18px !important;
+  isolation: isolate !important;
+  color: #ffffff !important;
+  background: #07100b !important;
+  box-shadow:
+    0 22px 48px rgba(0, 0, 0, 0.30),
+    inset 0 1px 0 rgba(255, 255, 255, 0.10) !important;
+}
+
+/* Full-card image layer */
+[class*="trending" i] a[href^="/ad/"] > :first-child,
+[class*="adsgrid" i] a[href^="/ad/"] > :first-child,
+[class*="AdsGrid" i] a[href^="/ad/"] > :first-child {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  min-width: 0 !important;
+  border-radius: inherit !important;
+  overflow: hidden !important;
+  z-index: 0 !important;
+}
+
+/* Actual image fill */
+[class*="trending" i] a[href^="/ad/"] img,
+[class*="adsgrid" i] a[href^="/ad/"] img,
+[class*="AdsGrid" i] a[href^="/ad/"] img {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  object-fit: cover !important;
+  object-position: center center !important;
+  transform: scale(1.01);
+  filter: saturate(1.06) contrast(1.03) brightness(0.88);
+  transition: transform 240ms ease, filter 240ms ease;
+}
+
+/* Strong lower gradient so title is readable */
+[class*="trending" i] a[href^="/ad/"]::after,
+[class*="adsgrid" i] a[href^="/ad/"]::after,
+[class*="AdsGrid" i] a[href^="/ad/"]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg,
+      rgba(0, 0, 0, 0.06) 0%,
+      rgba(0, 0, 0, 0.10) 34%,
+      rgba(0, 0, 0, 0.66) 72%,
+      rgba(0, 0, 0, 0.88) 100%),
+    radial-gradient(circle at 50% 100%, rgba(56, 212, 48, 0.16), transparent 48%);
+}
+
+/* Place all non-image content above the image */
+[class*="trending" i] a[href^="/ad/"] > :not(:first-child),
+[class*="adsgrid" i] a[href^="/ad/"] > :not(:first-child),
+[class*="AdsGrid" i] a[href^="/ad/"] > :not(:first-child) {
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+/* Lower-center text panel */
+[class*="trending" i] a[href^="/ad/"] > :last-child,
+[class*="adsgrid" i] a[href^="/ad/"] > :last-child,
+[class*="AdsGrid" i] a[href^="/ad/"] > :last-child {
+  position: absolute !important;
+  left: 18px !important;
+  right: 18px !important;
+  bottom: 15px !important;
+  width: auto !important;
+  max-width: none !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  display: grid !important;
+  justify-items: center !important;
+  align-content: end !important;
+  gap: 5px !important;
+  text-align: center !important;
   background: transparent !important;
   box-shadow: none !important;
-  color: #ffffff !important;
-  font-weight: 900 !important;
-}
-
-body main > section:first-of-type form input::placeholder,
-body main section:first-of-type form:first-of-type input::placeholder,
-.yp-hero form input::placeholder,
-.ypHero form input::placeholder,
-.hero form input::placeholder,
-[class*="hero" i] form input::placeholder {
-  color: rgba(255, 255, 255, 0.76) !important;
-}
-
-body main > section:first-of-type form select,
-body main section:first-of-type form:first-of-type select,
-.yp-hero form select,
-.ypHero form select,
-.hero form select,
-[class*="hero" i] form select {
-  border-color: rgba(255, 255, 255, 0.12) !important;
-  background-color: transparent !important;
-  color: #ffffff !important;
-  box-shadow: none !important;
-  font-weight: 900 !important;
-}
-
-body main > section:first-of-type form select option,
-body main section:first-of-type form:first-of-type select option,
-.yp-hero form select option,
-.ypHero form select option,
-.hero form select option,
-[class*="hero" i] form select option {
-  color: #07110b !important;
-  background: #ffffff !important;
-}
-
-/* Make the search button circular/yellow like the reference. */
-body main > section:first-of-type form button[type="submit"],
-body main section:first-of-type form:first-of-type button[type="submit"],
-.yp-hero form button[type="submit"],
-.ypHero form button[type="submit"],
-.hero form button[type="submit"],
-[class*="hero" i] form button[type="submit"] {
-  width: 56px !important;
-  min-width: 56px !important;
-  height: 56px !important;
-  min-height: 56px !important;
   border: 0 !important;
+}
+
+/* Category label */
+[class*="trending" i] a[href^="/ad/"] > :last-child > :first-child,
+[class*="adsgrid" i] a[href^="/ad/"] > :last-child > :first-child,
+[class*="AdsGrid" i] a[href^="/ad/"] > :last-child > :first-child {
+  color: #38d430 !important;
+  font-size: 0.78rem !important;
+  font-weight: 1000 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+}
+
+/* Promo title */
+[class*="trending" i] a[href^="/ad/"] h3,
+[class*="trending" i] a[href^="/ad/"] h4,
+[class*="adsgrid" i] a[href^="/ad/"] h3,
+[class*="adsgrid" i] a[href^="/ad/"] h4,
+[class*="AdsGrid" i] a[href^="/ad/"] h3,
+[class*="AdsGrid" i] a[href^="/ad/"] h4 {
+  margin: 0 !important;
+  max-width: 92% !important;
+  color: #ffffff !important;
+  font-size: clamp(1.22rem, 2.1vw, 1.8rem) !important;
+  font-weight: 1000 !important;
+  line-height: 0.94 !important;
+  letter-spacing: -0.055em !important;
+  text-align: center !important;
+  text-shadow: 0 4px 18px rgba(0, 0, 0, 0.62) !important;
+}
+
+/* Location line */
+[class*="trending" i] a[href^="/ad/"] p,
+[class*="adsgrid" i] a[href^="/ad/"] p,
+[class*="AdsGrid" i] a[href^="/ad/"] p {
+  margin: 0 !important;
+  max-width: 92% !important;
+  color: rgba(255, 255, 255, 0.82) !important;
+  font-size: 0.82rem !important;
+  font-weight: 800 !important;
+  line-height: 1.25 !important;
+  text-align: center !important;
+  text-shadow: 0 3px 12px rgba(0, 0, 0, 0.58) !important;
+}
+
+/* Date and tiny metrics stay low but clean */
+[class*="trending" i] a[href^="/ad/"] small,
+[class*="trending" i] a[href^="/ad/"] time,
+[class*="adsgrid" i] a[href^="/ad/"] small,
+[class*="adsgrid" i] a[href^="/ad/"] time,
+[class*="AdsGrid" i] a[href^="/ad/"] small,
+[class*="AdsGrid" i] a[href^="/ad/"] time {
+  color: #ffd400 !important;
+  font-weight: 1000 !important;
+}
+
+/* Featured badge remains top-left */
+[class*="trending" i] a[href^="/ad/"] [class*="badge" i],
+[class*="trending" i] a[href^="/ad/"] [class*="featured" i],
+[class*="adsgrid" i] a[href^="/ad/"] [class*="badge" i],
+[class*="adsgrid" i] a[href^="/ad/"] [class*="featured" i],
+[class*="AdsGrid" i] a[href^="/ad/"] [class*="badge" i],
+[class*="AdsGrid" i] a[href^="/ad/"] [class*="featured" i] {
+  position: absolute !important;
+  top: 12px !important;
+  left: 12px !important;
+  z-index: 3 !important;
+  width: auto !important;
+  height: auto !important;
+  min-height: 28px !important;
+  padding: 0 12px !important;
   border-radius: 999px !important;
   color: #07110b !important;
+  background: #ffd400 !important;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.28) !important;
+  font-size: 0.72rem !important;
+  font-weight: 1000 !important;
+}
+
+/* Hover polish */
+[class*="trending" i] a[href^="/ad/"]:hover img,
+[class*="adsgrid" i] a[href^="/ad/"]:hover img,
+[class*="AdsGrid" i] a[href^="/ad/"]:hover img {
+  transform: scale(1.055);
+  filter: saturate(1.12) contrast(1.05) brightness(0.94);
+}
+
+@media (max-width: 900px) {
+  [class*="trending" i] a[href^="/ad/"],
+  [class*="adsgrid" i] a[href^="/ad/"],
+  [class*="AdsGrid" i] a[href^="/ad/"] {
+    min-height: 220px !important;
+  }
+}
+
+@media (max-width: 620px) {
+  [class*="trending" i] a[href^="/ad/"],
+  [class*="adsgrid" i] a[href^="/ad/"],
+  [class*="AdsGrid" i] a[href^="/ad/"] {
+    aspect-ratio: 4 / 3 !important;
+    min-height: 230px !important;
+  }
+
+  [class*="trending" i] a[href^="/ad/"] > :last-child,
+  [class*="adsgrid" i] a[href^="/ad/"] > :last-child,
+  [class*="AdsGrid" i] a[href^="/ad/"] > :last-child {
+    left: 14px !important;
+    right: 14px !important;
+    bottom: 14px !important;
+  }
+}
+/* === End YardPromoJa Phase 65 Trending Landscape Overlay Cards === */
+
+/* === YardPromoJa Phase 66 Campaigns Offers Landscape === */
+/*
+  Makes Campaigns & Offers use the space better as a landscape panel.
+  CSS-only: does not edit app/page.js.
+*/
+
+/* Try to catch the Campaigns & Offers shell by common class names. */
+[class*="campaign" i][class*="offer" i],
+[class*="offers" i][class*="campaign" i],
+[class*="campaigns" i][class*="offers" i] {
+  width: 100% !important;
+  min-height: 0 !important;
+}
+
+/* Common homepage right rail: second card is Campaigns & Offers. */
+main aside > section:nth-of-type(2),
+main aside > div:nth-of-type(2) {
+  min-height: 0 !important;
+}
+
+/* Put the three offer blocks side by side when space allows. */
+[class*="campaign" i][class*="offer" i] > div:last-child,
+[class*="offers" i][class*="campaign" i] > div:last-child,
+[class*="campaigns" i][class*="offers" i] > div:last-child,
+main aside > section:nth-of-type(2) > div:last-child,
+main aside > div:nth-of-type(2) > div:last-child {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 12px !important;
+  align-items: stretch !important;
+}
+
+/* Landscape tiles. */
+[class*="campaign" i][class*="offer" i] > div:last-child > *,
+[class*="offers" i][class*="campaign" i] > div:last-child > *,
+[class*="campaigns" i][class*="offers" i] > div:last-child > *,
+main aside > section:nth-of-type(2) > div:last-child > *,
+main aside > div:nth-of-type(2) > div:last-child > * {
+  min-height: 116px !important;
+  height: auto !important;
+  padding: 18px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  border-radius: 18px !important;
+  overflow: hidden !important;
+  position: relative !important;
+}
+
+/* Add subtle premium depth to each offer tile. */
+[class*="campaign" i][class*="offer" i] > div:last-child > *::before,
+[class*="offers" i][class*="campaign" i] > div:last-child > *::before,
+[class*="campaigns" i][class*="offers" i] > div:last-child > *::before,
+main aside > section:nth-of-type(2) > div:last-child > *::before,
+main aside > div:nth-of-type(2) > div:last-child > *::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
   background:
-    radial-gradient(circle at 33% 25%, rgba(255, 255, 255, 0.42), transparent 31%),
-    linear-gradient(135deg, #ffe66d, #ffd400 54%, #ffb900) !important;
-  box-shadow:
-    0 20px 42px rgba(255, 212, 0, 0.29),
-    inset 0 1px 0 rgba(255, 255, 255, 0.42) !important;
+    radial-gradient(circle at 86% 18%, rgba(255, 212, 0, 0.18), transparent 34%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.055), transparent 46%);
+  opacity: 0.9;
 }
 
-@media (max-width: 760px) {
-  body main > section:first-of-type h1::before,
-  body main section:first-of-type h1:first-of-type::before,
-  body main h1:first-of-type::before,
-  .yp-hero h1::before,
-  .ypHero h1::before,
-  .hero h1::before,
-  [class*="hero" i] h1::before,
-  body main > section:first-of-type h1::after,
-  body main section:first-of-type h1:first-of-type::after,
-  body main h1:first-of-type::after,
-  .yp-hero h1::after,
-  .ypHero h1::after,
-  .hero h1::after,
-  [class*="hero" i] h1::after {
-    font-size: clamp(2.65rem, 14vw, 4.6rem) !important;
+/* Keep text above decorative layer. */
+[class*="campaign" i][class*="offer" i] > div:last-child > * > *,
+[class*="offers" i][class*="campaign" i] > div:last-child > * > *,
+[class*="campaigns" i][class*="offers" i] > div:last-child > * > *,
+main aside > section:nth-of-type(2) > div:last-child > * > *,
+main aside > div:nth-of-type(2) > div:last-child > * > * {
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+/* Header row: title left, View All right. */
+[class*="campaign" i][class*="offer" i] > :first-child,
+[class*="offers" i][class*="campaign" i] > :first-child,
+[class*="campaigns" i][class*="offers" i] > :first-child,
+main aside > section:nth-of-type(2) > :first-child,
+main aside > div:nth-of-type(2) > :first-child {
+  display: flex !important;
+  align-items: start !important;
+  justify-content: space-between !important;
+  gap: 20px !important;
+}
+
+/* Reduce title height so the whole card feels landscape. */
+[class*="campaign" i][class*="offer" i] h2,
+[class*="offers" i][class*="campaign" i] h2,
+[class*="campaigns" i][class*="offers" i] h2,
+main aside > section:nth-of-type(2) h2,
+main aside > div:nth-of-type(2) h2 {
+  max-width: 620px !important;
+  margin-bottom: 14px !important;
+  font-size: clamp(1.75rem, 2.7vw, 2.75rem) !important;
+  line-height: 0.92 !important;
+  letter-spacing: -0.055em !important;
+}
+
+[class*="campaign" i][class*="offer" i] h3,
+[class*="offers" i][class*="campaign" i] h3,
+[class*="campaigns" i][class*="offers" i] h3,
+main aside > section:nth-of-type(2) h3,
+main aside > div:nth-of-type(2) h3 {
+  margin: 0 0 8px !important;
+  font-size: clamp(1.05rem, 1.25vw, 1.35rem) !important;
+  line-height: 1.02 !important;
+  letter-spacing: -0.035em !important;
+}
+
+/* Stack back on narrower screens. */
+@media (max-width: 1180px) {
+  [class*="campaign" i][class*="offer" i] > div:last-child,
+  [class*="offers" i][class*="campaign" i] > div:last-child,
+  [class*="campaigns" i][class*="offers" i] > div:last-child,
+  main aside > section:nth-of-type(2) > div:last-child,
+  main aside > div:nth-of-type(2) > div:last-child {
+    grid-template-columns: 1fr !important;
   }
 
-  body main > section:first-of-type form,
-  body main section:first-of-type form:first-of-type,
-  .yp-hero form,
-  .ypHero form,
-  .hero form,
-  [class*="hero" i] form {
-    border-radius: 28px !important;
+  [class*="campaign" i][class*="offer" i] > div:last-child > *,
+  [class*="offers" i][class*="campaign" i] > div:last-child > *,
+  [class*="campaigns" i][class*="offers" i] > div:last-child > *,
+  main aside > section:nth-of-type(2) > div:last-child > *,
+  main aside > div:nth-of-type(2) > div:last-child > * {
+    min-height: 90px !important;
   }
 }
-/* === End YardPromoJa Phase 54 CSS Only Modern Hero Fix === */
+/* === End YardPromoJa Phase 66 Campaigns Offers Landscape === */
+
+/* === YardPromoJa Phase 67 Six Trending Featured Photos === */
+/*
+  Shows the Trending Now section as 6 landscape cards:
+  - 3 columns x 2 rows on wide screens
+  - keeps image-overlay look from Phase 65
+  - CSS-only layout adjustment, no page sections removed
+*/
+
+/* Parent grid holding trending promo cards */
+[class*="trending" i] :where(div, section):has(> a[href^="/ad/"]),
+[class*="AdsGrid" i] :where(div, section):has(> a[href^="/ad/"]),
+[class*="adsgrid" i] :where(div, section):has(> a[href^="/ad/"]) {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 14px !important;
+  align-items: stretch !important;
+}
+
+/* Slightly reduce landscape height so 6 cards fit cleanly */
+[class*="trending" i] a[href^="/ad/"],
+[class*="AdsGrid" i] a[href^="/ad/"],
+[class*="adsgrid" i] a[href^="/ad/"] {
+  min-height: clamp(168px, 14vw, 218px) !important;
+  aspect-ratio: 16 / 9 !important;
+}
+
+/* Keep title readable at the smaller six-card size */
+[class*="trending" i] a[href^="/ad/"] h3,
+[class*="trending" i] a[href^="/ad/"] h4,
+[class*="AdsGrid" i] a[href^="/ad/"] h3,
+[class*="AdsGrid" i] a[href^="/ad/"] h4,
+[class*="adsgrid" i] a[href^="/ad/"] h3,
+[class*="adsgrid" i] a[href^="/ad/"] h4 {
+  font-size: clamp(1.05rem, 1.45vw, 1.55rem) !important;
+  line-height: 0.96 !important;
+}
+
+/* Keep lower-center text compact */
+[class*="trending" i] a[href^="/ad/"] > :last-child,
+[class*="AdsGrid" i] a[href^="/ad/"] > :last-child,
+[class*="adsgrid" i] a[href^="/ad/"] > :last-child {
+  left: 14px !important;
+  right: 14px !important;
+  bottom: 12px !important;
+  gap: 4px !important;
+}
+
+[class*="trending" i] a[href^="/ad/"] p,
+[class*="AdsGrid" i] a[href^="/ad/"] p,
+[class*="adsgrid" i] a[href^="/ad/"] p {
+  font-size: 0.76rem !important;
+  line-height: 1.18 !important;
+}
+
+/* Medium screens: 2 columns x 3 rows */
+@media (max-width: 1180px) {
+  [class*="trending" i] :where(div, section):has(> a[href^="/ad/"]),
+  [class*="AdsGrid" i] :where(div, section):has(> a[href^="/ad/"]),
+  [class*="adsgrid" i] :where(div, section):has(> a[href^="/ad/"]) {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  [class*="trending" i] a[href^="/ad/"],
+  [class*="AdsGrid" i] a[href^="/ad/"],
+  [class*="adsgrid" i] a[href^="/ad/"] {
+    min-height: 210px !important;
+  }
+}
+
+/* Phone: single column */
+@media (max-width: 680px) {
+  [class*="trending" i] :where(div, section):has(> a[href^="/ad/"]),
+  [class*="AdsGrid" i] :where(div, section):has(> a[href^="/ad/"]),
+  [class*="adsgrid" i] :where(div, section):has(> a[href^="/ad/"]) {
+    grid-template-columns: 1fr !important;
+  }
+}
+/* === End YardPromoJa Phase 67 Six Trending Featured Photos === */

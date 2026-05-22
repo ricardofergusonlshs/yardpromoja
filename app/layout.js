@@ -119,7 +119,7 @@ export default function RootLayout({ children }) {
               <Link href="/campaigns">Campaigns & Giveaways</Link>
               <Link href="/link-up">Plan the Link-Up</Link>
               <Link href="/browse">Parish Pulse</Link>
-              <Link href="/weekend">Weekend Board</Link>
+              <Link href="/Newest">Weekend Board</Link>
               <Link href="/browse">Rankings</Link>
               <Link href="/terms">Terms</Link>
               <Link href="/privacy">Privacy</Link>

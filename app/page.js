@@ -1,3 +1,4 @@
+import JamaicaParishMap from "@/components/JamaicaParishMap";
 import Link from "next/link";
 import AdsGrid from "./AdsGrid";
 import HeroStack from "./components/HeroStack";
@@ -6,7 +7,8 @@ const categoryLinks = [
   { label: "Events & Parties", icon: "♫", href: "/browse?category=Party" },
   { label: "Food & Drinks", icon: "🍴", href: "/browse?category=Food" },
   { label: "Sale Offers", icon: "🏷", href: "/browse?category=Sale" },
-  { label: "Campaigns", icon: "📣", href: "/campaigns" },
+
+
   { label: "Beauty", icon: "✂", href: "/browse?category=Beauty" },
   { label: "Fashion", icon: "👕", href: "/browse?category=Fashion" },
   { label: "Transport", icon: "🚕", href: "/browse?category=Transport" },
@@ -189,12 +191,12 @@ export default function Home() {
       <section className="yp-dark-hero">
         <div className="yp-container yp-home-hero-grid">
           <div className="yp-hero-copy">
-            <p className="yp-mini-kicker">Jamaica’s link-up planner</p>
+            <p className="yp-mini-kicker">Discover the real Jamaica</p>
 
-            <h1>
-              Social media gets attention.
-              <span> YardPromoJa turns it into action.</span>
-            </h1>
+            <h1 className="ypHomeHeroTitle">
+  <span className="ypHomeHeroLine">What&apos;s happening</span>
+  <span className="ypHomeHeroJamaica">in Jamaica?</span>
+</h1>
 
             <p className="yp-hero-text">
               Discover events, promotions, food, fashion, transport, stays,
@@ -289,7 +291,7 @@ export default function Home() {
               <Link href="/browse">View All</Link>
             </div>
 
-            <AdsGrid limit={4} section="featured" />
+            <AdsGrid limit={6} section="featured" />
           </div>
 
           <aside className="yp-home-sidebar">
@@ -376,10 +378,7 @@ export default function Home() {
             </div>
 
             <aside className="yp-parish-map-panel">
-              <img
-                src="/assets/jamaica-parish-map.svg"
-                alt="Map of Jamaica with parish markers"
-              />
+              <JamaicaParishMap />
 
               <div className="yp-parish-map-cta">
                 <h3>Explore Your Parish</h3>
